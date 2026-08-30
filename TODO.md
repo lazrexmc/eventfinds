@@ -8,30 +8,35 @@ build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 
 ## RESUME HERE
 
-**Live state as of 2026-08-29. This block outranks every other document here.**
+**Live state as of 2026-08-30. This block outranks every other document here.**
 
-**v1 BUILT (rung one).** Pipeline and site built across Tasks 1-11; Task 12 adds this README,
-ships a handful of ruled fixes, and pushes the branch. All gates green: `python -m pytest -q`
-(56 tests), `npm test` (10 tests, via `node --test "tests/js/**/*.test.mjs"`), and
-`python pipeline/checks.py` (ALL GATES PASS, G1-G9). The page was verified in a browser in three
-states (empty, loaded, error) - see CHATLOG.
+**v1 is BUILT (rung one) and MERGED to `master`, pushed to github.com/lazrexmc/eventfinds (private).**
+Twelve plan tasks with a review gate each, a whole-branch adversarial review (0 Critical, 8 Important,
+all fixed and re-verified). Checks, all green at HEAD: `python -m pytest -q` (56), `npm test` (10),
+`python pipeline/checks.py` (ALL GATES PASS, G1-G9). The page was verified in a browser in four states.
+Every controller ruling is in CHATLOG.md (2026-08-30 00:xx CDT entry).
 
-**Final review: 8 Important findings fixed (F1-F8) plus three folded-in minors (M1-M3), 2026-08-30
-- see CHATLOG.**
+**The ONE thing blocking rung two is Lance's:** connect Cloudflare Pages. Dashboard -> Workers & Pages
+-> Create -> Pages -> Connect to Git -> repo `lazrexmc/eventfinds` -> production branch `master` ->
+root directory `site` -> build command EMPTY -> build output directory EMPTY -> Save and Deploy.
+Project name `eventfinds` (URL https://eventfinds.pages.dev). Trap: the dashboard funnels toward
+Workers; choose Pages. Then run `python pipeline/verify_deploy.py` in F:\EventFinds: it must print
+ALL DEPLOYED (rung two). Last check 2026-08-30 06:23 CDT: 21 markers HTTP 0 - the origin does not resolve; not connected.
+When it is green: record it in README `## Live` and CHATLOG (clock-dated, plain ASCII), commit, push,
+and message the RapidForge session with the verify_deploy output.
 
-**Waiting on the one credentialed step:** Lance connects Cloudflare Pages - project `eventfinds`,
-repo `lazrexmc/eventfinds`, production branch `master` (after the merge), root directory `site`,
-build command empty, output directory empty. That step is not taken here; Cloudflare Pages is not
-yet connected.
+**Registry state (F:\RapidForge):** `modules/event-finder.md` promotion to `proven` is HELD until
+check 7.8 (origin equals git) runs green here; its new section 7b records which of this build's checks
+ran and in which form (7.1/7.2/7.3 in the exporter-file form, 7.5/7.6/7.7 exact, 7.4 database-variant
+only, 7.9 N/A standalone, 7.8 pending). verify-deploy (pipeline/verify_deploy.py) becomes a code module
+on that same run.
 
-**After it:** `python pipeline/verify_deploy.py` must print ALL DEPLOYED (rung two). Record the
-result in CHATLOG when it runs.
+**Also waiting on Lance:** a "go" to create `CLAUDE.md` (drafted in the 2026-08-30 handoff; not created on
+a peer's relay per PROJECT_STANDARD s4.2). Standing conventions: plain ASCII punctuation, dates from the
+terminal clock with the zone, `F:\RapidForge\docs\PROJECT_STANDARD.md`.
 
-Read order for a cold session: this block -> the form below -> `CHATLOG.md` (why) ->
-`F:\RapidForge\modules\event-finder.md` section 5 and section 6 (how, and the traps) ->
-`F:\RapidForge\docs\BUILD_002_eventfinds.md` (the constraints verbatim).
-
----
+Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) ->
+`docs/superpowers/specs/2026-08-30-eventfinds-v1-design.md` -> `F:\RapidForge\modules\event-finder.md`.
 
 ## Stage 2 questionnaire - ANSWERED 2026-08-29 (kept for the record; answers in CHATLOG)
 
