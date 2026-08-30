@@ -245,3 +245,63 @@ committed empty publication. `python pipeline/checks.py` printed all nine gates 
 also removing an untracked `.playwright-mcp/` directory that the MCP browser tooling had written
 during this session (snapshot and console-log files, not part of the repository and not referenced
 by any code). The background server was stopped before this check ran.
+
+## 2026-08-29 - Build 002 v1 built; awaiting the Pages connect
+
+Task 12 (README, live-state documents, a handful of ruled fixes, final checks and push) run per
+the controller's supplement ordering: brief Step 1 (README, with the supplement's items 4 and 7
+folded in) -> supplement items 1, 2, 3, 5, 6 -> brief Step 3 (TODO/CHATLOG) -> brief Step 4 (final
+checks and push, with `npm test` added). Brief Step 2 (whole-branch adversarial review) and Step 5
+(the Pages handoff message) were both skipped on the controller's ruling - the review runs after
+this task and the handoff is the controller's message, not mine.
+
+**Created `README.md`** from the brief's template with the supplement's items folded in: the local
+preview line uses `python -u pipeline/serve_local.py` (stdout is block-buffered when backgrounded,
+so without `-u` the startup log appears late); a `## Live` section states the three-rung ladder -
+Built (rung one); Cloudflare Pages not yet connected; verification recorded here once it runs; and
+the Tests section shows `npm test` first with `node --test "tests/js/**/*.test.mjs"` given as the
+literal equivalent, never the bare-directory form.
+
+**Fixes (supplement section A), each verified after applying:**
+1. `package.json`: `"test": "node --test tests/js"` failed under Node 24.11.1 with
+   `Cannot find module 'F:\EventFinds\tests\js'` (a bare directory is no longer walked as a test
+   root; Node resolves it as a module specifier). Changed to
+   `"test": "node --test \"tests/js/**/*.test.mjs\""`. `npm test` now passes, 9 tests.
+2. `site/index.html`: added `<link rel="icon" href="data:," />` in `<head>` right after the
+   viewport meta, so the browser stops requesting `/favicon.ico` (previously a cosmetic 404 seen
+   in the Task 11 console log). No other change to the file.
+3. `.gitignore`: appended `/.playwright-mcp/` (anchored, matching every existing entry) - the
+   browser-tool MCP had written untracked artifacts under that path during Task 11.
+4. Plain ASCII punctuation applied to `README.md`, `TODO.md`, `PLAYBOOK_DELTA.md`: em dashes, the
+   section sign, arrows and the RESUME heading's rewind emoji replaced with hyphens, "section N",
+   `->`, and a bare `## RESUME HERE`. `grep -nP "[^\x00-\x7F]" README.md TODO.md PLAYBOOK_DELTA.md`
+   prints nothing.
+5. Dates: every `2026-08-30` in `TODO.md` and `PLAYBOOK_DELTA.md` changed to `2026-08-29` (the
+   machine's local date; the earlier date was UTC). TODO's RESUME block now reads
+   "Live state as of 2026-08-29" and states it outranks every other document in the repo.
+
+**TODO.md RESUME block** rewritten to the live state: v1 BUILT (rung one); all gates green
+(`python -m pytest -q` 50 tests, `npm test` 9 tests, `python pipeline/checks.py` ALL GATES PASS
+G1-G9); waiting on the one credentialed step - Lance connects Cloudflare Pages (project
+`eventfinds`, repo `lazrexmc/eventfinds`, production branch `master` after the merge, root
+directory `site`, build command empty, output directory empty); after that,
+`python pipeline/verify_deploy.py` must print ALL DEPLOYED (rung two). Build queue items through
+"Build" ticked done; the review/deploy and dogfood/deposit items left open since Pages is not yet
+connected and the review is the controller's to run.
+
+**PLAYBOOK_DELTA.md**: added Lesson 1 (verify_deploy's `read_bytes()` crashed on a marker file
+absent from the repo instead of reporting a verdict; fixed with a `local_bytes()` helper and a
+NO-LOCAL verdict - already committed in Task 6, documented here for the first time) and Lesson 2
+(`node --test <directory>` resolves as a module specifier on Node 24 instead of walking the
+directory; use a quoted glob). The existing memory-index lesson kept as Lesson 3 under the same
+numbering, text otherwise unchanged.
+
+**Final checks, all green:** `python -m pytest -q` (50 passed), `npm test` (9 passed),
+`python pipeline/checks.py` (ALL GATES PASS, G1-G9), `grep -nP "[^\x00-\x7F]" pipeline/*.py
+tests/*.py` (nothing), `grep -n -i -E "glizzness|midwest event finder" -r site pipeline tests data
+README.md` (nothing).
+
+Two commits follow: one for the fixes (`package.json`, `site/index.html`, `.gitignore`), one for
+the documents (`README.md`, `TODO.md`, `PLAYBOOK_DELTA.md`, `CHATLOG.md`). Branch `v1` pushed to
+`origin` (not previously pushed). `verify_deploy.py` was not run against the network, per the
+supplement.

@@ -1,41 +1,51 @@
-# EventFinds — TODO
+# EventFinds - TODO
 
-*RapidForge Build 002. A public, curated, filterable directory of events — a spin-out of Glizzness's
+*RapidForge Build 002. A public, curated, filterable directory of events - a spin-out of Glizzness's
 Midwest Event Finder that must not damage it. Method: `F:\RapidForge\modules\event-finder.md`;
 build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 
 ---
 
-## ⏮ RESUME HERE
+## RESUME HERE
 
-**Live state as of 2026-08-30. This block outranks every other document here.**
+**Live state as of 2026-08-29. This block outranks every other document here.**
 
-**Stage 2 ANSWERED 2026-08-30** (verbatim in `CHATLOG.md`): #1 **standalone**, #3 **Lance owns
-everything ownable**, #13 **static JSON ($0) "for now"** — all fourteen defaults stand. Build is in
-Stage 3: spec → freeze → plan → build → review → deploy. Interruptions so far: **0**.
+**v1 BUILT (rung one).** Pipeline and site built across Tasks 1-11; Task 12 adds this README,
+ships a handful of ruled fixes, and pushes the branch. All gates green: `python -m pytest -q`
+(50 tests), `npm test` (9 tests, via `node --test "tests/js/**/*.test.mjs"`), and
+`python pipeline/checks.py` (ALL GATES PASS, G1-G9). The page was verified in a browser in three
+states (empty, loaded, error) - see CHATLOG.
 
-Read order for a cold session: this block → the form → `CHATLOG.md` (why) →
-`F:\RapidForge\modules\event-finder.md` §5 and §6 (how, and the traps) →
+**Waiting on the one credentialed step:** Lance connects Cloudflare Pages - project `eventfinds`,
+repo `lazrexmc/eventfinds`, production branch `master` (after the merge), root directory `site`,
+build command empty, output directory empty. That step is not taken here; Cloudflare Pages is not
+yet connected.
+
+**After it:** `python pipeline/verify_deploy.py` must print ALL DEPLOYED (rung two). Record the
+result in CHATLOG when it runs.
+
+Read order for a cold session: this block -> the form below -> `CHATLOG.md` (why) ->
+`F:\RapidForge\modules\event-finder.md` section 5 and section 6 (how, and the traps) ->
 `F:\RapidForge\docs\BUILD_002_eventfinds.md` (the constraints verbatim).
 
 ---
 
-## Stage 2 questionnaire — ANSWERED 2026-08-30 (kept for the record; answers in CHATLOG)
+## Stage 2 questionnaire - ANSWERED 2026-08-29 (kept for the record; answers in CHATLOG)
 
-**Genuinely open — no default can stand in for the owner:**
+**Genuinely open - no default can stand in for the owner:**
 
 | # | Question | Recommended | Why |
 |---|---|---|---|
 | **1** | **Relationship to Glizzness:** standalone product / shared backend / Glizzness's north-star under a new name? | **Standalone.** `glizzness.com/festivals` untouched through the 2026-09-10 demo; whether it later points at EventFinds is a second decision | Two finders over one dataset fork (trap 6.20); touching Glizzness before the demo risks the demo |
-| **3** | **Who owns the 415 events and their organiser contacts** — Lance, or the LLC's "business data" carve-out? | *(no default — a fact only Lance knows)* | Decides whether #2's later import is his to make |
-| **13** | **Where does the database live?** (a) 4th Supabase project, **$10/mo**; (b) schema in an existing project — couples to Glizzness; (c) **static JSON publication, $0**, as EqualShares does | **(c) for v1.** The curated path emits `site/data/*.json`; the page reads a file | This is Build 001's open interruption returning — one answer closes both. **Consequence:** with no DB there is no promote form in v1; the source file is the truth and curation is edit → export → deploy |
+| **3** | **Who owns the 415 events and their organiser contacts** - Lance, or the LLC's "business data" carve-out? | *(no default - a fact only Lance knows)* | Decides whether #2's later import is his to make |
+| **13** | **Where does the database live?** (a) 4th Supabase project, **$10/mo**; (b) schema in an existing project - couples to Glizzness; (c) **static JSON publication, $0**, as EqualShares does | **(c) for v1.** The curated path emits `site/data/*.json`; the page reads a file | This is Build 001's open interruption returning - one answer closes both. **Consequence:** with no DB there is no promote form in v1; the source file is the truth and curation is edit -> export -> deploy |
 
-**Defaults to confirm — reply only with the numbers that are wrong:**
+**Defaults to confirm - reply only with the numbers that are wrong:**
 
 | # | Question | Default |
 |---|---|---|
-| 2 | Seed data | **Start empty.** Import a re-verified subset of the 415 later, by explicit act, without contacts — and only if #3 says they are Lance's |
-| 4 | v1 scope | **Curated-only:** source file → normalise → geocode → export → static finder page. Crawler intake is v2 (the reference's is pointed at, not rebuilt) |
+| 2 | Seed data | **Start empty.** Import a re-verified subset of the 415 later, by explicit act, without contacts - and only if #3 says they are Lance's |
+| 4 | v1 scope | **Curated-only:** source file -> normalise -> geocode -> export -> static finder page. Crawler intake is v2 (the reference's is pointed at, not rebuilt) |
 | 5 | Home / distance | **One configurable home per deployment; v1 home = Columbia, MO; distance computed at load.** Per-viewer geolocation later |
 | 6 | Audience | **Generic event directory, attendee-shaped columns; vendor fit an optional attribute, never the gate** |
 | 7 | Public columns | **No organiser name/email/phone.** Homepage URL only |
@@ -47,33 +57,35 @@ Read order for a cold session: this block → the form → `CHATLOG.md` (why) �
 | 14 | Launch surface | **`eventfinds.pages.dev` first; custom domain later** |
 | 15 | Name / brand | **"EventFinds"; no Glizzness brand; no "Midwest Event Finder" string** |
 | 16 | Passed events | **Hide** (a finder shows what you can still catch) |
-| 17 | Repo | **`lazrexmc/eventfinds`, private, Cloudflare Pages root `site`** — created only on your word |
+| 17 | Repo | **`lazrexmc/eventfinds`, private, Cloudflare Pages root `site`** - created only on your word |
 
 ---
 
-## BUILD QUEUE (v1, on the defaults — reordered if answers change it)
+## BUILD QUEUE (v1, on the defaults - reordered if answers change it)
 
-- [ ] `git init`; commit the docs; create the remote (#17) on Lance's word
-- [ ] Spec, then freeze: schema of the source file (columns from the class-B list in CHATLOG),
+- [x] `git init`; commit the docs; create the remote (#17) on Lance's word
+- [x] Spec, then freeze: schema of the source file (columns from the class-B list in CHATLOG),
       `visibility` enum, the export contract (`site/data/events.json` + `schedules.json` +
       `meta.json` with the "as of / N events" line computed, never typed)
-- [ ] Plan with acceptance criteria = `event-finder` §7 (7.1, 7.2-as-exporter-test, 7.3, 7.5,
+- [x] Plan with acceptance criteria = `event-finder` section 7 (7.1, 7.2-as-exporter-test, 7.3, 7.5,
       7.6, 7.7, 7.8) + EqualShares-style `pipeline/checks.py` gates
-- [ ] Build: `pipeline/` (normalise → geocode → export → checks → serve_local), `site/` (finder
-      page — take the shape and the named sub-units from `Glizzness/site/festivals/app.js`, fix
+- [x] Build: `pipeline/` (normalise -> geocode -> export -> checks -> serve_local), `site/` (finder
+      page - take the shape and the named sub-units from `Glizzness/site/festivals/app.js`, fix
       6.1/6.2/6.3/6.5 rather than inherit them; vendored Leaflet + markercluster; CSP enumerated)
-- [ ] Whole-branch adversarial review, then deploy to `*.pages.dev`; verify at the origin (7.8)
-- [ ] Dogfood (Lance) → deposit: promote `event-finder` to `proven`; back-propagate to Glizzness
+- [ ] Whole-branch adversarial review (now the controller's, run after Task 12), then deploy to
+      `*.pages.dev`; verify at the origin (7.8)
+- [ ] Dogfood (Lance) -> deposit: promote `event-finder` to `proven`; back-propagate to Glizzness
       via RapidForge (traps fixed here that it still carries)
 
 ## INBOX (captured, not chased)
 
-- v2: intake — point at `Glizzness/crawler/` and the written-but-unbuilt promote design
-  (`event-finder` §5.8); needs a DB (#13) and the passcode gate (`auth-and-gating` §9, unbuilt)
+- v2: intake - point at `Glizzness/crawler/` and the written-but-unbuilt promote design
+  (`event-finder` section 5.8); needs a DB (#13) and the passcode gate (`auth-and-gating` section 9,
+  unbuilt)
 - Later: per-viewer geolocation (header + JS change, trap 6.13); venue-precision geocoding
-  (provider decision); `featured` → payments (Tier-0 gap, two other consumers already)
+  (provider decision); `featured` -> payments (Tier-0 gap, two other consumers already)
 - SEO: `static-publication-site` field 2 warns client-side rendering bets on crawlers. A public
-  directory may care. Investigable when the first real event list exists — not a question
+  directory may care. Investigable when the first real event list exists - not a question
 - `verify-deploy` (Glizzness code candidate): EventFinds could be its third consumer
 
 ## STANDING CONSTRAINTS
