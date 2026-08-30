@@ -595,3 +595,15 @@ from CLAUDE.md, and at the reference by path from PLAYBOOK_DELTA. Nothing here f
 moves. The first clause is checked constantly; the second is decoration until an instrument reads it.
 Also worth stating plainly: this repo holds one deliberate COPY, pipeline/verify_deploy.py, attributed
 in its docstring - a code module is a copy by design, which is the edge the rule should name.
+
+## 2026-08-30 14:40 CDT - Session closing
+
+Lance closed this session. Final state: v1 built (rung one) and merged to master, clean and in sync at
+11cf795 before this entry; `python -m pytest -q` 56, `npm test` 10, `python pipeline/checks.py` ALL GATES
+PASS at that commit. Blocked on one owner step, the Cloudflare Pages connect, whose parameters are in
+CLAUDE.md and in the RESUME block. The hourly origin check was a session-only timer and dies with this
+session, so the RESUME now says a later session must run verify_deploy itself rather than expecting a
+watcher. Open and carried in the inbox, none of it blocking: a tenth gate for plain ASCII in documents,
+the rule 5 rewording (an owner-approved import must not require breaking the rule), narrowing the
+claim-checker deviation so it does not overstate what the gates cover, and the freshness display showing
+only the newest verification date. RapidForge notified.
