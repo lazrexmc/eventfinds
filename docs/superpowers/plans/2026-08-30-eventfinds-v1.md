@@ -71,7 +71,7 @@ site/_headers                  CSP + security headers
 **Interfaces:**
 - Produces: `model.COLUMNS: list[str]` (18 names, spec §4 order); `model.EVENT_TYPES`, `model.CADENCES`, `model.VISIBILITIES`: tuples; `class ValidationError(Exception)`; `validate_header(fieldnames) -> None` (raises); `validate_row(raw: dict, line: int) -> dict` (raises; returns a typed row: strings or `None`, `months: list[int]`, `featured: bool`); `parse_months(s) -> list[int]` (raises `ValueError`); `months_from_dates(start: date, end: date | None) -> list[int]`; `slugify(name, city, state) -> str`. `config.HOME = {"name","lat","lng"}`, `config.EVENTS_CSV`, `config.PLACES_CSV`, `config.SITE_DATA`, `config.STALE_DAYS = 60`, `config.PIPELINE_VERSION = "1"`.
 
-- [ ] **Step 1: Write the scaffold files**
+- [x] **Step 1: Write the scaffold files**
 
 `.gitignore`:
 ```
@@ -141,7 +141,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "pipeline"))
 ```
 
-- [ ] **Step 2: Write the failing tests**
+- [x] **Step 2: Write the failing tests**
 
 `tests/test_model.py`:
 ```python
@@ -270,12 +270,12 @@ def test_slugify():
     assert slugify("  Art & Wine!  ", "St. Louis", "MO") == "art-wine-st-louis-mo"
 ```
 
-- [ ] **Step 3: Run the tests to verify they fail**
+- [x] **Step 3: Run the tests to verify they fail**
 
 Run: `python -m pytest tests/test_model.py -q`
 Expected: collection error `ModuleNotFoundError: No module named 'model'`.
 
-- [ ] **Step 4: Write `pipeline/model.py`**
+- [x] **Step 4: Write `pipeline/model.py`**
 
 ```python
 """model.py - the source-file contract for data/events.csv.
@@ -438,12 +438,12 @@ def validate_row(raw, line):
     return r
 ```
 
-- [ ] **Step 5: Run the tests to verify they pass**
+- [x] **Step 5: Run the tests to verify they pass**
 
 Run: `python -m pytest tests/test_model.py -q`
 Expected: all pass (about 30 including parametrised cases).
 
-- [ ] **Step 6: ASCII check and commit**
+- [x] **Step 6: ASCII check and commit**
 
 Run: `grep -nP "[^\x00-\x7F]" pipeline/*.py tests/*.py` — expected: no output.
 ```bash
@@ -465,7 +465,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Consumes: typed rows from `model.validate_row` (keys `id`, `city`, `state`, `name`).
 - Produces: `class UnknownPlace(Exception)`; `load_places(path) -> dict[tuple[str,str], tuple[float,float]]` (raises `ValueError` on bad header, bad float, duplicate); `ring_offset(lat, lng, idx, n) -> tuple[float,float]`; `geocode(rows, places) -> dict[str, tuple[float,float]]` keyed by row `id`, values rounded to 5 dp; raises `UnknownPlace` whose message lists every `"City, ST (n rows: slug...)"` missing.
 
-- [ ] **Step 1: Write the fixture**
+- [x] **Step 1: Write the fixture**
 
 `pipeline/fixtures/places.csv`:
 ```
@@ -473,7 +473,7 @@ city,state,lat,lng
 Columbia,MO,38.9517,-92.3341
 ```
 
-- [ ] **Step 2: Write the failing tests**
+- [x] **Step 2: Write the failing tests**
 
 `tests/test_geocode.py`:
 ```python
@@ -543,12 +543,12 @@ def test_unknown_place_names_every_missing_town_and_its_rows():
     assert "Columbia" not in msg
 ```
 
-- [ ] **Step 3: Run the tests to verify they fail**
+- [x] **Step 3: Run the tests to verify they fail**
 
 Run: `python -m pytest tests/test_geocode.py -q`
 Expected: `ModuleNotFoundError: No module named 'geocode'`.
 
-- [ ] **Step 4: Write `pipeline/geocode.py`**
+- [x] **Step 4: Write `pipeline/geocode.py`**
 
 ```python
 """geocode.py - city-centroid geocoding from data/places.csv, the ONE table.
@@ -621,11 +621,11 @@ def geocode(rows, places):
     return out
 ```
 
-- [ ] **Step 5: Run the tests to verify they pass**
+- [x] **Step 5: Run the tests to verify they pass**
 
 Run: `python -m pytest tests/test_geocode.py -q` — expected: 5 passed.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add pipeline/geocode.py pipeline/fixtures/places.csv tests/test_geocode.py
@@ -645,7 +645,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces: `assign_ids(csv_path) -> int` (number of ids assigned; rewrites the file in place, LF line endings, header unchanged, existing ids untouched); CLI `python pipeline/assign_ids.py [--csv PATH]` printing `assigned N id(s)`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_assign_ids.py`:
 ```python
@@ -682,11 +682,11 @@ def test_header_only_file_is_left_alone(tmp_path):
     assert p.read_text(encoding="utf-8") == HEADER + "\n"
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 Run: `python -m pytest tests/test_assign_ids.py -q` — expected: `ModuleNotFoundError`.
 
-- [ ] **Step 3: Write `pipeline/assign_ids.py`**
+- [x] **Step 3: Write `pipeline/assign_ids.py`**
 
 ```python
 """assign_ids.py - give every row a permanent id, once.
@@ -738,11 +738,11 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 4: Run the tests to verify they pass**
+- [x] **Step 4: Run the tests to verify they pass**
 
 Run: `python -m pytest tests/test_assign_ids.py -q` — expected: 2 passed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add pipeline/assign_ids.py tests/test_assign_ids.py
@@ -763,7 +763,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Consumes: `model.validate_header/validate_row/slugify`, `geocode.load_places/geocode/UnknownPlace`, `config.HOME/STALE_DAYS/PIPELINE_VERSION`.
 - Produces: `is_published(row) -> bool` (**the only publish predicate in the repo**); `read_rows(csv_path) -> list[dict]` (validated; adds `row["slug"]`; raises `ValidationError` on duplicate id or slug); `build(rows, places, home, generated_at: str, source_sha256: str, today: date) -> tuple[dict, dict, list]` returning `(events_doc, meta, stale_warnings)`; `EVENT_KEYS: tuple` (the exact per-event key set); `write_publication(out_dir: Path, events_doc, meta) -> None`; `sha256_file(path) -> str`; `main(argv) -> int` with `--csv`, `--places`, `--out`, `--today YYYY-MM-DD` flags; exit 1 with `ERROR:` line on any `ValidationError`/`UnknownPlace`; prints `WARN stale: <slug> (<date>)` per stale row and a final `exported N event(s)` line.
 
-- [ ] **Step 1: Write the fixtures**
+- [x] **Step 1: Write the fixtures**
 
 `pipeline/fixtures/negative.csv`:
 ```
@@ -779,7 +779,7 @@ id,name,event_type,cadence,city,state,county,start_date,end_date,months,dates_te
 44444444-4444-4444-8444-444444444444,Lost Fest,festival,annual,Nowhere,MO,,2026-10-01,,,,,,https://example.com/lost,,2026-08-30,published,
 ```
 
-- [ ] **Step 2: Write the failing tests**
+- [x] **Step 2: Write the failing tests**
 
 `tests/test_export.py`:
 ```python
@@ -905,11 +905,11 @@ def test_stale_published_row_is_warned_not_failed(tmp_path, capsys):
     assert "exported 1 event(s)" in out
 ```
 
-- [ ] **Step 3: Run the tests to verify they fail**
+- [x] **Step 3: Run the tests to verify they fail**
 
 Run: `python -m pytest tests/test_export.py -q` — expected: `ModuleNotFoundError: No module named 'export'`.
 
-- [ ] **Step 4: Write `pipeline/export.py`**
+- [x] **Step 4: Write `pipeline/export.py`**
 
 ```python
 """export.py - data/events.csv -> site/data/events.json + meta.json.
@@ -1043,11 +1043,11 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 5: Run the tests to verify they pass**
+- [x] **Step 5: Run the tests to verify they pass**
 
 Run: `python -m pytest tests/test_export.py -q` — expected: 9 passed.
 
-- [ ] **Step 6: Produce the real (empty) publication and commit it**
+- [x] **Step 6: Produce the real (empty) publication and commit it**
 
 Run: `python pipeline/export.py` — expected: `exported 0 event(s) -> ...site\data  (as_of=None, types=0)`; `site/data/events.json` is `{"events": []}` and `meta.json` has `"event_count": 0`.
 ```bash
