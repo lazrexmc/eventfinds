@@ -165,3 +165,21 @@ wrong" — so **all fourteen defaults stand**, including #17 (repo `lazrexmc/eve
 
 Interruptions this build so far: **0** (the form is the scheduled touchpoint, not an interruption).
 Next: spec (frozen decisions + contracts) → plan with acceptance criteria → build → review → deploy.
+
+## 2026-08-30 — Reconnect after the PC restart; plan written; execution begins
+
+Peers restarted and renamed (`rapidforge-79`, `glizzness-f1`; this session `eventfinds-12`).
+Lance: *"connect to all open peer sessions"* — done; both confirmed their state matches this
+repo line for line. RapidForge kept full context; its `23d01d1` closed Build 001's interruption
+with Lance's #13 answer. Two messages addressed to RapidForge were misrouted here (Glizzness
+remediation COMPLETE, probe 30/0/0/0; VisibleGov's seven-round summary, HEAD `89d9fce`) — both
+acknowledged and pointed at `rapidforge-79`; nothing in either changes Build 002. Glizzness noted
+the 22:24Z crawler run I cited predates its Phase 5 (honest per-source table starts at `7024e7a`) —
+correction accepted. It offered `tools/verify_deploy.py`; taken verbatim with attribution as
+`pipeline/verify_deploy.py`, with `ORIGIN`, `MARKERS`, `HEADER_MARKERS` changed for this site —
+EventFinds becomes that instrument's second consumer.
+
+**Plan:** `docs/superpowers/plans/2026-08-30-eventfinds-v1.md` — twelve tasks with the code in
+them, TDD per task, one commit per task, gates G1–G9 mapped to `event-finder` §7. Execution is
+subagent-driven with per-task review; the only stop is a failing gate or the single credentialed
+step at the end (Cloudflare Pages connect).
