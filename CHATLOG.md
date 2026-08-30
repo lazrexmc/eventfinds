@@ -455,13 +455,13 @@ credentialed step (Cloudflare Pages connect) is batched for the morning.
 Every ruling the controller made without the owner, verbatim from the build ledger, so nothing was decided
 in secret (the ledger itself is scratch and is deleted after this entry):
 
-- - Ruling: work on branch `v1` in F:\EventFinds rather than a separate worktree — the plan's commands,
-- - Ruling: Task 10 status text "No events published yet." → "No events listed yet." — the plan's own
-- - Ruling: Task 6 test fixture local `<html></html>` → `<html>\n</html>` — compare() collapses
-- - Ruling: Task 10 drop unused `isUpcoming` import — YAGNI; if wrong, one import is missing (no,
-- Ruling: reviewer is right; spec's controlled-failure rule outranks the plan's line placement; fix = move parse into try + one test — costs one line if wrong.
-- Ruling: fix — add local_bytes() returning None, verdict NO-LOCAL (fails the run cleanly); compare()/fetch() untouched — costs one helper if wrong.
-- Task 7: Ruling: plan's passesFilter test fixture lacked lat/lng while the mandated implementation hides null coords; implementer added lat/lng to the fixture — correct, the spec's null-coords rule outranks the fixture text; costs nothing if wrong.
+- - Ruling: work on branch `v1` in F:\EventFinds rather than a separate worktree - the plan's commands,
+- - Ruling: Task 10 status text "No events published yet." -> "No events listed yet." - the plan's own
+- - Ruling: Task 6 test fixture local `<html></html>` -> `<html>\n</html>` - compare() collapses
+- - Ruling: Task 10 drop unused `isUpcoming` import - YAGNI; if wrong, one import is missing (no,
+- Ruling: reviewer is right; spec's controlled-failure rule outranks the plan's line placement; fix = move parse into try + one test - costs one line if wrong.
+- Ruling: fix - add local_bytes() returning None, verdict NO-LOCAL (fails the run cleanly); compare()/fetch() untouched - costs one helper if wrong.
+- Task 7: Ruling: plan's passesFilter test fixture lacked lat/lng while the mandated implementation hides null coords; implementer added lat/lng to the fixture - correct, the spec's null-coords rule outranks the fixture text; costs nothing if wrong.
 - Ruling: plan defect, not app.js; fix in Task 12: package.json script -> node --test "tests/js/**/*.test.mjs", README/plan wording likewise - costs one line if wrong.
 - Task 11: review: 1 Important: State 2 header quoted with a hyphen where the page renders a middle dot, undisclosed (State 1 disclosed it). Ruling: fix the sentence to the exact rendered string - the verbatim-quote rule (playbook: copy, never retype) is binding; costs one sentence if wrong.
 - Ruling: CLAUDE.md is NOT created on a peer's relay (PROJECT_STANDARD s4.2: a rule file is configuration, added on the owner's word in the project's own session); a draft goes in the morning handoff for Lance to approve. Costs one file's delay if wrong.
