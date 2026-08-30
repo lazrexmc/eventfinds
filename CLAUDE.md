@@ -42,8 +42,9 @@ built 2026-08-29/30 CDT.
 ## Honest status
 
 **BUILT** (rung one): `python -m pytest -q` 56, `npm test` 10, `python pipeline/checks.py`
-ALL GATES PASS (G1-G9); page verified in a browser in four states; merged to `master`. **NOT VIEWABLE**: Cloudflare Pages is not connected. The
-connect parameters, so no session reconstructs them: repo `lazrexmc/eventfinds`, production
+ALL GATES PASS (G1-G9); page verified in a browser in four states; merged to `master`.
+**NOT VIEWABLE**: Cloudflare Pages is not connected. The connect parameters, so no session
+reconstructs them: repo `lazrexmc/eventfinds`, production
 branch `master`, root directory `site`, build command EMPTY, output directory EMPTY, project
 `eventfinds` -> https://eventfinds.pages.dev. After connecting, `python pipeline/verify_deploy.py`
 must print ALL DEPLOYED (rung two). `event-finder`'s promotion to proven is HELD at RapidForge
