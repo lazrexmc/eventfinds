@@ -141,3 +141,27 @@ blocks after it — ~120 city → (lat, lng) entries: Missouri statewide (four s
 corridor and interior fills across IL, IN, KY, TN, AR, KS, OK, IA, NE. Adequate as the *recipe* for a
 Midwest-centred v1; EventFinds builds its own single table from the towns its own events name, and
 an unknown town fails the export (7.6).
+
+## 2026-08-30 — Stage 2 answered. The form is closed; the build is unblocked
+
+**Lance, verbatim:** *"1. Standalone 3. I, Lance McCarter, own everything I can legally own as well
+as assume ownership of any unknown owned items 13. C for now"*
+
+No other number was named, and the form's contract was "reply only with the numbers that are
+wrong" — so **all fourteen defaults stand**, including #17 (repo `lazrexmc/eventfinds`, private).
+
+**Decisions now frozen for v1:**
+1. **Standalone product.** `glizzness.com/festivals` is untouched; nothing shared — no key, project,
+   data, or domain. Whether Glizzness later points at EventFinds is a second decision after the
+   2026-09-10 demo.
+3. **Ownership:** Lance owns the 415 events and their contacts as far as legally ownable. This makes
+   a later import *his to make*; it does not change #2 (start empty, no contacts) or #7 (no contact
+   columns public) — those are consent and fork decisions, not ownership ones.
+13. **Static JSON publication, $0** — "for now." The source file is the truth; the pipeline exports
+    `site/data/*.json`; the finder page reads files. No Supabase project. This also answers Build
+    001's open interruption (same question, same answer): a recorded "for now" — RapidForge closes
+    the entry with it. Consequence accepted: no promote form in v1; curation is edit → export →
+    deploy.
+
+Interruptions this build so far: **0** (the form is the scheduled touchpoint, not an interruption).
+Next: spec (frozen decisions + contracts) → plan with acceptance criteria → build → review → deploy.

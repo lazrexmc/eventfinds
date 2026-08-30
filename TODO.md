@@ -10,10 +10,9 @@ build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 
 **Live state as of 2026-08-30. This block outranks every other document here.**
 
-Stages 0–1 done. **Stage 2 — the one batched questionnaire — is in front of Lance (below).** No
-code, no schema, no repo remote until it is answered. Three questions are genuinely open (#1, #3,
-#13); the other fourteen are defaults to confirm — answering only the three lets the build proceed
-on the defaults for everything else.
+**Stage 2 ANSWERED 2026-08-30** (verbatim in `CHATLOG.md`): #1 **standalone**, #3 **Lance owns
+everything ownable**, #13 **static JSON ($0) "for now"** — all fourteen defaults stand. Build is in
+Stage 3: spec → freeze → plan → build → review → deploy. Interruptions so far: **0**.
 
 Read order for a cold session: this block → the form → `CHATLOG.md` (why) →
 `F:\RapidForge\modules\event-finder.md` §5 and §6 (how, and the traps) →
@@ -21,7 +20,7 @@ Read order for a cold session: this block → the form → `CHATLOG.md` (why) �
 
 ---
 
-## NOW — Stage 2 questionnaire (answer once; "is the default wrong?")
+## Stage 2 questionnaire — ANSWERED 2026-08-30 (kept for the record; answers in CHATLOG)
 
 **Genuinely open — no default can stand in for the owner:**
 
