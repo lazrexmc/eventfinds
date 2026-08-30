@@ -1,0 +1,8 @@
+# Anchored on purpose (an unanchored data/ once swallowed a whole publication). site/data/ and /data/ ARE committed.
+/.venv/
+__pycache__/
+*.pyc
+/.pytest_cache/
+/node_modules/
+.env
+.env.*
