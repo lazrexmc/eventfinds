@@ -75,7 +75,7 @@ Read order for a cold session: this block -> the form below -> `CHATLOG.md` (why
 - [x] Build: `pipeline/` (normalise -> geocode -> export -> checks -> serve_local), `site/` (finder
       page - take the shape and the named sub-units from `Glizzness/site/festivals/app.js`, fix
       6.1/6.2/6.3/6.5 rather than inherit them; vendored Leaflet + markercluster; CSP enumerated)
-- [ ] Whole-branch adversarial review (now the controller's, run after Task 12), then deploy to
+- [x] Whole-branch adversarial review DONE 2026-08-30 CDT (0 Critical, 8 Important, all fixed and re-verified; v1 merged fast-forward to master and pushed). Next: deploy to
       `*.pages.dev`; verify at the origin (7.8)
 - [ ] Dogfood (Lance) -> deposit: promote `event-finder` to `proven`; back-propagate to Glizzness
       via RapidForge (traps fixed here that it still carries)
