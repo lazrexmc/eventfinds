@@ -1070,7 +1070,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Consumes: `export.read_rows/build/main/EVENT_KEYS`, `geocode.load_places`, `config.*`.
 - Produces: gate functions `g1_source_valid()`, `g2_negative_gate()`, `g3_export_current()`, `g4_unknown_place()`, `g5_publication_committed()`, `g6_no_gate_in_js(site_js_dir=config.SITE_DIR / "js")`, `g7_named_columns(events_path=config.SITE_DATA / "events.json")`, `g8_stale()`, `g9_headers(headers_path=config.SITE_DIR / "_headers")`; each returns `(ok: bool | None, message: str)` where `None` = WARN/SKIP; `main(argv) -> int` prints one `PASS/FAIL/WARN` line per gate with its evidence and exits 0 only if no gate returned `False`. G6 and G9 tolerate the file/dir not existing yet by returning `False` with a message naming the path (they exist after Tasks 7–9).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/test_checks.py`:
 ```python
@@ -1121,11 +1121,11 @@ def test_g2_and_g4_run_against_the_fixtures():
     assert checks.g4_unknown_place()[0] is True
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 Run: `python -m pytest tests/test_checks.py -q` — expected: `ModuleNotFoundError: No module named 'checks'`.
 
-- [ ] **Step 3: Write `pipeline/checks.py`**
+- [x] **Step 3: Write `pipeline/checks.py`**
 
 ```python
 """checks.py - THE GATES. Run before every push. Exit 0 only when no gate FAILS.
@@ -1321,15 +1321,15 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 4: Run the tests to verify they pass**
+- [x] **Step 4: Run the tests to verify they pass**
 
 Run: `python -m pytest tests/test_checks.py -q` — expected: 4 passed.
 
-- [ ] **Step 5: Run the gates for real**
+- [x] **Step 5: Run the gates for real**
 
 Run: `python pipeline/checks.py` — expected now: G1–G5, G7, G8 PASS; **G6 and G9 FAIL** (no `site/js`, no `_headers` yet) with messages naming the missing paths; exit 1. This is the expected state until Tasks 7–9 land; record it in the commit message.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 grep -nP "[^\x00-\x7F]" pipeline/*.py tests/*.py   # expected: nothing
@@ -1350,7 +1350,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces: `python pipeline/serve_local.py` serves `site/` at `http://127.0.0.1:8765/` with `application/json` for `.json` and every header from `site/_headers`; `verify_deploy.compare(local: bytes, remote: bytes | None) -> "DEPLOYED" | "STALE" | "MISSING"`; `verify_deploy.MARKERS`; CLI `python pipeline/verify_deploy.py [--origin URL] [--json]` exit 0 only when all DEPLOYED.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/test_verify_deploy.py`:
 ```python
@@ -1374,11 +1374,11 @@ def test_markers_cover_the_publication_and_the_page():
     assert vd.ORIGIN == "https://eventfinds.pages.dev"
 ```
 
-- [ ] **Step 2: Run the test to verify it fails**
+- [x] **Step 2: Run the test to verify it fails**
 
 Run: `python -m pytest tests/test_verify_deploy.py -q` — expected: `ModuleNotFoundError`.
 
-- [ ] **Step 3: Write `pipeline/serve_local.py`**
+- [x] **Step 3: Write `pipeline/serve_local.py`**
 
 ```python
 """serve_local.py - view site/ locally with production parity.
@@ -1484,7 +1484,7 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 4: Write `pipeline/verify_deploy.py`** — copy of the reference instrument, adapted only in `ORIGIN`, `MARKERS`, `HEADER_MARKERS`, the User-Agent, and the failure hint. Keep `compare()` and `fetch()` byte-for-byte.
+- [x] **Step 4: Write `pipeline/verify_deploy.py`** — copy of the reference instrument, adapted only in `ORIGIN`, `MARKERS`, `HEADER_MARKERS`, the User-Agent, and the failure hint. Keep `compare()` and `fetch()` byte-for-byte.
 
 ```python
 #!/usr/bin/env python
@@ -1605,11 +1605,11 @@ if __name__ == "__main__":
     sys.exit(main())
 ```
 
-- [ ] **Step 5: Run the tests to verify they pass**
+- [x] **Step 5: Run the tests to verify they pass**
 
 Run: `python -m pytest tests/test_verify_deploy.py -q` — expected: 2 passed.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 grep -nP "[^\x00-\x7F]" pipeline/*.py tests/*.py   # expected: nothing
@@ -1630,7 +1630,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces (ES module exports): `isUpcoming(e, todayISO, nowMonth) -> boolean`; `haversineMiles(lat1, lng1, lat2, lng2) -> number`; `passesFilter(e, filt, todayISO, nowMonth) -> boolean` where `filt = { month: "all"|"1".."12", distance: "all"|"50"|..., county: "all"|"<county>|<ST>", types: Set|null }` and `e.distance_mi` is a number or `undefined` (set by the page at load); `esc(s) -> string`; `distinctSorted(events, key) -> string[]`; `countyKey(e) -> string | null` (`"Boone|MO"`); `firstMonth(e) -> number` (99 when none). **This file must not contain the tokens `visibility`, `published`, `draft`, `retired`** (G6).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/js/predicates.test.mjs`:
 ```js
@@ -1697,11 +1697,11 @@ test("distinctSorted, countyKey, firstMonth", () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 Run: `node --test tests/js` — expected: failure `Cannot find module ... site/js/predicates.js`.
 
-- [ ] **Step 3: Write `site/js/predicates.js`**
+- [x] **Step 3: Write `site/js/predicates.js`**
 
 ```js
 // predicates.js - pure functions, no DOM, no Leaflet. Tested with node --test.
@@ -1762,12 +1762,12 @@ export function distinctSorted(events, key) {
 }
 ```
 
-- [ ] **Step 4: Run the tests to verify they pass**
+- [x] **Step 4: Run the tests to verify they pass**
 
 Run: `node --test tests/js` — expected: 6 tests pass.
 Run: `python pipeline/checks.py` — expected: G6 now PASS (`1 js file(s) carry none of ...`); G9 still FAIL.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add site/js/predicates.js tests/js/predicates.test.mjs
@@ -1787,7 +1787,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces: `class FetchError extends Error { path, status, detail }`; `class DataShapeError extends Error`; `fetchJson(path, fetchImpl = globalThis.fetch) -> Promise<any>` (throws `FetchError` on network error, non-2xx, or invalid JSON; `cache: "no-cache"`); `assertShape(meta, eventsDoc)` throws `DataShapeError` unless `eventsDoc.events` is an array and `meta.home.lat/lng` are finite numbers and `meta.event_count` is a number.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 `tests/js/data.test.mjs`:
 ```js
@@ -1822,11 +1822,11 @@ test("assertShape rejects the wrong shape", () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests to verify they fail**
+- [x] **Step 2: Run the tests to verify they fail**
 
 Run: `node --test tests/js` — expected: `Cannot find module ... data.js`.
 
-- [ ] **Step 3: Write `site/js/data.js`**
+- [x] **Step 3: Write `site/js/data.js`**
 
 ```js
 // data.js - the fetch layer. One property is load-bearing: a failed fetch THROWS a typed error and
@@ -1878,11 +1878,11 @@ export function assertShape(meta, eventsDoc) {
 }
 ```
 
-- [ ] **Step 4: Run the tests to verify they pass**
+- [x] **Step 4: Run the tests to verify they pass**
 
 Run: `node --test tests/js` — expected: 9 tests pass. Run: `python pipeline/checks.py` — G6 still PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add site/js/data.js tests/js/data.test.mjs
@@ -1902,7 +1902,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces the element ids `app.js` (Task 10) wires: `#fresh`, `#error-box`, `#status`, `#crumb`, `#list-toggle`, `#f-month`, `#f-distance`, `#f-county`, `#ms-type`, `#ms-btn`, `#ms-panel`, `#ms-all`, `#ms-none`, `#ms-list`, `#f-reset`, `#map`, `#listpanel`, `#lp-count`, `#list-body`, `.lp-close`, `#drawer`, `#drawer-body`, `#drawer .close`. CSS classes: `.evt-dot span` (the dot — colour in CSS, not inline), `.lp-row`, `.lp-dot`, `.lp-onetime`, `.lp-empty`, `.badge .b-grey .b-blue .b-gold`, `.home`, `.error-box`.
 
-- [ ] **Step 1: Vendor the libraries (third-party; MIT/BSD-2)**
+- [x] **Step 1: Vendor the libraries (third-party; MIT/BSD-2)**
 
 ```bash
 mkdir -p site/assets/vendor/leaflet
@@ -1918,7 +1918,7 @@ https://github.com/Leaflet/Leaflet.markercluster), vendored so the map never dep
 being up. Third-party code; upgrade by replacing these files.
 ```
 
-- [ ] **Step 2: Write `site/_headers`**
+- [x] **Step 2: Write `site/_headers`**
 
 ```
 # Cloudflare Pages response headers. The CSP is an ENUMERATION of what the page loads:
@@ -1933,7 +1933,7 @@ being up. Third-party code; upgrade by replacing these files.
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 ```
 
-- [ ] **Step 3: Write `site/index.html`**
+- [x] **Step 3: Write `site/index.html`**
 
 ```html
 <!DOCTYPE html>
@@ -2000,7 +2000,7 @@ being up. Third-party code; upgrade by replacing these files.
 </html>
 ```
 
-- [ ] **Step 4: Write `site/css/app.css`**
+- [x] **Step 4: Write `site/css/app.css`**
 
 ```css
 :root { --bg:#12151a; --panel:#1b2028; --ink:#eef2f6; --muted:#a9b3bf; --accent:#3fb4a0; --blue:#5aa7e0; --gold:#e0b14a; --red:#d0594f; --line:#0a0c10; }
@@ -2073,7 +2073,7 @@ header h1 { font-size: 17px; margin: 0; font-weight: 700; letter-spacing: .3px; 
 }
 ```
 
-- [ ] **Step 5: Verify the constraints and the gate**
+- [x] **Step 5: Verify the constraints and the gate**
 
 ```bash
 grep -n -i -E "glizzness|midwest event finder" -r site pipeline tests data   # expected: no output
@@ -2082,7 +2082,7 @@ grep -n "<base" site/index.html                                                #
 python pipeline/checks.py                                                       # expected: ALL GATES PASS (G8 may WARN)
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add site/index.html site/css/app.css site/_headers site/assets/vendor/leaflet
@@ -2103,7 +2103,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Consumes: `predicates.js` and `data.js` exports (Tasks 7–8); element ids from Task 9; `window.L` (vendored Leaflet, loaded before this module).
 - Produces: the page. Boot order: fetch `/data/meta.json` then `/data/events.json` → `assertShape` → set `distance_mi` on every event (haversine from `meta.home`) → freshness line → `wireFilters()` → `render(true)`. Any throw → `renderFatal(err)` shows `#error-box` with the file name; the map is not rendered.
 
-- [ ] **Step 1: Write `site/js/app.js`**
+- [x] **Step 1: Write `site/js/app.js`**
 
 ```js
 // app.js - Leaflet + DOM wiring for EventFinds. All decisions live in predicates.js; this file
@@ -2339,7 +2339,7 @@ function wireFilters() {
 })();
 ```
 
-- [ ] **Step 2: Gates and static checks**
+- [x] **Step 2: Gates and static checks**
 
 ```bash
 python pipeline/checks.py                                    # expected: ALL GATES PASS (G6 covers app.js now)
@@ -2347,7 +2347,7 @@ node --test tests/js                                         # expected: all pas
 grep -n -i -E "glizzness|midwest event finder" -r site        # expected: nothing
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add site/js/app.js
