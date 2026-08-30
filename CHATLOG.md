@@ -209,7 +209,8 @@ https://tile.openstreetmap.org https://*.tile.openstreetmap.org; script-src 'sel
 **State 2, loaded (fixture export).** Ran
 `python pipeline/export.py --csv pipeline/fixtures/negative.csv --places pipeline/fixtures/places.csv --out site/data`;
 output verbatim: `exported 1 event(s) -> site/data  (as_of=2026-08-30, types=1)`. Reloaded.
-Header text: `1 event - verified as of 2026-08-30`. One marker rendered on the map; clicked it.
+Header text: `1 event - verified as of 2026-08-30` (the app's own separator is a middle dot,
+not a hyphen: `1 event · verified as of 2026-08-30`). One marker rendered on the map; clicked it.
 Drawer: heading `Published Fest`, type badge text `festival`, definition list `When` =
 `2026-09-12 to 2026-09-13`, `Distance from Columbia, MO` = `0 mi` (zero shown, not hidden or
 blank - trap 6.2), `Last verified` = `2026-08-30`, a link `Event page` to `https://example.com/p`
