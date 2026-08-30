@@ -551,3 +551,47 @@ would carry them dead.
 A note on method, since it cost a minute here: the first attempt wrote this entry through a heredoc
 and Python read the backslash-u in its own prose as an escape. The playbook rule already covers it -
 write the patch to a file and run the file - and it applies to prose about escapes, not just code.
+
+## 2026-08-30 14:37 CDT - Round 2: which standard rule has never checked this project
+
+Registry (4784a50): both federal candidates from this session were adopted - F5 failure is not
+emptiness (verb control, jointly with PostKit, which added that a declared state must reach the
+interface) and F6 one decision one place WITH a structural guard (verb build, folded into rule 11).
+This session's rule-2 wording was adopted verbatim after four of eight sessions hit the same conflict
+in one evening, and verify_standard gained a third state, `dec`, for an absence the rule file declares.
+Applied here at once: CLAUDE.md's status line and TODO's origin-check line now name the command that
+produces every number in the same sentence. TODO's RESUME already did.
+
+PostKit's round-2 question, answered honestly - which existing standard rule has never once been
+checked against this project, given that the sharper half of the federal test is deletion:
+
+ONE CANDIDATE FOR DEMOTION, rule 12, the pre-work anti-repeat protocol (check the five named places -
+the script inventory, the trail, the TODO, the registry, the last session's handoff - and report what
+you found). It has never run as a protocol here and on day one it could not have: this repo was an
+empty directory, so four of its five places did not exist. What served its purpose was a machine-wide
+grep for prior art, which found the reference project's finder and its crawler and is why nothing was
+rebuilt. The rule is written for a mature repo with accumulated scripts; for a greenfield build it is
+vacuous, and a rule satisfied vacuously teaches a session nothing. Proposal: scope it to repos with
+prior work, or restate it as its purpose - check what already exists, in the places that exist here,
+before generating anything.
+
+THREE THAT ARE UNTESTED BUT SHOULD NOT BE DELETED, because untested-by-me is not evidence against a
+rule, and this repo is a day old:
+- Rule 8, an expected-failures list with an expiry condition. Never had one - and this build hit
+  exactly its case: gates G6 and G9 were red BY DESIGN for four tasks, because the site they check did
+  not exist yet. That was handled in a commit subject and a dispatch brief rather than a list with an
+  expiry, which is the ad-hoc form the rule exists to replace. So rule 8 has never checked this
+  project, and it should have. That is evidence for the rule, not against it.
+- Rule 4, a retraction quotes what it retracts. No claim published from this repo has ever needed
+  retracting. The nearest thing was a reviewer catching a hyphen typed where the page renders a middle
+  dot, fixed before the document was trusted - a correction, not a retraction.
+- Rule 3's correction mechanism specifically (strikethrough in place, original bytes intact, a dated
+  entry quoting the false sentence). The append-only half is exercised every session; the strikethrough
+  half never has been.
+
+ONE HALF-RULE THAT HAS NEVER BEEN CHECKED AND COULD BE: rule 11's second clause, "and the pointers are
+checked". This repo points at F:\RapidForge\docs\PROJECT_STANDARD.md and at modules/event-finder.md
+from CLAUDE.md, and at the reference by path from PLAYBOOK_DELTA. Nothing here fails if any of them
+moves. The first clause is checked constantly; the second is decoration until an instrument reads it.
+Also worth stating plainly: this repo holds one deliberate COPY, pipeline/verify_deploy.py, attributed
+in its docstring - a code module is a copy by design, which is the edge the rule should name.

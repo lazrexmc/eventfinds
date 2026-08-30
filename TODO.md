@@ -21,7 +21,8 @@ Every controller ruling is in CHATLOG.md (2026-08-30 00:xx CDT entry).
 root directory `site` -> build command EMPTY -> build output directory EMPTY -> Save and Deploy.
 Project name `eventfinds` (URL https://eventfinds.pages.dev). Trap: the dashboard funnels toward
 Workers; choose Pages. Then run `python pipeline/verify_deploy.py` in F:\EventFinds: it must print
-ALL DEPLOYED (rung two). Last check 2026-08-30 06:23 CDT: 21 markers HTTP 0 - the origin does not resolve; not connected.
+ALL DEPLOYED (rung two). Last check by `python pipeline/verify_deploy.py`, 2026-08-30 06:23 CDT:
+21 markers HTTP 0 - the origin does not resolve; not connected.
 When it is green: record it in README `## Live` and CHATLOG (clock-dated, plain ASCII), commit, push,
 and message the RapidForge session with the verify_deploy output.
 
@@ -98,9 +99,11 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
   gate; here it is habit plus a grep. Note: the product surface is ASCII on disk by design - the page
   renders a middle dot and an em dash through \u escapes - so the gate must check documents,
   not site/js
-- Counted claims in prose (standard rule 2): CLAUDE.md and TODO type "56 pytest + 10 node tests, nine
-  gates" and "21 markers". Either name the producing command in the sentence or derive them; awaiting
-  RapidForge's ruling on whether naming the command satisfies the rule
+- ~~Counted claims in prose (standard rule 2)~~ - DONE 2026-08-30: the registry adopted this session's
+  proposed wording (a number complies by derivation OR by the sentence naming the command that produces
+  it), and every counted claim in CLAUDE.md and TODO.md now names its command. PostKit's two conditions
+  apply here too: the command sits in the SAME sentence, and a declared substitute must not overstate
+  what it covers
 
 - Freshness honesty (VisibleGov caveat, 2026-08-30): the header's `verified as of <max last_verified>` is the NEWEST row's date and can read as if it covers every row; candidates: show the oldest verification too (`verified between <min> and <max>`), or a count of rows older than STALE_DAYS beside it. The drawer already shows each row's own last_verified; generated_at is deliberately not shown as freshness (last built is not last verified)
 
