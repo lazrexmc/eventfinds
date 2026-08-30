@@ -3,7 +3,7 @@
 
 Copied 2026-08-30 from the RapidForge `verify-deploy` code candidate (reference implementation:
 the reference project's tools/verify_deploy.py, stdlib, 2026-08-29). EventFinds is its second
-consumer. Only ORIGIN, MARKERS, HEADER_MARKERS, the User-Agent and the hint text differ.
+consumer. Only ORIGIN, the markers() walk, HEADER_MARKERS, the User-Agent and the hint text differ.
 
 WHY. "Auto-deploys on push" is a sentence with no check; a Pages integration can die silently and
 every push then "succeeds" into git only. Run this after every push that touches site/.
@@ -31,20 +31,29 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parent.parent
 ORIGIN = "https://eventfinds.pages.dev"
-# Files whose bytes must match the origin exactly: the page, its scripts, its stylesheet, the
-# vendored library, and THE PUBLICATION (both JSON files). The headers file is checked by effect.
-MARKERS = [
-    ("site/index.html", "/"),
-    ("site/js/app.js", "/js/app.js"),
-    ("site/js/predicates.js", "/js/predicates.js"),
-    ("site/js/data.js", "/js/data.js"),
-    ("site/css/app.css", "/css/app.css"),
-    ("site/data/events.json", "/data/events.json"),
-    ("site/data/meta.json", "/data/meta.json"),
-    ("site/assets/vendor/leaflet/leaflet.js", "/assets/vendor/leaflet/leaflet.js"),
-    ("site/_headers", None),          # not served as a file; its effect is HEADER_MARKERS
-]
+# _headers is not served as a file; its effect is checked separately, via HEADER_MARKERS.
+SKIP = {"_headers"}
 HEADER_MARKERS = ["content-security-policy", "x-content-type-options", "referrer-policy"]
+
+
+def markers(site_dir):
+    """Every file under site_dir except the names in SKIP, sorted by relative path - so a fresh
+    file under site/ is covered automatically instead of waiting on a hand-maintained list.
+    Returns (local_rel, url_path) pairs; local_rel is always "site/<relpath>" (this tool's own
+    on-disk naming), regardless of what site_dir itself is actually named, so a test can point
+    this at a temp tree and still get back the site/... strings the rest of the script expects.
+    index.html maps to the root URL "/"; every other file maps to "/<relpath>"."""
+    site_dir = Path(site_dir)
+    relpaths = sorted(
+        p.relative_to(site_dir).as_posix()
+        for p in site_dir.rglob("*")
+        if p.is_file() and p.name not in SKIP
+    )
+    return [
+        ("site/" + rel, "/" if rel == "index.html" else "/" + rel)
+        for rel in relpaths
+    ]
+
 
 # Cloudflare Web Analytics injects exactly this tag into HTML responses at the edge (a zone setting,
 # not a file in git). It is the one difference between git and the origin that is not drift.
@@ -86,9 +95,7 @@ def main():
     origin = a.origin.rstrip("/")
 
     results = []
-    for local_rel, path in MARKERS:
-        if path is None:
-            continue
+    for local_rel, path in markers(ROOT / "site"):
         local = local_bytes(ROOT / local_rel)
         if local is None:
             results.append({"file": local_rel, "url": origin + path, "http": None, "verdict": "NO-LOCAL"})
