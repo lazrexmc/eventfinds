@@ -1,0 +1,13 @@
+{
+  "as_of": null,
+  "event_count": 0,
+  "event_types": [],
+  "generated_at": "2026-08-30T03:43:59+00:00",
+  "home": {
+    "lat": 38.9517,
+    "lng": -92.3341,
+    "name": "Columbia, MO"
+  },
+  "pipeline_version": "1",
+  "source_sha256": "fbcc1b2501cbe21fdfd01535539415e92522b7f16faa97aa1ad2829b271ef597"
+}

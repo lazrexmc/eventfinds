@@ -1,0 +1,4 @@
+id,name,event_type,cadence,city,state,county,start_date,end_date,months,dates_text,attendance_text,homepage_url,source_url,description,last_verified,visibility,featured
+11111111-1111-4111-8111-111111111111,Published Fest,festival,annual,Columbia,MO,Boone,2026-09-12,2026-09-13,,,,https://example.com/p,https://example.com/p-source,,2026-08-30,published,false
+22222222-2222-4222-8222-222222222222,Draft Fest,festival,annual,Columbia,MO,Boone,2026-09-12,,,,,,https://example.com/d-source,,2026-08-30,draft,
+33333333-3333-4333-8333-333333333333,Retired Fest,festival,annual,Columbia,MO,Boone,2026-09-12,,,,,,https://example.com/r-source,,2026-08-30,retired,
