@@ -88,6 +88,20 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
 
 ## INBOX (captured, not chased)
 
+- CLAUDE.md rule 5 is stricter than the decision it came from: "nothing shared with the reference
+  project" bars a data row outright, but Lance owns the 415 events and the questionnaire left a
+  re-verified import as his to make. Reword to "not without an explicit owner decision recorded in
+  CHATLOG" on the next touch of that file (self-reported in the 2026-08-30 consent check)
+- A tenth gate for plain ASCII in live documents: rule 9 of CLAUDE.md is the only locked rule with no
+  check behind it (G1-G9 are source-valid, negative, export-current, unknown-place,
+  publication-committed, no-gate-in-js, named-columns, stale, headers). PostKit enforces its with a
+  gate; here it is habit plus a grep. Note: the product surface is ASCII on disk by design - the page
+  renders a middle dot and an em dash through \u escapes - so the gate must check documents,
+  not site/js
+- Counted claims in prose (standard rule 2): CLAUDE.md and TODO type "56 pytest + 10 node tests, nine
+  gates" and "21 markers". Either name the producing command in the sentence or derive them; awaiting
+  RapidForge's ruling on whether naming the command satisfies the rule
+
 - Freshness honesty (VisibleGov caveat, 2026-08-30): the header's `verified as of <max last_verified>` is the NEWEST row's date and can read as if it covers every row; candidates: show the oldest verification too (`verified between <min> and <max>`), or a count of rows older than STALE_DAYS beside it. The drawer already shows each row's own last_verified; generated_at is deliberately not shown as freshness (last built is not last verified)
 
 - v2 intake, before any adapter is designed: probe each candidate source with ONE real unauthenticated request and keep the response (RapidForge Build 003 found Reddit 403 on every path and a trends feed returning the wrong category, forty minutes after the adapters were written; now a stage-1 step in the registry)

@@ -511,3 +511,43 @@ out and the held event-finder promotion, a pointer to F:\RapidForge\docs\PROJECT
 copy, and five declared deviations (checks.py IS the claim checker; no RLS probe or migration ledger with no
 database; AUDIT_LOG.md and REBUILD.md owed at the next touch per the standard's own rule; no PII guard
 because the closed header admits no contact data). Gates re-run after the file landed.
+
+## 2026-08-30 14:28 CDT - Consent check on the rules (Lance, via RapidForge)
+
+Lance: "ask each session if the session agrees with the rules for it's session then check if each
+projects rules can exist with the overall Lazrex Enterprise of softwares rules", corrected an hour
+later with "the smaller bodies can override rules when needed but usually when owner approval states
+so... We don't need our small projects going no where because big brother doesn't understand the need."
+PROJECT_STANDARD section 3b (3e8faa7) supplies the test: a rule is federal only if RapidForge needs it
+uniform to work across projects; everything else is local; when in doubt the project ships.
+
+Answered, with the facts checked in this repo first rather than recalled:
+
+(1) Agree with all ten locked rules, with three caveats reported rather than hidden. Stdlib-only is the
+one this build would break first when v2 adds an intake, and that will be declared if it happens.
+Rule 5 is wrong as written - it bars a data row outright while the owner owns the reference data and
+the questionnaire left a re-verified import to him; reworded on the next touch (inbox). Two of the ten
+have never been tested (no-auto-publish, nothing-shared) and are claims rather than rules until an
+intake or an import exists. Rule 9 (plain ASCII) is the only one of the ten with no gate behind it, so
+it is the one most likely to break by accident; a tenth gate is in the inbox.
+
+(2) One real conflict with the standard: rule 2 says a counted claim is derived or deleted, and this
+repo types "56 pytest + 10 node tests, nine gates" (CLAUDE.md:44) and "21 markers" (TODO.md:24).
+Proposed resolution offered to the registry: derivation OR the sentence naming the command that
+produces the number. Recorded as a conflict with two answers rather than resolved unilaterally.
+Recorded as NOT a conflict: rule 15 against the rendered page - site/js and index.html hold zero
+non-ASCII bytes; the middle dot and em dash the page shows are six \u escapes, so the rule
+governs documents and prose, not rendered output.
+
+(3) Offered as federal: "failure is not emptiness" (verb: control - an instrument can only measure a
+project whose states it can tell apart) and "one decision, one place, with a structural guard that
+fails when a copy returns" (verb: build - VisibleGov derived the same rule independently, and its
+sharp half is that a test asserting two copies agree is theatre). Kept local: the closed header, the
+contact-column ban, no-auto-publish, stdlib-only, nothing-shared - a project with no publish surface
+would carry them dead.
+
+(4) No override requested. Nothing in the standard blocks this build.
+
+A note on method, since it cost a minute here: the first attempt wrote this entry through a heredoc
+and Python read the backslash-u in its own prose as an escape. The playbook rule already covers it -
+write the patch to a file and run the file - and it applies to prose about escapes, not just code.
