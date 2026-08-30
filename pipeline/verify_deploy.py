@@ -12,8 +12,8 @@ every push then "succeeds" into git only. Run this after every push that touches
   python pipeline/verify_deploy.py --origin https://eventfinds.pages.dev
   python pipeline/verify_deploy.py --json
 
-Exit 0 only when every marker is DEPLOYED. STALE = origin serves different bytes; MISSING = 404.
-Not in CI on purpose: a push is not yet a deploy, so CI would race it.
+Exit 0 only when every marker is DEPLOYED. STALE = origin serves different bytes; MISSING = 404;
+NO-LOCAL = the marker file is missing from the repo itself. Not in CI on purpose: a push is not yet a deploy, so CI would race it.
 ASCII only in this file.
 """
 import argparse
@@ -72,6 +72,12 @@ def fetch(url):
         return 0, None, {"error": "%s: %s" % (type(e).__name__, e)}
 
 
+def local_bytes(path):
+    """The repo's bytes for a marker, or None when the file does not exist locally - a verdict, not a crash."""
+    p = Path(path)
+    return p.read_bytes() if p.is_file() else None
+
+
 def main():
     ap = argparse.ArgumentParser(description="compare local site/ files with what the origin serves")
     ap.add_argument("--origin", default=ORIGIN)
@@ -83,7 +89,10 @@ def main():
     for local_rel, path in MARKERS:
         if path is None:
             continue
-        local = (ROOT / local_rel).read_bytes()
+        local = local_bytes(ROOT / local_rel)
+        if local is None:
+            results.append({"file": local_rel, "url": origin + path, "http": None, "verdict": "NO-LOCAL"})
+            continue
         status, body, _ = fetch(origin + path)
         verdict = compare(local, body if status == 200 else None)
         results.append({"file": local_rel, "url": origin + path, "http": status, "verdict": verdict})
