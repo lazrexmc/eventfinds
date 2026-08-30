@@ -2364,24 +2364,24 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Uses: `pipeline/serve_local.py`, `pipeline/fixtures/negative.csv`; temporary edits to `site/data/` are reverted with `git checkout -- site/data`.
 - Test: Playwright (MCP `browser_*` tools) against `http://127.0.0.1:8765/`.
 
-- [ ] **Step 1: Start the local server in the background**
+- [x] **Step 1: Start the local server in the background**
 
 Run: `python pipeline/serve_local.py` (run_in_background). Expected log: `serving 4 security header(s)`.
 
-- [ ] **Step 2: Empty state (the committed publication)**
+- [x] **Step 2: Empty state (the committed publication)**
 
 Navigate to `http://127.0.0.1:8765/`. Expected: header shows `0 events · verified as of —`; `#status` reads `No events listed yet.`; `#error-box` hidden; **zero console errors** (`browser_console_messages`); the CSP header is present on the response (`browser_network_requests` shows `content-security-policy` on `/`).
 
-- [ ] **Step 3: Loaded state (fixture export)**
+- [x] **Step 3: Loaded state (fixture export)**
 
 Run: `python pipeline/export.py --csv pipeline/fixtures/negative.csv --places pipeline/fixtures/places.csv --out site/data` — expected `exported 1 event(s)`.
 Reload. Expected: header `1 event · verified as of 2026-08-30`; one dot on the map near Columbia; click it → drawer shows `Published Fest`, badge `festival`, `When 2026-09-12 to 2026-09-13`, `Distance from Columbia, MO 0 mi` (**zero is shown** — trap 6.2), `Last verified 2026-08-30`, an `Event page` link with `rel="noopener"`, no contact text anywhere. Open `List` → `1 in view`. Set month to `Oct` → crumb `0 events`; `Reset` → `1 event`. Types panel shows exactly one checkbox, `Festival`. Zero console errors.
 
-- [ ] **Step 4: Error state (a file removed)**
+- [x] **Step 4: Error state (a file removed)**
 
 Run: `mv site/data/meta.json site/data/meta.json.bak`. Reload. Expected: `#error-box` visible with `Failed to load /data/meta.json — HTTP 404`; no dots; `#status` hidden. Restore: `mv site/data/meta.json.bak site/data/meta.json`.
 
-- [ ] **Step 5: Restore the committed publication and stop the server**
+- [x] **Step 5: Restore the committed publication and stop the server**
 
 ```bash
 git checkout -- site/data
@@ -2390,7 +2390,7 @@ git status --short            # expected: empty
 ```
 Stop the background server (TaskStop). Record the three observations (with the exact strings seen) in `CHATLOG.md` under a dated "Browser verification" entry — no screenshot claims, only what the tool output said.
 
-- [ ] **Step 6: Commit the CHATLOG entry**
+- [x] **Step 6: Commit the CHATLOG entry**
 
 ```bash
 git add CHATLOG.md
@@ -2407,7 +2407,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Create: `README.md`
 - Modify: `TODO.md` (RESUME block → "built; deployed pending Pages connect"), `CHATLOG.md`
 
-- [ ] **Step 1: Write `README.md`**
+- [x] **Step 1: Write `README.md`**
 
 ```markdown
 # EventFinds
@@ -2450,11 +2450,11 @@ Built from the RapidForge registry: `modules/event-finder.md` (the shape and its
 `CHATLOG.md`; the frozen spec is `docs/superpowers/specs/2026-08-30-eventfinds-v1-design.md`.
 ```
 
-- [ ] **Step 2: Whole-branch adversarial review** — dispatch a reviewer (superpowers:requesting-code-review) with the spec and this plan; its brief is to *refute*: find any second copy of the gate, any inline style/script, any contact-shaped path, any place an empty state could be rendered from a failure, any non-determinism in the export, any ASCII violation in `.py`. Fix findings at the source (spec/plan first if they are design defects), re-run `python -m pytest -q`, `node --test tests/js`, `python pipeline/checks.py`.
+- [x] **Step 2: Whole-branch adversarial review** — dispatch a reviewer (superpowers:requesting-code-review) with the spec and this plan; its brief is to *refute*: find any second copy of the gate, any inline style/script, any contact-shaped path, any place an empty state could be rendered from a failure, any non-determinism in the export, any ASCII violation in `.py`. Fix findings at the source (spec/plan first if they are design defects), re-run `python -m pytest -q`, `node --test tests/js`, `python pipeline/checks.py`.
 
-- [ ] **Step 3: Update `TODO.md` and `CHATLOG.md`** — RESUME block: "v1 BUILT (rung one); all gates green; waiting on the one credentialed step: Lance connects Cloudflare Pages (root `site`, no build). Then `python pipeline/verify_deploy.py` must print ALL DEPLOYED (rung two)." CHATLOG: the review round's findings and fixes, verbatim.
+- [x] **Step 3: Update `TODO.md` and `CHATLOG.md`** — RESUME block: "v1 BUILT (rung one); all gates green; waiting on the one credentialed step: Lance connects Cloudflare Pages (root `site`, no build). Then `python pipeline/verify_deploy.py` must print ALL DEPLOYED (rung two)." CHATLOG: the review round's findings and fixes, verbatim.
 
-- [ ] **Step 4: Final checks and push**
+- [x] **Step 4: Final checks and push**
 
 ```bash
 python -m pytest -q && node --test tests/js && python pipeline/checks.py
@@ -2467,7 +2467,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 git push origin master
 ```
 
-- [ ] **Step 5: The handoff (one message to Lance, batched)** — Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git → `lazrexmc/eventfinds` → production branch `master`, **root directory `site`**, build command *empty*, build output *empty* → Save and Deploy. Trap (deploy-runbook 6.1): the dashboard funnels toward Workers; choose Pages. When he says it is connected: `python pipeline/verify_deploy.py` → expected `ALL DEPLOYED`; record in CHATLOG; message RapidForge with the deposit (event-finder → proven; verify-deploy second consumer ran; any new trap).
+- [x] **Step 5: The handoff (one message to Lance, batched)** — Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git → `lazrexmc/eventfinds` → production branch `master`, **root directory `site`**, build command *empty*, build output *empty* → Save and Deploy. Trap (deploy-runbook 6.1): the dashboard funnels toward Workers; choose Pages. When he says it is connected: `python pipeline/verify_deploy.py` → expected `ALL DEPLOYED`; record in CHATLOG; message RapidForge with the deposit (event-finder → proven; verify-deploy second consumer ran; any new trap).
 
 ---
 
