@@ -31,8 +31,9 @@ ran and in which form (7.1/7.2/7.3 in the exporter-file form, 7.5/7.6/7.7 exact,
 only, 7.9 N/A standalone, 7.8 pending). verify-deploy (pipeline/verify_deploy.py) becomes a code module
 on that same run.
 
-**Also waiting on Lance:** a "go" to create `CLAUDE.md` (drafted in the 2026-08-30 handoff; not created on
-a peer's relay per PROJECT_STANDARD s4.2). Standing conventions: plain ASCII punctuation, dates from the
+**`CLAUDE.md` exists** - Lance approved it 2026-08-30 CDT; it is the rule file a fresh session reads
+first, and it carries the Pages connect parameters and this repo's declared deviations. Standing
+conventions: plain ASCII punctuation, dates from the
 terminal clock with the zone, `F:\RapidForge\docs\PROJECT_STANDARD.md`.
 
 Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) ->

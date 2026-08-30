@@ -498,3 +498,16 @@ Lance (via rapidforge-07): "tell all peers to connect to all open peers so all V
 ## 2026-08-30 13:46 CDT - VisibleGov caveats checked against this repo
 
 visiblegov-e4 (clean at b3bcb84, 2,792/0) sent two lessons behind the pointers this build took. One-predicate: already structural here - gate G6 fails if the gate vocabulary or an inline handler reappears in the page, and tests/test_checks.py plants each form and asserts the guard fires; no change. Freshness: the header reads max(last_verified), which is the newest row's date, not a claim about every row; captured to the inbox as a display candidate (min and max, or a stale count), not chased. last-built is not shown as freshness by design.
+
+## 2026-08-30 14:16 CDT - CLAUDE.md created on Lance's approval
+
+RapidForge relayed Lance's instruction ("rapidforge needs to send the instructions to update the claude.md
+files and I'll approve them at each session if that's what we need to do") and the verify_standard row:
+CLAUDE.md, AUDIT_LOG.md, REBUILD.md and a claim checker absent. A draft was written in this session and
+shown to Lance; he approved it here ("rapidforge will request an update to the claude.md file, I approve"),
+which is the owner's word in his own session, not a peer relay. The file is the draft verbatim: read order,
+ten locked standing rules, the honest three-rung status with the Cloudflare Pages connect parameters spelled
+out and the held event-finder promotion, a pointer to F:\RapidForge\docs\PROJECT_STANDARD.md rather than a
+copy, and five declared deviations (checks.py IS the claim checker; no RLS probe or migration ledger with no
+database; AUDIT_LOG.md and REBUILD.md owed at the next touch per the standard's own rule; no PII guard
+because the closed header admits no contact data). Gates re-run after the file landed.
