@@ -1,0 +1,10 @@
+# Cloudflare Pages response headers. The CSP is an ENUMERATION of what the page loads:
+#   self                                   index.html, css/app.css, js/*.js (ES modules), data/*.json, vendored Leaflet
+#   https://tile.openstreetmap.org and https://*.tile.openstreetmap.org   map tiles (img-src)
+#   data:                                  Leaflet's inline marker/cluster images
+# No 'unsafe-inline' anywhere: there is no inline <style> or <script> in this site (gate G9).
+/*
+  Content-Security-Policy: default-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
