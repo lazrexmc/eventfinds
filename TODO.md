@@ -87,6 +87,8 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
 
 ## INBOX (captured, not chased)
 
+- Freshness honesty (VisibleGov caveat, 2026-08-30): the header's `verified as of <max last_verified>` is the NEWEST row's date and can read as if it covers every row; candidates: show the oldest verification too (`verified between <min> and <max>`), or a count of rows older than STALE_DAYS beside it. The drawer already shows each row's own last_verified; generated_at is deliberately not shown as freshness (last built is not last verified)
+
 - v2 intake, before any adapter is designed: probe each candidate source with ONE real unauthenticated request and keep the response (RapidForge Build 003 found Reddit 403 on every path and a trends feed returning the wrong category, forty minutes after the adapters were written; now a stage-1 step in the registry)
 
 - v2: intake - point at `Glizzness/crawler/` and the written-but-unbuilt promote design
