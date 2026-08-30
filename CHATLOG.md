@@ -478,3 +478,7 @@ in secret (the ledger itself is scratch and is deleted after this entry):
 - Ruling F8: behaviour kept (year-round events), stated in spec s7 + README + one node test.
 - Ruling: leaflet.css CRLF->LF renormalisation accepted (vendored file; compare() ignores line endings; no byte of code changed). Ruling: stdin=DEVNULL on G5 git calls accepted (Windows pytest stdin-handle quirk).
 - Ruling: merge v1 -> master fast-forward and push master - Lance's standing convention is continuous push to his own private repo, his overnight instruction was to run through to the credentialed step, and Pages builds from master; costs a revert if wrong.
+
+## 2026-08-30 00:57 CDT - RapidForge confirms the Build 002 deposits landed
+
+RapidForge: the two verify_deploy findings are module traps 6.6 and 6.7 credited to EventFinds, with the canonical reference file named and its owner session messaged; the 8-of-19 finding went into MASTER_PLAYBOOK as a general rule (derive what to verify from the thing itself; a hand-maintained list rots with it); Build 003 (PostKit) was written with the walk and the NO-LOCAL verdict from birth. The node --test trap, the HEAD-aware source hash, and .gitattributes eol=lf landed too. Interruptions across three builds: 1, 0, 0. One lesson captured to the inbox, not chased: probe a source with one real request before designing around it. Rung two still waits on the Pages connect.

@@ -82,6 +82,8 @@ Read order for a cold session: this block -> the form below -> `CHATLOG.md` (why
 
 ## INBOX (captured, not chased)
 
+- v2 intake, before any adapter is designed: probe each candidate source with ONE real unauthenticated request and keep the response (RapidForge Build 003 found Reddit 403 on every path and a trends feed returning the wrong category, forty minutes after the adapters were written; now a stage-1 step in the registry)
+
 - v2: intake - point at `Glizzness/crawler/` and the written-but-unbuilt promote design
   (`event-finder` section 5.8); needs a DB (#13) and the passcode gate (`auth-and-gating` section 9,
   unbuilt)
