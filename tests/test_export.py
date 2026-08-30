@@ -120,6 +120,13 @@ def test_stale_published_row_is_warned_not_failed(tmp_path, capsys):
     assert "exported 1 event(s)" in out
 
 
+def test_write_publication_leaves_no_tmp_files(tmp_path):
+    rows = read_rows(FIX / "negative.csv")
+    events_doc, meta, _ = build(rows, load_places(FIX / "places.csv"), HOME, "t", "s", date(2026, 8, 30))
+    write_publication(tmp_path, events_doc, meta)
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["events.json", "meta.json"]
+
+
 def test_bad_today_is_an_error_line_not_a_traceback(tmp_path, capsys):
     p = tmp_path / "empty.csv"
     p.write_text(HEADER + "\n", encoding="utf-8")

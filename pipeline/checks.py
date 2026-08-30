@@ -4,8 +4,9 @@
   G2 negative-gate           fixture with published/draft/retired -> only the published id exported
   G3 export-current          a fresh export of the committed CSV == site/data (ignoring generated_at)
   G4 unknown-place           fixture row in a town places.csv lacks -> exit 1 naming "Nowhere, MO"
-  G5 publication-committed   site/data/events.json is NOT gitignored
-  G6 no-gate-in-js           site/js carries none of: visibility published draft retired
+  G5 publication-committed   site/data/events.json is NOT gitignored and matches HEAD's source CSV
+  G6 no-gate-in-js           site/js carries none of: visibility published draft retired;
+                             index.html has no inline <script> (no src=) and no inline on*= handler
   G7 named-columns           every exported event has exactly EVENT_KEYS; no contact/email/phone key
   G8 stale (WARN)            published rows dated > STALE_DAYS in the past - counted, never fails
   G9 headers                 _headers: CSP present, no 'unsafe-inline', nosniff, Referrer-Policy
@@ -13,6 +14,7 @@
 Each gate prints PASS/FAIL/WARN with extracted evidence, never a child's exit code alone.
 ASCII only in this file.
 """
+import hashlib
 import io
 import json
 import re
@@ -96,26 +98,63 @@ def g4_unknown_place():
 
 
 def g5_publication_committed():
+    """Two checks: (a) the publication is not gitignored, so it CAN be committed; (b) HEAD's
+    committed meta.json actually matches HEAD's committed source CSV - proving the last commit's
+    publication and its source were committed together, not just that git would allow it."""
     rel = "site/data/events.json"
-    proc = subprocess.run(["git", "check-ignore", "-q", rel], cwd=str(config.ROOT), capture_output=True)
+    proc = subprocess.run(["git", "check-ignore", "-q", rel], cwd=str(config.ROOT),
+                          capture_output=True, stdin=subprocess.DEVNULL)
     if proc.returncode == 0:
         return False, rel + " is gitignored - the publication would never be committed"
-    return True, rel + " is not ignored"
+    if proc.returncode != 1:
+        return False, "git check-ignore rc=%d - not a repository?" % proc.returncode
+
+    csv_proc = subprocess.run(["git", "show", "HEAD:data/events.csv"], cwd=str(config.ROOT),
+                              capture_output=True, stdin=subprocess.DEVNULL)
+    if csv_proc.returncode != 0:
+        return False, "data/events.csv is absent at HEAD"
+    meta_proc = subprocess.run(["git", "show", "HEAD:site/data/meta.json"], cwd=str(config.ROOT),
+                               capture_output=True, stdin=subprocess.DEVNULL)
+    if meta_proc.returncode != 0:
+        return False, "site/data/meta.json is absent at HEAD"
+
+    head_csv_sha = hashlib.sha256(csv_proc.stdout).hexdigest()
+    head_meta = json.loads(meta_proc.stdout.decode("utf-8"))
+    if head_csv_sha != head_meta.get("source_sha256"):
+        return False, ("the last commit's publication does not match its source CSV - "
+                       "commit data/ and site/data/ together")
+    return True, "not ignored; HEAD's meta.source_sha256 matches HEAD's data/events.csv"
 
 
-def g6_no_gate_in_js(site_js_dir=None):
+SCRIPT_NO_SRC_RE = re.compile(r"<script(?:(?!src\s*=)[^>])*>", re.IGNORECASE)
+INLINE_HANDLER_RE = re.compile(r" on[a-z]+=")
+
+
+def g6_no_gate_in_js(site_js_dir=None, index_html=None):
+    """G6, extended: none of the publish-gate words anywhere in site/js, AND index.html carries no
+    inline <script> (one without src=) and no inline event-handler attribute (onclick= and the
+    like) - either would be a second, unaudited place for page logic to live."""
     site_js_dir = Path(site_js_dir or (config.SITE_DIR / "js"))
+    index_html = Path(index_html or (config.SITE_DIR / "index.html"))
     if not site_js_dir.is_dir():
         return False, "no directory %s yet" % site_js_dir
+    js_files = sorted(site_js_dir.rglob("*.js"))
     hits = []
-    for p in sorted(site_js_dir.glob("*.js")):
+    for p in js_files:
         text = p.read_text(encoding="utf-8")
         for tok in GATE_TOKENS:
             if re.search(r"\b%s\b" % tok, text):
                 hits.append("%s: %s" % (p.name, tok))
     if hits:
         return False, "publish-gate vocabulary in the page: " + "; ".join(hits)
-    return True, "%d js file(s) carry none of %s" % (len(list(site_js_dir.glob("*.js"))), " ".join(GATE_TOKENS))
+    if index_html.is_file():
+        for lineno, line in enumerate(index_html.read_text(encoding="utf-8").splitlines(), start=1):
+            if SCRIPT_NO_SRC_RE.search(line):
+                return False, "%s:%d: inline <script> with no src=" % (index_html.name, lineno)
+            if INLINE_HANDLER_RE.search(line):
+                return False, "%s:%d: inline event-handler attribute" % (index_html.name, lineno)
+    return True, "%d js file(s) carry none of %s; %s has no inline script or handler" % (
+        len(js_files), " ".join(GATE_TOKENS), index_html.name)
 
 
 def g7_named_columns(events_path=None):

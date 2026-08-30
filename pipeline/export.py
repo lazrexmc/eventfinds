@@ -9,6 +9,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -86,17 +87,23 @@ def build(rows, places, home, generated_at, source_sha256, today):
     return {"events": events}, meta, stale
 
 
-def _dump(path, obj):
+def _dump_atomic(path, obj):
+    """Write to <name>.tmp in the same directory, then os.replace() it into place - a crash or a
+    later failure in this same run never leaves a half-written file at the real path."""
     text = json.dumps(obj, sort_keys=True, indent=2, ensure_ascii=False) + "\n"
-    path.write_text(text, encoding="utf-8", newline="\n")
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8", newline="\n")
+    os.replace(tmp, path)
     return len(text.encode("utf-8"))
 
 
 def write_publication(out_dir, events_doc, meta):
+    """meta.json FIRST, then events.json - so a failure partway through never leaves a new events
+    list published beside an old meta (or vice versa) as a mismatched pair."""
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    _dump(out_dir / "events.json", events_doc)
-    _dump(out_dir / "meta.json", meta)
+    _dump_atomic(out_dir / "meta.json", meta)
+    _dump_atomic(out_dir / "events.json", events_doc)
 
 
 def main(argv=None):
@@ -114,12 +121,12 @@ def main(argv=None):
             rows, places, config.HOME,
             datetime.now(timezone.utc).isoformat(timespec="seconds"),
             sha256_file(a.csv), today)
+        write_publication(a.out, events_doc, meta)
     except (ValidationError, UnknownPlace, ValueError, OSError) as e:
         print("ERROR: %s" % e)
         return 1
     for slug, last in stale:
         print("WARN stale: %s (%s)" % (slug, last))
-    write_publication(a.out, events_doc, meta)
     print("exported %d event(s) -> %s  (as_of=%s, types=%d)"
           % (meta["event_count"], a.out, meta["as_of"], len(meta["event_types"])))
     return 0

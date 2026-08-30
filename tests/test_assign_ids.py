@@ -1,7 +1,7 @@
 import csv
 import re
 
-from assign_ids import assign_ids
+from assign_ids import assign_ids, main
 from model import COLUMNS, UUID4_RE
 
 HEADER = ",".join(COLUMNS)
@@ -29,3 +29,12 @@ def test_header_only_file_is_left_alone(tmp_path):
     p.write_text(HEADER + "\n", encoding="utf-8")
     assert assign_ids(p) == 0
     assert p.read_text(encoding="utf-8") == HEADER + "\n"
+
+
+def test_bad_header_is_an_error_line(tmp_path, capsys):
+    p = tmp_path / "events.csv"
+    p.write_text("id,name\n", encoding="utf-8")
+    rc = main(["--csv", str(p)])
+    out = capsys.readouterr().out
+    assert rc == 1
+    assert out.startswith("ERROR:")

@@ -11,8 +11,8 @@ import uuid
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import config                      # noqa: E402
-from model import validate_header  # noqa: E402
+import config                                       # noqa: E402
+from model import ValidationError, validate_header  # noqa: E402
 
 
 def assign_ids(csv_path):
@@ -38,7 +38,11 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="fill blank id cells in the events CSV with UUID4s")
     ap.add_argument("--csv", default=str(config.EVENTS_CSV))
     a = ap.parse_args(argv)
-    n = assign_ids(Path(a.csv))
+    try:
+        n = assign_ids(Path(a.csv))
+    except (ValidationError, OSError) as e:
+        print("ERROR: %s" % e)
+        return 1
     print("assigned %d id(s) in %s" % (n, a.csv))
     return 0
 
