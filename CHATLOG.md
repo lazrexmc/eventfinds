@@ -183,3 +183,64 @@ EventFinds becomes that instrument's second consumer.
 them, TDD per task, one commit per task, gates G1–G9 mapped to `event-finder` §7. Execution is
 subagent-driven with per-task review; the only stop is a failing gate or the single credentialed
 step at the end (Cloudflare Pages connect).
+
+## 2026-08-29 - Browser verification (three states)
+
+Server: started with `python -u pipeline/serve_local.py` (run_in_background, unbuffered so the
+startup log could be captured before the first request). Log line, verbatim: `[23:39:01] serving 4
+security header(s) from site/_headers on every response`. Confirmed reachable with
+`curl -sI http://127.0.0.1:8765/` (200 OK). Stopped at the end of the task (TaskStop); a `curl`
+against the port afterward did not connect, confirming shutdown.
+
+**State 1, empty (the committed publication, event_count 0).** Navigated to
+`http://127.0.0.1:8765/`. `browser_snapshot`: header text `0 events - verified as of -` (the app's
+own separators are a middle dot and an em dash: `0 events · verified as of —`, matching
+the brief's expected string exactly); `#status` text `No events listed yet.`. `browser_evaluate`
+on the live DOM: `errorBoxHidden: true`, `statusHidden: false`. `browser_console_messages`
+(level info): `Total messages: 1 (Errors: 1, Warnings: 0)` - the one error was
+`Failed to load resource: the server responded with a status of 404 (File not found) @
+http://127.0.0.1:8765/favicon.ico:0`, the ledgered cosmetic favicon 404; no other console messages,
+so zero non-favicon console errors. `browser_network_request` on request 1 (`GET /`),
+response-headers part, included `content-security-policy: default-src 'self'; img-src 'self' data:
+https://tile.openstreetmap.org https://*.tile.openstreetmap.org; script-src 'self'; style-src
+'self'; connect-src 'self'; base-uri 'none'; object-src 'none'; form-action 'self'; frame-ancestors
+'none'` - the CSP header is present on the `/` response. Matches the brief.
+
+**State 2, loaded (fixture export).** Ran
+`python pipeline/export.py --csv pipeline/fixtures/negative.csv --places pipeline/fixtures/places.csv --out site/data`;
+output verbatim: `exported 1 event(s) -> site/data  (as_of=2026-08-30, types=1)`. Reloaded.
+Header text: `1 event - verified as of 2026-08-30`. One marker rendered on the map; clicked it.
+Drawer: heading `Published Fest`, type badge text `festival`, definition list `When` =
+`2026-09-12 to 2026-09-13`, `Distance from Columbia, MO` = `0 mi` (zero shown, not hidden or
+blank - trap 6.2), `Last verified` = `2026-08-30`, a link `Event page` to `https://example.com/p`
+with `rel="noopener"` and `target="_blank"` (checked via `browser_evaluate` reading the anchor's
+`rel` attribute directly). `browser_evaluate` over `document.body.innerText` found no match for
+`/contact/i`, no `@`, and no phone-number pattern anywhere on the page. Opened `List`: side panel
+read `1 in view`. Set Month to `Oct`: header crumb changed to `0 events`, list panel showed
+`0 in view` and `No events in this view. Pan or zoom out to see more.`. Clicked `Reset`: crumb
+back to `1 event`, list back to `1 in view`. Opened the `All types` panel: exactly one checkbox,
+labeled `Festival`, checked. `browser_console_messages` (level info, since the reload navigation):
+`Total messages: 0 (Errors: 0, Warnings: 0)` - zero console errors, favicon included (not
+re-requested on reload). Matches the brief.
+
+**State 3, error (a file removed).** Ran `mv site/data/meta.json site/data/meta.json.bak`.
+Reloaded. `browser_snapshot` showed an `alert` region with `strong` text
+`This page could not load its data.` and paragraph text
+`Failed to load /data/meta.json — HTTP 404 File not found. Nothing on this page is rendered
+from a failed fetch.` - the brief's expected substring `Failed to load /data/meta.json - HTTP 404`
+appears verbatim at the start of that text. `browser_evaluate`: `errorBoxHidden: false`,
+`statusHidden: true`, and a query for `.leaflet-marker-icon, .marker-cluster` returned 0 elements
+(no dots on the map). `browser_console_messages` (level info): `Total messages: 2
+(Errors: 2, Warnings: 0)`:
+`Failed to load resource: the server responded with a status of 404 (File not found) @
+http://127.0.0.1:8765/data/meta.json:0` and
+`FetchError: fetch of /data/meta.json failed: HTTP 404 File not found` (stack: `fetchJson` at
+`js/data.js:27:11`, `init` at `js/app.js:212:18`). Restored with
+`mv site/data/meta.json.bak site/data/meta.json`. Matches the brief.
+
+**Restore and gates.** `git checkout -- site/data` reverted the fixture export back to the
+committed empty publication. `python pipeline/checks.py` printed all nine gates as `PASS`
+(G1-G9) and ended with `ALL GATES PASS: 0 gate(s) failed`. `git status --short` was empty after
+also removing an untracked `.playwright-mcp/` directory that the MCP browser tooling had written
+during this session (snapshot and console-log files, not part of the repository and not referenced
+by any code). The background server was stopped before this check ran.
