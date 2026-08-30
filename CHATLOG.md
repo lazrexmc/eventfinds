@@ -443,3 +443,38 @@ pipeline data tests` (empty). `git status --short` clean after committing.
 
 Full per-finding detail (file:line, covering test, command output) is in
 `.superpowers/sdd/2026-08-30-eventfinds-v1/final-fix-report.md`.
+
+## 2026-08-30 00:40 CDT - Build 002 v1 complete on the branch; rulings made on the owner's behalf
+
+The subagent-driven build ran twelve plan tasks with a review gate after each (six fix rounds in total,
+every one re-reviewed), then a whole-branch adversarial review (0 Critical, 8 Important, all fixed in one
+wave and re-verified). Final state: pytest 56, node tests 10, nine gates ALL PASS, page verified in a browser
+in three states plus the script-load failure state. The branch merges to master fast-forward next; the one
+credentialed step (Cloudflare Pages connect) is batched for the morning.
+
+Every ruling the controller made without the owner, verbatim from the build ledger, so nothing was decided
+in secret (the ledger itself is scratch and is deleted after this entry):
+
+- - Ruling: work on branch `v1` in F:\EventFinds rather than a separate worktree — the plan's commands,
+- - Ruling: Task 10 status text "No events published yet." → "No events listed yet." — the plan's own
+- - Ruling: Task 6 test fixture local `<html></html>` → `<html>\n</html>` — compare() collapses
+- - Ruling: Task 10 drop unused `isUpcoming` import — YAGNI; if wrong, one import is missing (no,
+- Ruling: reviewer is right; spec's controlled-failure rule outranks the plan's line placement; fix = move parse into try + one test — costs one line if wrong.
+- Ruling: fix — add local_bytes() returning None, verdict NO-LOCAL (fails the run cleanly); compare()/fetch() untouched — costs one helper if wrong.
+- Task 7: Ruling: plan's passesFilter test fixture lacked lat/lng while the mandated implementation hides null coords; implementer added lat/lng to the fixture — correct, the spec's null-coords rule outranks the fixture text; costs nothing if wrong.
+- Ruling: plan defect, not app.js; fix in Task 12: package.json script -> node --test "tests/js/**/*.test.mjs", README/plan wording likewise - costs one line if wrong.
+- Task 11: review: 1 Important: State 2 header quoted with a hyphen where the page renders a middle dot, undisclosed (State 1 disclosed it). Ruling: fix the sentence to the exact rendered string - the verbatim-quote rule (playbook: copy, never retype) is binding; costs one sentence if wrong.
+- Ruling: CLAUDE.md is NOT created on a peer's relay (PROJECT_STANDARD s4.2: a rule file is configuration, added on the owner's word in the project's own session); a draft goes in the morning handoff for Lance to approve. Costs one file's delay if wrong.
+- Ruling: Task 12 scope widened by exactly these items (all defects or owner-relayed rules, no new features): package.json test script glob; favicon data: link; /.playwright-mcp/ in .gitignore; TODO/PLAYBOOK_DELTA ASCII sweep + local date re-stamp (2026-08-29); README ## Live section on the three-rung ladder; serve_local -u note. CHATLOG history left as written (standard rule 3/15).
+- Task 12: Ruling: the reference project's name in TODO.md's questionnaire record is a factual decision record, not a product string; spec #15 binds site/, pipeline/, data/, README - allowed in TODO/CHATLOG/spec/plan. Costs nothing if wrong (a doc edit).
+- Task 12: review: 1 Important claimed (50 vs 49 tests). Ruling: REFUTED - `python -m pytest -q` collects and passes 50 (test_model.py = 26: 11 + 15 parametrised; the reviewer counted 14). Documents stand. Costs nothing if wrong (a number in a doc).
+- Ruling F1: fix - Leaflet construction inside init()'s try with an explicit library check (a script-load failure must reach the error box).
+- Ruling F2: fix - verify_deploy walks site/ (spec s9 says every file); compare/fetch untouched.
+- Ruling F3: fix - .gitattributes eol=lf (G3 would fail spuriously on autocrlf clones).
+- Ruling F4: fix, NOT as proposed - reviewer's `git diff --quiet HEAD` breaks export-then-commit; instead G5 verifies HEAD's own pair (sha256(HEAD:data/events.csv) == HEAD:site/data/meta.json.source_sha256) and treats check-ignore rc>1 as FAIL. Costs a gate rewrite if wrong.
+- Ruling F5: fix - assign_ids controlled failure (same principle as Task 4).
+- Ruling F6: fix - write_publication inside try; tmp+os.replace, meta first.
+- Ruling F7: frozen decision 12 wins over spec s7 badge list - Featured badge removed, spec s7 amended; decision 15 wording narrowed to the product surface (matches the Task 12 ruling). Costs a badge if wrong.
+- Ruling F8: behaviour kept (year-round events), stated in spec s7 + README + one node test.
+- Ruling: leaflet.css CRLF->LF renormalisation accepted (vendored file; compare() ignores line endings; no byte of code changed). Ruling: stdin=DEVNULL on G5 git calls accepted (Windows pytest stdin-handle quirk).
+- Ruling: merge v1 -> master fast-forward and push master - Lance's standing convention is continuous push to his own private repo, his overnight instruction was to run through to the credentialed step, and Pages builds from master; costs a revert if wrong.
