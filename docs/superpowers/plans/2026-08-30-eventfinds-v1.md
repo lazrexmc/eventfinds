@@ -1363,7 +1363,8 @@ def test_compare_verdicts():
     assert vd.compare(b"a\nb", None) == "MISSING"
     assert vd.compare(b"a\nb", b"a\nc") == "STALE"
     injected = b"<html><script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" data-cf-beacon='{}'></script>\n</html>"
-    assert vd.compare(b"<html></html>", injected) == "DEPLOYED"  # edge-injected analytics tag is not drift
+    assert vd.compare(b"<html>
+</html>", injected) == "DEPLOYED"  # edge-injected analytics tag is not drift
 
 
 def test_markers_cover_the_publication_and_the_page():
@@ -2107,7 +2108,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 ```js
 // app.js - Leaflet + DOM wiring for EventFinds. All decisions live in predicates.js; this file
 // only moves data to the screen. No copy of the exporter's gate exists here (gate G6).
-import { isUpcoming, haversineMiles, passesFilter, esc, distinctSorted, countyKey, firstMonth } from "./predicates.js";
+import { haversineMiles, passesFilter, esc, distinctSorted, countyKey, firstMonth } from "./predicates.js";
 import { fetchJson, FetchError, DataShapeError, assertShape } from "./data.js";
 
 const $ = (id) => document.getElementById(id);
@@ -2330,7 +2331,7 @@ function wireFilters() {
     wireFilters();
     setStatus("");
     render(true);
-    if (!EVENTS.length) setStatus("No events published yet.");
+    if (!EVENTS.length) setStatus("No events listed yet.");
     else if (!visibleEvents().length) setStatus("No upcoming events match. Try Reset.");
   } catch (err) {
     renderFatal(err);
@@ -2369,7 +2370,7 @@ Run: `python pipeline/serve_local.py` (run_in_background). Expected log: `servin
 
 - [ ] **Step 2: Empty state (the committed publication)**
 
-Navigate to `http://127.0.0.1:8765/`. Expected: header shows `0 events · verified as of —`; `#status` reads `No events published yet.`; `#error-box` hidden; **zero console errors** (`browser_console_messages`); the CSP header is present on the response (`browser_network_requests` shows `content-security-policy` on `/`).
+Navigate to `http://127.0.0.1:8765/`. Expected: header shows `0 events · verified as of —`; `#status` reads `No events listed yet.`; `#error-box` hidden; **zero console errors** (`browser_console_messages`); the CSP header is present on the response (`browser_network_requests` shows `content-security-policy` on `/`).
 
 - [ ] **Step 3: Loaded state (fixture export)**
 
