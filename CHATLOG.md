@@ -305,3 +305,141 @@ Two commits follow: one for the fixes (`package.json`, `site/index.html`, `.giti
 the documents (`README.md`, `TODO.md`, `PLAYBOOK_DELTA.md`, `CHATLOG.md`). Branch `v1` pushed to
 `origin` (not previously pushed). `verify_deploy.py` was not run against the network, per the
 supplement.
+
+---
+
+## 2026-08-30 - Final fix wave: eight Important findings plus three folded-in minors
+
+Controller-ruled fixes from the whole-branch adversarial review, worked item by item from
+`.superpowers/sdd/2026-08-30-eventfinds-v1/final-fix-brief.md` against branch `v1` at 777f64c.
+Every ruling in the brief was followed as written; nothing beyond it was changed.
+
+**F1** - `site/js/app.js`: a Leaflet load failure used to throw at module top level, before
+`init()`'s try ever ran, so the page rendered a blank map with no error box and no console error.
+Moved the map construction (`L`, `map`, the tile layer, the cluster group, `dotIcon`) and the DOM
+event wiring (drawer close, list-toggle, list-panel close, the list-row click handler, and
+`map.on("moveend", ...)`) into a new `boot()` function, called as the first statement inside
+`init()`'s try, before either fetch. `boot()` opens with a check that throws a named `Error` when
+`window.L` or `window.L.markerClusterGroup` is missing. `describeError`'s existing fallthrough to
+`err.message` needed no change. Verified in a browser (Playwright, via `python -u
+pipeline/serve_local.py`): the normal empty state shows "0 events - verified as of -" with the map
+rendered and zero console errors; after renaming `site/assets/vendor/leaflet/leaflet.js` and
+reloading, the error box appeared reading "This page could not load its data." / "the map library
+did not load (assets/vendor/leaflet)" (console showed the expected 404, the vendored
+markercluster.js's own `ReferenceError: L is not defined`, and our thrown Error logged by
+`renderFatal`'s `console.error(err)` - all expected, not a regression). The file was renamed back
+and `git status --short` showed no diff on it afterward. Covering: `node --check site/js/app.js`;
+gate G6.
+
+**F2** - `pipeline/verify_deploy.py`: the static `MARKERS` list named 8 of the 19 files actually
+under `site/`, so a stale file drifting at the origin (e.g. a CSS or vendored JS file nobody
+remembered to add to the list) would never be caught. Replaced `MARKERS` with a `markers(site_dir)`
+function that walks `site_dir` recursively, skips names in a new `SKIP = {"_headers"}` constant,
+and returns `(local_rel, url_path)` pairs sorted by relative path; `local_rel` is always
+`"site/" + relposix` regardless of the directory's actual name, `index.html` maps to `/`, every
+other file maps to `/<relpath>`. `main()` now calls `markers(ROOT / "site")`. `compare()`,
+`fetch()`, `local_bytes()`, `HEADER_MARKERS` unchanged. Replaced
+`test_markers_cover_the_publication_and_the_page` in `tests/test_verify_deploy.py` with a new test
+against a temp tree (four files including `_headers`; asserts the exact three-item sorted list with
+`_headers` absent) plus an updated version of the same-named test against the real `site/` that
+checks for `site/data/meta.json`, `site/js/app.js`, and
+`site/assets/vendor/leaflet/leaflet.markercluster.js`. Covering: `python -m pytest -q
+tests/test_verify_deploy.py` (4 passed).
+
+**F3** - No `.gitattributes`: a fresh clone with `core.autocrlf=true` would check out CRLF line
+endings, and gate G3 (byte comparison of a fresh export against the committed `site/data/*.json`)
+would then fail spuriously. Added `.gitattributes` at the root with `* text=auto eol=lf` and
+`*.png binary`, then ran `git add --renormalize .`. The brief expected this to touch nothing but
+the new file; in fact one file, `site/assets/vendor/leaflet/leaflet.css` (a vendored third-party
+file), was still CRLF and got renormalized to LF by that command - confirmed by diff to be a pure
+line-ending change with no content difference. Every other tracked file was already LF, so nothing
+else changed. `git status --short` after renormalizing showed exactly that one modified file plus
+the new `.gitattributes`.
+
+**F4** - Gate G5 only proved `site/data/events.json` was not gitignored, i.e. that it *could* be
+committed, not that it *was* committed together with the CSV it was exported from. Rewrote
+`g5_publication_committed()` in `pipeline/checks.py` as two checks: (a) `git check-ignore -q
+site/data/events.json` from the repo root - returncode 0 fails naming it "gitignored", returncode 1
+passes, any other returncode fails naming the returncode; (b) reads `data/events.csv` and
+`site/data/meta.json` at HEAD via `git show`, fails naming whichever path is absent, then compares
+the CSV's sha256 to `meta.json`'s `source_sha256`, failing "the last commit's publication does not
+match its source CSV - commit data/ and site/data/ together" on a mismatch. Pass message: "not
+ignored; HEAD's meta.source_sha256 matches HEAD's data/events.csv". Added
+`test_g5_publication_committed_on_this_repo` asserting `checks.g5_publication_committed()[0] is
+True` on this repo. Making that test pass under pytest on this Windows machine required adding
+`stdin=subprocess.DEVNULL` to all three `subprocess.run(...)` calls in `g5_publication_committed`:
+without it, `git ...` spawned from inside a pytest-captured test raised `OSError: [WinError 6] The
+handle is invalid` while `subprocess.Popen` tried to duplicate pytest's (invalid, under capture)
+stdin handle for inheritance - reproduced with and without `-s`, fixed by not inheriting stdin at
+all. Updated the G6-line docstring reference to G5. Covering: `python -m pytest -q
+tests/test_checks.py` (was 4, now 7 passed); `python pipeline/checks.py` (G5 PASS).
+
+**F5** - `pipeline/assign_ids.py` `main()` let a `ValidationError` from a bad CSV header propagate
+as a raw traceback. Wrapped the `assign_ids(...)` call in `try/except (ValidationError, OSError) as
+e: print("ERROR: %s" % e); return 1`, importing `ValidationError` from `model`. Added
+`test_bad_header_is_an_error_line` in `tests/test_assign_ids.py`: a CSV with header `id,name` makes
+`main(["--csv", str(p)])` return 1 with stdout starting `ERROR:`. Covering: `python -m pytest -q
+tests/test_assign_ids.py` (3 passed).
+
+**F6** - `pipeline/export.py`: `write_publication(...)` was called outside `main()`'s try block, and
+wrote `events.json` then `meta.json` directly with `Path.write_text`, so a failure partway through
+(e.g. disk full on the second file) could leave a new events list beside a stale meta, or a
+half-written file. Moved the `write_publication(...)` call inside the try (the existing `except
+(..., OSError)` already covers it). `write_publication` now writes each file to `<name>.tmp` in the
+same directory via a new `_dump_atomic()` helper and `os.replace()`s it into place, meta.json FIRST
+then events.json, per the ruling. Added `test_write_publication_leaves_no_tmp_files` asserting only
+`events.json` and `meta.json` exist in the output directory afterward. Covering: `python -m pytest
+-q tests/test_export.py` (11 passed).
+
+**F7** - The drawer rendered a "Featured" badge, contradicting frozen decision 12 ("`featured`
+boolean column reserved and exported, not rendered specially in v1"). Removed the `if (e.featured
+=== true) badges.push(badge("Featured", "b-gold"));` line from `openDrawer` in `site/js/app.js`;
+badges are now type and one-time only. Removed the now-dead `.b-gold` CSS rule from
+`site/css/app.css` (the `--gold` custom property itself was left, since the brief named only the
+rule). `featured` remains untouched in the export contract. Amended
+`docs/superpowers/specs/2026-08-30-eventfinds-v1-design.md`: section 7's drawer bullet now reads
+"two badges max (type, one-time); `featured` is exported but not rendered (decision 12)"; section
+2's decision 15 now reads "Name EventFinds; no reference-project brand or the string Midwest Event
+Finder in the product surface (`site/`, `pipeline/`, `data/`, `README.md`); decision records may
+name the reference project" (per the brief, this is a decision record naming the reference project
+by its old working phrase, not the product surface, so the phrase is allowed here). Covering:
+`node --test "tests/js/**/*.test.mjs"`; gate G6; `grep -c b-gold site/css/app.css` (0).
+
+**F8** - A published row with no dates and no months is upcoming forever and matches every month
+filter - this was already the coded behaviour (`predicates.isUpcoming` returns `true` for exactly
+this shape) but was undocumented and looked like a bug. Ruling: keep it (deliberate, for year-round
+events) and document it. Amended spec section 7's Upcoming bullet with: "no date, no months ->
+always shown and matches every month filter (a year-round or undated event); the curator opts into
+this by leaving both blank." Added a sentence to README.md workflow step 1: "Leave both dates and
+months blank only for a year-round event: such a row is always shown and appears under every month
+filter." Added a node test `monthless undated row is intentionally shown under every month` to
+`tests/js/predicates.test.mjs` asserting `passesFilter` on a dateless, monthless row returns true
+for both month "1" and month "12". Covering: `npm test` (was 9, now 10 passed).
+
+**M1** - `README.md`'s Tests section described `npm test` as "pipeline's page layer: predicates and
+fetch," backwards (predicates and fetch are the page's, not the pipeline's). Changed to "the page's
+predicates and fetch layer".
+
+**M2** - Gate G6 only scanned `site/js/*.js` for the publish-gate vocabulary; an inline `<script>`
+or an `onclick=`-style handler in `site/index.html` would be a second, unaudited place for page
+logic to live and gate G6 would never see it. Extended `g6_no_gate_in_js` to
+`g6_no_gate_in_js(site_js_dir=None, index_html=None)` (defaults from `config`); it now collects
+`sorted(site_js_dir.rglob("*.js"))` once, then scans `index.html` line by line for a `<script>` tag
+with no `src=` attribute and for an inline `on[a-z]+=` handler attribute, failing and naming the
+line for either. Added `test_g6_flags_inline_handler_in_index_html` (a temp `index.html` with
+`<button onclick="x()">` fails) and `test_g6_passes_a_clean_index_html` (a clean temp `index.html`
+with only a `src=`-bearing `<script>` passes) to `tests/test_checks.py`.
+
+**M3** - `site/js/app.js` constructed the map with a second literal copy of the HOME coordinates
+(`[38.9517, -92.3341]`, also in `pipeline/config.py`). `boot()` now creates the map with
+`setView([0, 0], 2)`; `init()` already re-centers on `META.home` after the data loads, so the real
+HOME coordinate now lives in exactly one place.
+
+**Final checks, all green:** `python -m pytest -q` (56 passed, up from 50); `npm test` (10 passed,
+up from 9); `python pipeline/checks.py` (ALL GATES PASS, G1-G9); `node --check site/js/app.js`
+(no output = success); `grep -nP "[^\x00-\x7F]" pipeline/*.py tests/*.py README.md TODO.md
+PLAYBOOK_DELTA.md` (empty); `grep -rn -i -E "glizzness|midwest event finder" README.md site
+pipeline data tests` (empty). `git status --short` clean after committing.
+
+Full per-finding detail (file:line, covering test, command output) is in
+`.superpowers/sdd/2026-08-30-eventfinds-v1/final-fix-report.md`.

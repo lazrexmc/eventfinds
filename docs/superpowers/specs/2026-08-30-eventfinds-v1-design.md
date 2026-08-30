@@ -32,7 +32,7 @@ database, no server, no framework, no bundler, no LLM, no crawler, no accounts, 
 | 12 | No monetisation; `featured` boolean column reserved and exported, not rendered specially in v1 |
 | 13 | Static JSON publication; `site/data/*.json` is **committed** (it is the publication) |
 | 14 | `eventfinds.pages.dev` only |
-| 15 | Name "EventFinds"; no Glizzness brand or "Midwest Event Finder" string in the repo |
+| 15 | Name EventFinds; no reference-project brand or the string Midwest Event Finder in the product surface (`site/`, `pipeline/`, `data/`, `README.md`); decision records may name the reference project |
 | 16 | Passed events are hidden; no dimmed/"returns ~Month" path exists (trap 6.1) |
 | 17 | `github.com/lazrexmc/eventfinds`, private, Pages root `site`, no build command |
 
@@ -136,7 +136,8 @@ The page builds its type filter from the values **present** in `events.json`, ne
 - **Upcoming** (`predicates.isUpcoming(e, todayISO, nowMonth)`), computed from the browser date:
   `recurring` → always; a row with `end_date ?? start_date` → shown iff that date `>= todayISO`
   (dates win, for annual and one_time alike); no date + `months` → shown iff `max(months) >= nowMonth`;
-  no date, no months → always. Passed events are **absent**, not dimmed.
+  no date, no months -> always shown and matches every month filter (a year-round or undated
+  event); the curator opts into this by leaving both blank. Passed events are **absent**, not dimmed.
 - **Distance** = haversine miles from `meta.home` to the row, computed at load; filter buckets
   50 / 100 / 150 / 250 mi; a row with no distance is hidden under a cap.
 - **Filters** built from data: month (1–12), distance, county (`county|state` composite, one option
@@ -148,8 +149,8 @@ The page builds its type filter from the values **present** in `events.json`, ne
   no inline style. Tiles from `tile.openstreetmap.org`. Legend: "Pins show the city, not the venue."
 - **List panel:** events in the current viewport, sorted by first month then name; row click pans
   and opens the drawer. **Drawer:** conditional rows via `add(label, value)` testing `!= null && !== ""`,
-  three badges max (type, one-time, featured), homepage link with scheme normalised and
-  `rel="noopener"`, every interpolation through `esc()`.
+  two badges max (type, one-time); `featured` is exported but not rendered (decision 12), homepage
+  link with scheme normalised and `rel="noopener"`, every interpolation through `esc()`.
 - **Freshness line** in the header: `"{event_count} events · verified as of {as_of}"` from
   `meta.json`; `"0 events"` and `"as of —"` are honest states.
 - **CSP** (`site/_headers`): `default-src 'self'; img-src 'self' data: https://tile.openstreetmap.org

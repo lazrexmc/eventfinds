@@ -13,7 +13,9 @@ verification (verify_deploy output, headers, URL semantics) gets recorded.
 
 1. Edit `data/events.csv` (header is fixed - 18 columns; see `pipeline/model.py` for the rules).
    Leave `id` blank for a new row. If the town is new, add it to `data/places.csv` first
-   (`city,state,lat,lng` - city centroid; pins show the city, not the venue).
+   (`city,state,lat,lng` - city centroid; pins show the city, not the venue). Leave both dates
+   and months blank only for a year-round event: such a row is always shown and appears under
+   every month filter.
 2. `python pipeline/assign_ids.py`     - gives new rows a permanent UUID
 3. `python pipeline/export.py`         - writes `site/data/events.json` + `meta.json`; exits 1 naming
                                          any bad row or unknown town
@@ -30,7 +32,7 @@ passed (or whose last month has passed when no date exists); it never dims them.
 
 ## Tests
 
-    npm test                                       # pipeline's page layer: predicates and fetch
+    npm test                                       # the page's predicates and fetch layer
     node --test "tests/js/**/*.test.mjs"           # the equivalent, spelled out
     python -m pytest -q                            # pipeline
 

@@ -12,9 +12,12 @@ build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 
 **v1 BUILT (rung one).** Pipeline and site built across Tasks 1-11; Task 12 adds this README,
 ships a handful of ruled fixes, and pushes the branch. All gates green: `python -m pytest -q`
-(50 tests), `npm test` (9 tests, via `node --test "tests/js/**/*.test.mjs"`), and
+(56 tests), `npm test` (10 tests, via `node --test "tests/js/**/*.test.mjs"`), and
 `python pipeline/checks.py` (ALL GATES PASS, G1-G9). The page was verified in a browser in three
 states (empty, loaded, error) - see CHATLOG.
+
+**Final review: 8 Important findings fixed (F1-F8) plus three folded-in minors (M1-M3), 2026-08-30
+- see CHATLOG.**
 
 **Waiting on the one credentialed step:** Lance connects Cloudflare Pages - project `eventfinds`,
 repo `lazrexmc/eventfinds`, production branch `master` (after the merge), root directory `site`,
