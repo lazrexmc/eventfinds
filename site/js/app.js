@@ -36,21 +36,42 @@ function renderFatal(err) {
 }
 function setStatus(msg) { statusEl.textContent = msg; statusEl.hidden = !msg; }
 
-// ---------- map ----------
-const L = window.L;
-const map = L.map("map", { zoomControl: true }).setView([38.9517, -92.3341], 7);
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19, attribution: "&copy; OpenStreetMap contributors",
-}).addTo(map);
-const clusterGroup = L.markerClusterGroup({
-  maxClusterRadius: 55, showCoverageOnHover: false, spiderfyOnMaxZoom: true,
-  zoomToBoundsOnClick: false, chunkedLoading: true,
-}).addTo(map);
-clusterGroup.on("clusterclick", (a) => {
-  if (a.layer.getChildCount() <= 5) a.layer.spiderfy();
-  else a.layer.zoomToBounds({ padding: [40, 40] });
-});
-const dotIcon = L.divIcon({ className: "evt-dot", iconSize: [16, 16], iconAnchor: [8, 8], html: "<span></span>" });
+// ---------- map: built by boot(), which init() calls before it fetches anything, so a script
+// that failed to load (window.L missing or incomplete) is a named error, never a blank map ----------
+let L, map, clusterGroup, dotIcon;
+
+function boot() {
+  if (!window.L || typeof window.L.markerClusterGroup !== "function") {
+    throw new Error("the map library did not load (assets/vendor/leaflet)");
+  }
+  L = window.L;
+  map = L.map("map", { zoomControl: true }).setView([0, 0], 2);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19, attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(map);
+  clusterGroup = L.markerClusterGroup({
+    maxClusterRadius: 55, showCoverageOnHover: false, spiderfyOnMaxZoom: true,
+    zoomToBoundsOnClick: false, chunkedLoading: true,
+  }).addTo(map);
+  clusterGroup.on("clusterclick", (a) => {
+    if (a.layer.getChildCount() <= 5) a.layer.spiderfy();
+    else a.layer.zoomToBounds({ padding: [40, 40] });
+  });
+  dotIcon = L.divIcon({ className: "evt-dot", iconSize: [16, 16], iconAnchor: [8, 8], html: "<span></span>" });
+
+  document.querySelector("#drawer .close").addEventListener("click", () => drawer.classList.remove("open"));
+  listBody.addEventListener("click", (ev) => {
+    const r = ev.target.closest(".lp-row");
+    if (!r) return;
+    const e = eventsById[r.dataset.id];
+    if (!e) return;
+    map.setView([e.lat, e.lng], Math.max(map.getZoom(), 13));
+    openDrawer(e);
+  });
+  $("list-toggle").addEventListener("click", () => toggleList());
+  document.querySelector("#listpanel .lp-close").addEventListener("click", () => toggleList(false));
+  map.on("moveend", renderList);
+}
 
 const visibleEvents = () => EVENTS.filter((e) => passesFilter(e, FILT, TODAY_ISO, NOW_M));
 
@@ -107,7 +128,6 @@ const badge = (text, cls) => `<span class="badge ${cls}">${esc(text)}</span>`;
 function openDrawer(e) {
   const badges = [badge((e.event_type || "").replace(/_/g, " "), "b-grey")];
   if (e.cadence === "one_time") badges.push(badge("One-time event", "b-blue"));
-  if (e.featured === true) badges.push(badge("Featured", "b-gold"));
   const rows = [];
   const add = (label, val) => { if (val != null && val !== "") rows.push(`<dt>${esc(label)}</dt><dd>${esc(val)}</dd>`); };
   add("When", whenText(e));
@@ -130,18 +150,6 @@ function openDrawer(e) {
     ${home}${src}`;
   drawer.classList.add("open");
 }
-document.querySelector("#drawer .close").addEventListener("click", () => drawer.classList.remove("open"));
-listBody.addEventListener("click", (ev) => {
-  const r = ev.target.closest(".lp-row");
-  if (!r) return;
-  const e = eventsById[r.dataset.id];
-  if (!e) return;
-  map.setView([e.lat, e.lng], Math.max(map.getZoom(), 13));
-  openDrawer(e);
-});
-$("list-toggle").addEventListener("click", () => toggleList());
-document.querySelector("#listpanel .lp-close").addEventListener("click", () => toggleList(false));
-map.on("moveend", renderList);
 
 // ---------- filters, built from the data ----------
 function wireFilters() {
@@ -208,6 +216,7 @@ function wireFilters() {
 // ---------- boot ----------
 (async function init() {
   try {
+    boot();
     setStatus("Loading\u2026");
     const meta = await fetchJson("/data/meta.json");
     const doc = await fetchJson("/data/events.json");

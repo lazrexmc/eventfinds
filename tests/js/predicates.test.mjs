@@ -22,6 +22,14 @@ test("month fallback only when no date exists; recurring always", () => {
   assert.equal(isUpcoming(ev({ cadence: "recurring", months: [1] }), T, M), true);
 });
 
+test("monthless undated row is intentionally shown under every month", () => {
+  const row = ev({ event_type: "festival", months: [], lat: 38.9517, lng: -92.3341 });
+  const filtJan = { month: "1", distance: "all", county: "all", types: null };
+  const filtDec = { month: "12", distance: "all", county: "all", types: null };
+  assert.equal(passesFilter(row, filtJan, T, M), true);
+  assert.equal(passesFilter(row, filtDec, T, M), true);
+});
+
 test("haversine: Columbia to Kansas City is about 125 miles", () => {
   const d = haversineMiles(38.9517, -92.3341, 39.0997, -94.5786);
   assert.ok(d > 118 && d < 132, String(d));
