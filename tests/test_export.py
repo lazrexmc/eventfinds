@@ -118,3 +118,13 @@ def test_stale_published_row_is_warned_not_failed(tmp_path, capsys):
     assert rc == 0
     assert "WARN stale: old-fest-columbia-mo (2026-01-11)" in out
     assert "exported 1 event(s)" in out
+
+
+def test_bad_today_is_an_error_line_not_a_traceback(tmp_path, capsys):
+    p = tmp_path / "empty.csv"
+    p.write_text(HEADER + "\n", encoding="utf-8")
+    rc = main(["--csv", str(p), "--places", str(FIX / "places.csv"), "--out", str(tmp_path),
+               "--today", "not-a-date"])
+    out = capsys.readouterr().out
+    assert rc == 1 and out.startswith("ERROR:") and "not-a-date" in out
+    assert not (tmp_path / "events.json").exists()

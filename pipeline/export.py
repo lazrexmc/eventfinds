@@ -106,8 +106,8 @@ def main(argv=None):
     ap.add_argument("--out", default=str(config.SITE_DATA))
     ap.add_argument("--today", default=None, help="YYYY-MM-DD; default = today (for the stale warning)")
     a = ap.parse_args(argv)
-    today = date.fromisoformat(a.today) if a.today else date.today()
     try:
+        today = date.fromisoformat(a.today) if a.today else date.today()
         rows = read_rows(a.csv)
         places = load_places(a.places)
         events_doc, meta, stale = build(
