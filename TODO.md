@@ -136,6 +136,13 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
      count publishes the decision ("3 of 41 not verified in 30 days") and can be zero, so "0 stale" is
      a real claim rather than the absence of a bad one.
 
+  **When it is built, lift rather than write:** LinkedUmp shipped `tools/public_surface.py` +
+  `tools/surface.json` (LinkedUmp f2b0c02, 2026-09-03) whose `freshness` block IS this red condition -
+  point it at the same query the page makes, name the date field, set `min_future`, and it fails when
+  published rows exist and none has a future date (its own board prints `0 of 2 rows have ends_on >=
+  2026-09-03 (need 1)`). Stdlib, no install, config-driven, no session. It also checks that every path
+  returns 200, that referenced assets resolve, and what the edge sends for cache. A pointer, not a
+  copy: read it there when the first real rows land.
   **Deliberately NOT built yet, and the reason is a rule, not an excuse:** with zero stale rows a
   staleness counter is untestable by construction - a working counter and one hardwired to zero are
   indistinguishable, which is the same defect as a checker reporting HEALTHY on a response it could not

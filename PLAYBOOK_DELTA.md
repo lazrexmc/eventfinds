@@ -48,6 +48,27 @@ layers, each further from the truth than the last, and the outermost one is what
 Rule: read one level deeper than the summary before repeating a status. (Tier-1 rule 5, sighted at
 session start.)
 
+### Lesson 5 - A new instrument's first red is as likely to be the instrument (2026-09-03)
+
+During the 2026-09-03 documentation audit, the first check run against PLAYBOOK_DELTA was
+`grep -c '^## Lesson '` and it returned **0** for a file holding four lessons - they are `### Lesson N`
+under `## 1. Earned here`. Reported as written, that would have been a fabricated defect in this
+project's own trail. Two peers hit the same thing the same day from the other direction: RapidForge's
+new lessons column flagged ten headings across three repos as malformed and all ten were false, its
+fourth new check to do this on a first run; LinkedUmp's new `public_surface.py` reported five failures
+of which four were its own ignore-prefix bug.
+
+**Diagnosis.** A new check is written against the format its author imagines rather than the corpus
+that exists, so its first disagreement with reality is evidence about the check. The false-positive
+form (flagging good input) is the one everyone names; the false-negative form is more dangerous and is
+what happened here - a count of zero looks like a clean, quiet fact rather than an accusation, so
+nobody interrogates it.
+
+**Rule.** A new instrument's first run is a calibration pass, never findings. Before believing any
+result, prove it can produce the other answer: point it at input you know is bad and watch it go red,
+and at input you know is good and watch it go green. A zero counts as a red for this purpose. This is
+the same discipline as the deferred staleness counter in `TODO.md` - a guard whose passing state has
+never been distinguished from a broken one is not yet a guard.
 ### Lesson 4 - "Gates green" did not yet mean the origin serves what the CSV says (2026-08-30)
 
 Failure: a whole-branch review found three gaps that each passed on their own while the end-to-end
