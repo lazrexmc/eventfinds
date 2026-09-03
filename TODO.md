@@ -8,7 +8,10 @@ build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 
 ## RESUME HERE
 
-**Live state as of 2026-08-30. This block outranks every other document here.**
+**Live state as of 2026-08-30, re-verified 2026-09-02 22:04 CDT. This block outranks every other document
+here.** Re-verified by running, not by reading: `python -m pytest -q` 56, `npm test` 10,
+`python pipeline/checks.py` ALL GATES PASS (G1-G9), `python pipeline/verify_deploy.py` 21 markers
+HTTP 0 (still not deployed). No fact in this block changed; only the verification date did.
 
 **v1 is BUILT (rung one) and MERGED to `master`, pushed to github.com/lazrexmc/eventfinds (private).**
 Twelve plan tasks with a review gate each, a whole-branch adversarial review (0 Critical, 8 Important,
@@ -21,12 +24,13 @@ Every controller ruling is in CHATLOG.md (2026-08-30 00:xx CDT entry).
 root directory `site` -> build command EMPTY -> build output directory EMPTY -> Save and Deploy.
 Project name `eventfinds` (URL https://eventfinds.pages.dev). Trap: the dashboard funnels toward
 Workers; choose Pages. Then run `python pipeline/verify_deploy.py` in F:\EventFinds: it must print
-ALL DEPLOYED (rung two). Last check by `python pipeline/verify_deploy.py`, 2026-08-30 06:23 CDT:
+ALL DEPLOYED (rung two). Last check by `python pipeline/verify_deploy.py`, 2026-09-02 22:05 CDT:
 21 markers HTTP 0 - the origin does not resolve; not connected.
 When it is green: record it in README `## Live` and CHATLOG (clock-dated, plain ASCII), commit, push,
-and message the RapidForge session with the verify_deploy output. **Nothing watches for this any
-more** - the hourly origin check was a session-only timer and ended with the session that built v1,
-so whoever picks this up runs `python pipeline/verify_deploy.py` themselves.
+and message the RapidForge session with the verify_deploy output. **Do not assume anything is
+watching.** An hourly origin check runs only while the session that built v1 is alive; it was still
+alive and still firing at 2026-09-02 22:04 CDT. It is session-only and leaves nothing behind, so a later
+session runs `python pipeline/verify_deploy.py` itself rather than waiting to be told.
 
 **Registry state (F:\RapidForge):** `modules/event-finder.md` promotion to `proven` is HELD until
 check 7.8 (origin equals git) runs green here; its new section 7b records which of this build's checks

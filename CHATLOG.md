@@ -82,7 +82,9 @@ in v1; public submit-an-event intake. Each will carry a recommended default.
 
 Files in this directory at the end of this entry: `CHATLOG.md` only. No git, no shape, no schema.
 
-## 2026-08-30 — The module landed; Stage 1 selection; class B answered; Stage 2 issued
+## 2026-08-29 — The module landed; Stage 1 selection; class B answered; Stage 2 issued
+
+*Timestamp corrected 2026-09-02: this heading read "## 2026-08-30 — The module landed; Stage 1 selection; class B answered; Stage 2 issued" until now - the UTC date, not the local one. `git log --date=iso` puts the commit that carried this entry (9e29652) at 2026-08-29 21:39:03 -0500. The entry text below is unchanged.*
 
 RapidForge delivered `modules/event-finder.md` (`single-source`, Glizzness reference, six readers,
 21 traps, 13 parameters) and `docs/BUILD_002_eventfinds.md` (the brief verbatim, the intent
@@ -142,7 +144,9 @@ corridor and interior fills across IL, IN, KY, TN, AR, KS, OK, IA, NE. Adequate 
 Midwest-centred v1; EventFinds builds its own single table from the towns its own events name, and
 an unknown town fails the export (7.6).
 
-## 2026-08-30 — Stage 2 answered. The form is closed; the build is unblocked
+## 2026-08-29 — Stage 2 answered. The form is closed; the build is unblocked
+
+*Timestamp corrected 2026-09-02: this heading read "## 2026-08-30 — Stage 2 answered. The form is closed; the build is unblocked" until now - the UTC date, not the local one. `git log --date=iso` puts the commit that carried this entry (6a4c442) at 2026-08-29 22:14:11 -0500. The entry text below is unchanged.*
 
 **Lance, verbatim:** *"1. Standalone 3. I, Lance McCarter, own everything I can legally own as well
 as assume ownership of any unknown owned items 13. C for now"*
@@ -166,7 +170,9 @@ wrong" — so **all fourteen defaults stand**, including #17 (repo `lazrexmc/eve
 Interruptions this build so far: **0** (the form is the scheduled touchpoint, not an interruption).
 Next: spec (frozen decisions + contracts) → plan with acceptance criteria → build → review → deploy.
 
-## 2026-08-30 — Reconnect after the PC restart; plan written; execution begins
+## 2026-08-29 — Reconnect after the PC restart; plan written; execution begins
+
+*Timestamp corrected 2026-09-02: this heading read "## 2026-08-30 — Reconnect after the PC restart; plan written; execution begins" until now - the UTC date, not the local one. `git log --date=iso` puts the commit that carried this entry (1c3b206) at 2026-08-29 22:23:57 -0500. The entry text below is unchanged.*
 
 Peers restarted and renamed (`rapidforge-79`, `glizzness-f1`; this session `eventfinds-12`).
 Lance: *"connect to all open peer sessions"* — done; both confirmed their state matches this
@@ -607,3 +613,54 @@ watcher. Open and carried in the inbox, none of it blocking: a tenth gate for pl
 the rule 5 rewording (an owner-approved import must not require breaking the rule), narrowing the
 claim-checker deviation so it does not overstate what the gates cover, and the freshness display showing
 only the newest verification date. RapidForge notified.
+
+## 2026-09-02 22:05 CDT - Documentation audit: every .md re-derived, not re-read
+
+Lance, via RapidForge: check all chatlogs and other documentation, and every .md in addition, so
+that sessions reading their own documents cold are current. Seven tracked markdown files, no
+untracked ones. Findings, not a clean bill:
+
+**DEFECT 1, three trail headings carried the UTC date.** Entries at what were lines 85, 145 and 169
+read 2026-08-30 while `git log --date=iso` puts the commits that carried them at 2026-08-29
+21:39:03, 22:14:11 and 22:23:57 -0500 (9e29652, 6a4c442, 1c3b206). The file was therefore
+non-monotonic: three entries dated 08-30 sat above two later entries dated 08-29. The false
+headings, quoted verbatim before correction:
+  "## 2026-08-30 - The module landed; Stage 1 selection; class B answered; Stage 2 issued"
+  "## 2026-08-30 - Stage 2 answered. The form is closed; the build is unblocked"
+  "## 2026-08-30 - Reconnect after the PC restart; plan written; execution begins"
+(the originals use an em dash where this entry uses a hyphen, since new prose is ASCII). Each is
+corrected in place to 2026-08-29 with the old value quoted beneath it and the entry text untouched,
+which standard rule 1 licenses: a timestamp is metadata about the record, not the record. Cause: the
+first three sessions of this build dated documents before the local-clock rule existed here; TODO and
+PLAYBOOK_DELTA were re-stamped on 2026-08-29 when RapidForge caught it, and the trail was left alone
+as history. That was half right - the entry text is history, but a wrong timestamp is a wrong fact.
+
+**DEFECT 2, a live document claimed a future event as past.** TODO's RESUME said the hourly origin
+check "ended with the session that built v1". It had not: that session is still alive and the check
+fired at 21:36 CDT today. Written in anticipation of a close that did not happen. Now states what is
+true - the check runs only while that session lives, leaves nothing behind, and a later session runs
+verify_deploy itself.
+
+**DEFECT 3, the rule file declared a trailer that is no longer correct.** CLAUDE.md required
+`Co-Authored-By: Claude Fable 5`; this session's attribution is now Claude Opus 5. Updated, with a
+note that commits up to f1e7d33 carry the old trailer and stay as written.
+
+**DEFECT 4, the RESUME stamp was three days behind its own re-verification.** It read "as of
+2026-08-30" while today's check re-derived the same facts. Now carries both dates and the commands.
+
+**FORMAT FINDING, reported to the registry rather than changed here:** PLAYBOOK_DELTA numbers its
+lessons `### Lesson N` under `## 1. Earned here`, while PROJECT_STANDARD section 1 specifies
+`## Lesson N - <title> (<date>)`. A checker keying on `^## Lesson` scores this file as having zero
+lessons - which is exactly what this audit's first grep did, before reading one level deeper and
+finding all four. A mechanical absence is a candidate, not a finding.
+
+**Everything re-derived by running it, and every one correct:** `python -m pytest -q` 56 against the
+56 claimed in three files; `npm test` 10 against 10; nine gates defined in checks.py against "nine
+gates" in CLAUDE.md and README; 18 columns in data/events.csv against the closed-header claim in
+CLAUDE.md, README, the plan and the spec; 21 traps in the registry's event-finder.md against the 21
+cited in CLAUDE.md, README and the spec; four lessons against "Lessons 1-4". The trail's last entry
+matched the last commit, so no work went unwritten. README's `## Live` was accurate.
+
+Dated documents left alone on purpose: the spec and the plan under docs/superpowers/ carry
+2026-08-30 in their filenames and headers and describe decisions made then. Correcting those would
+make them claim foresight they did not have.

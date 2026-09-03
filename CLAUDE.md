@@ -37,7 +37,9 @@ built 2026-08-29/30 CDT.
   context, and carry their zone. Commit times come from `git log --date=iso`.
 - **Plain ASCII punctuation in live documents** (standard rule 15); CHATLOG history stays as
   written.
-- Commit trailer: `Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>`.
+- Commit trailer: `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`. (Commits up to
+  f1e7d33 carry `Claude Fable 5`, which was the correct trailer when they were made; history
+  stays as written.)
 
 ## Honest status
 
