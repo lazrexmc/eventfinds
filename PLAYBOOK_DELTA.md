@@ -48,6 +48,20 @@ layers, each further from the truth than the last, and the outermost one is what
 Rule: read one level deeper than the summary before repeating a status. (Tier-1 rule 5, sighted at
 session start.)
 
+### Lesson 4 - "Gates green" did not yet mean the origin serves what the CSV says (2026-08-30)
+
+Failure: a whole-branch review found three gaps that each passed on their own while the end-to-end
+claim they exist to prove was never actually checked: `verify_deploy.py`'s `MARKERS` list named 8
+of 19 files under `site/`, so an unlisted file could drift at the origin forever undetected; gate G5
+proved `site/data/events.json` was merely not gitignored, not that it was committed together with
+the CSV it was exported from; no `.gitattributes` meant a fresh clone with `core.autocrlf=true`
+would fail gate G3 on line endings alone. Diagnosis: each check verified a necessary but
+insufficient condition, and nobody asked whether passing all of them together actually proved the
+claim until an adversarial pass did. Rule: when a gate's name promises an end-to-end guarantee (the
+origin matches git; the publication is committed with its source), trace the claim to its weakest
+link - a hand-maintained list, a check that proves possibility rather than fact, an unwritten
+environment assumption - before trusting the gate's green.
+
 ### Lesson 5 - A new instrument's first red is as likely to be the instrument (2026-09-03)
 
 During the 2026-09-03 documentation audit, the first check run against PLAYBOOK_DELTA was
@@ -69,16 +83,3 @@ result, prove it can produce the other answer: point it at input you know is bad
 and at input you know is good and watch it go green. A zero counts as a red for this purpose. This is
 the same discipline as the deferred staleness counter in `TODO.md` - a guard whose passing state has
 never been distinguished from a broken one is not yet a guard.
-### Lesson 4 - "Gates green" did not yet mean the origin serves what the CSV says (2026-08-30)
-
-Failure: a whole-branch review found three gaps that each passed on their own while the end-to-end
-claim they exist to prove was never actually checked: `verify_deploy.py`'s `MARKERS` list named 8
-of 19 files under `site/`, so an unlisted file could drift at the origin forever undetected; gate G5
-proved `site/data/events.json` was merely not gitignored, not that it was committed together with
-the CSV it was exported from; no `.gitattributes` meant a fresh clone with `core.autocrlf=true`
-would fail gate G3 on line endings alone. Diagnosis: each check verified a necessary but
-insufficient condition, and nobody asked whether passing all of them together actually proved the
-claim until an adversarial pass did. Rule: when a gate's name promises an end-to-end guarantee (the
-origin matches git; the publication is committed with its source), trace the claim to its weakest
-link - a hand-maintained list, a check that proves possibility rather than fact, an unwritten
-environment assumption - before trusting the gate's green.
