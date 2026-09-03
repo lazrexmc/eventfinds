@@ -111,7 +111,37 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
   apply here too: the command sits in the SAME sentence, and a declared substitute must not overstate
   what it covers
 
-- Freshness honesty (VisibleGov caveat, 2026-08-30): the header's `verified as of <max last_verified>` is the NEWEST row's date and can read as if it covers every row; candidates: show the oldest verification too (`verified between <min> and <max>`), or a count of rows older than STALE_DAYS beside it. The drawer already shows each row's own last_verified; generated_at is deliberately not shown as freshness (last built is not last verified)
+- **TIME DECAY - the failure mode of this product, three items, all latent today because zero rows are
+  published and all real the moment Lance publishes one.** A curated directory of dated things gets
+  worse on a schedule with no commit, no failing check and no edit: the JSON stays byte-identical and
+  the calendar moves. Raised by LinkedUmp 2026-09-03 after its own public board was found advertising
+  nothing but finished tournaments; sharpened by VisibleGov the same hour.
+
+  1. **The header counts published rows, not upcoming ones** (`site/js/app.js:230` reads
+     `META.event_count`, which `pipeline/export.py` sets to the published count). If every published
+     event has passed, the page says "12 events" in the header while the map shows zero and the status
+     line says "No upcoming events match. Try Reset." - it advertises what it cannot show. Fix: export
+     an `upcoming_count` computed at export time against the export date, or have the page render the
+     count from `visibleEvents()` with the published total beside it. The page already HIDES passed
+     events correctly (`isUpcoming`, tested against dated fixtures); only the count lies.
+  2. **No gate fails on the data's dates.** G8 warns (never fails) and only at STALE_DAYS = 60 past an
+     event date, so a directory whose every row ended yesterday passes all nine gates. Add the red
+     condition LinkedUmp names: published rows exist AND none has an end/start date in the future ->
+     FAIL. It is invisible to every test that only asks whether the file parsed.
+  3. **The freshness header uses `max(last_verified)`, the one aggregate that cannot degrade**
+     (VisibleGov, which shipped the same shape): every new verification refreshes it, so a single
+     actively-updated row holds the header green while the rest rots, and the display gets BRIGHTER as
+     coverage gets worse. A mean would sag, a min would go red, a count would climb. Take the STALE
+     COUNT over min-and-max: min-and-max hands the reader two timestamps and leaves them to judge; a
+     count publishes the decision ("3 of 41 not verified in 30 days") and can be zero, so "0 stale" is
+     a real claim rather than the absence of a bad one.
+
+  **Deliberately NOT built yet, and the reason is a rule, not an excuse:** with zero stale rows a
+  staleness counter is untestable by construction - a working counter and one hardwired to zero are
+  indistinguishable, which is the same defect as a checker reporting HEALTHY on a response it could not
+  parse. Build all three with the first real rows, and force one row stale and one row past first, to
+  watch the numbers move before trusting them. (The drawer already shows each row's own last_verified;
+  generated_at is deliberately not shown as freshness - last built is not last verified.)
 
 - v2 intake, before any adapter is designed: probe each candidate source with ONE real unauthenticated request and keep the response (RapidForge Build 003 found Reddit 403 on every path and a trends feed returning the wrong category, forty minutes after the adapters were written; now a stage-1 step in the registry)
 
