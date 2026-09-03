@@ -83,3 +83,22 @@ result, prove it can produce the other answer: point it at input you know is bad
 and at input you know is good and watch it go green. A zero counts as a red for this purpose. This is
 the same discipline as the deferred staleness counter in `TODO.md` - a guard whose passing state has
 never been distinguished from a broken one is not yet a guard.
+
+### Lesson 6 - A command that succeeds is not evidence the artifact is right (2026-09-03)
+
+Writing lesson 5, the patch script that inserted it anchored on `### Lesson 4` and prepended, so the
+file came out numbered 1, 2, 3, 5, 4. The script exited 0. Every assertion in it passed. The commit
+succeeded, the gates stayed green, and the defect was visible only in the printed heading list - which
+was in the same output, three lines down. RapidForge shipped the mirror image the same day: a
+`| tail -2` on a checker, where the pipeline returned the last command's status and masked a red.
+
+**Diagnosis.** An exit code reports whether a program ran, not whether it did the right thing. A patch
+that lands in the wrong place is a complete success by every signal the shell has. The failure is
+invisible in exactly the cases where the operation is a write, because writes have no natural output
+to read - so nothing prompts the check.
+
+**Rule.** After any scripted edit, print the property that would be wrong if the edit misfired and read
+it - the heading order, the row count, the resulting line - and never let the exit code stand in for
+it. In a pipeline, check the status of the command that matters rather than the last one. Both
+instances happened to sessions that had just written a rule about verification, which is the
+uncomfortable part: knowing the rule is not the same as running the check.

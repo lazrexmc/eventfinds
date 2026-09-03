@@ -150,6 +150,16 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
   watch the numbers move before trusting them. (The drawer already shows each row's own last_verified;
   generated_at is deliberately not shown as freshness - last built is not last verified.)
 
+- **Before v2 is specced: what stalled the same feature in the predecessor, and who could have
+  unstuck it?** (RapidForge rule 12's restored clause, 2026-09-03 - a search of code registries alone
+  finds none of this; the owner's own prose history is one of the places.) This build is a spin-out,
+  so it has a predecessor and two of its outcomes are unexplained here. (a) The reference's
+  promote-to-public design - the exact shape of my v2 intake - is written and explicitly UNBUILT in its
+  spec section 9.5; I have never established why. (b) Its written north-star, a paid regional event
+  directory, was never realised. Neither is a code problem and neither is visible in any registry.
+  Answer both before designing v2, and take the amendment with it: not only what killed it, but who
+  could have unstuck it and whether the reason they did not is known. If the answer is "nobody had
+  time", v2 inherits that constraint rather than solving it.
 - v2 intake, before any adapter is designed: probe each candidate source with ONE real unauthenticated request and keep the response (RapidForge Build 003 found Reddit 403 on every path and a trends feed returning the wrong category, forty minutes after the adapters were written; now a stage-1 step in the registry)
 
 - v2: intake - point at `Glizzness/crawler/` and the written-but-unbuilt promote design
