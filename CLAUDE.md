@@ -11,7 +11,7 @@ built 2026-08-29/30 CDT.
 
 1. `README.md` - what it is, the workflow, the `## Live` ladder
 2. `TODO.md` -> **RESUME HERE** - the live state; it outranks every other document here
-3. `PLAYBOOK_DELTA.md` - what this build cost to learn (Lessons 1-4)
+3. `PLAYBOOK_DELTA.md` - what this build cost to learn (Lessons 1-6)
 4. `docs/superpowers/specs/2026-08-30-eventfinds-v1-design.md` - the frozen decisions
 5. `F:\RapidForge\modules\event-finder.md` - the shape, its 21 traps, and section 7b's record
    of which acceptance checks ran here and in which form
@@ -43,8 +43,8 @@ built 2026-08-29/30 CDT.
 
 ## Honest status
 
-**BUILT** (rung one): `python -m pytest -q` 56, `npm test` 10, `python pipeline/checks.py`
-ALL GATES PASS (G1-G9); page verified in a browser in four states; merged to `master`.
+**BUILT** (rung one): `python -m pytest -q` 62, `npm test` 10, `python pipeline/checks.py`
+ALL GATES PASS (G1-G10); page verified in a browser in four states; merged to `master`.
 **NOT VIEWABLE**: Cloudflare Pages is not connected. The connect parameters, so no session
 reconstructs them: repo `lazrexmc/eventfinds`, production
 branch `master`, root directory `site`, build command EMPTY, output directory EMPTY, project

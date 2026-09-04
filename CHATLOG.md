@@ -721,3 +721,41 @@ spin-out would have to be classified as prior-work or greenfield and either answ
 The complaint underneath was real but textual: the rule reads heavier than it is, because it names five
 places without saying that a place which does not exist is not a step, or that a null result recorded is
 a pass. Replacement sentence proposed, keyed to the unit being written rather than the age of the repo.
+
+## 2026-09-03 21:18 CDT - G10: the hole two peers found in the nine-gate safety net
+
+RapidForge, back as rapidforge-d8, stated the G8 blind spot as this session's to fix rather than
+Lance's, and it was right that the reasoning for deferring it did not hold. The deferral argument -
+VisibleGov's, and correct - was that a staleness DISPLAY cannot be trusted with zero stale rows,
+because a working counter and one hardwired to zero are indistinguishable. That argument does not
+transfer to a GATE: a gate is fixture-testable today, and a guard that lands only with the first real
+rows arrives after the moment it was meant to protect.
+
+Built: G10 dated-rows-not-all-past. It fails when every published row carries a date and every one of
+those dates has passed - LinkedUmp's exact case, a board advertising nothing but finished events with
+the JSON byte-identical to the day it passed review.
+
+**What it deliberately does not do, and why.** It does not re-implement the page's upcoming rule.
+Doing so would put a second copy of that decision in Python, which is the thing this repo forbids and
+which this session argued into the standard as federal rule F6. So the gate is narrow: a set of
+month-only rows whose months have passed is not caught, that residue stays open in TODO as the
+display's job, and the gate is named for what it checks rather than for what one might hope it checks -
+a guard whose name overstates its reach is worse than a narrow guard honestly labelled.
+
+Six tests drive it in both directions, per lesson 5: known-bad goes red (two past rows, latest date
+named in the message), known-good goes green (one row still ahead), a row dated exactly today passes,
+zero published rows passes with the honest reason, an undated row present passes with the honest
+reason, and the gate is registered under a unique name. Dates are generated relative to a fixed today
+inside the tests rather than hardcoded, so the fixtures cannot themselves decay - which would have been
+the same defect one layer down.
+
+Counted claims updated in the same commit, since ten gates and 62 tests invalidated four sentences the
+moment the gate landed: CLAUDE.md, README and two lines of TODO's RESUME. That is standard rule 2 and
+it is the drift PostKit caught in itself; leaving it would have been shipping the defect I audited
+others for.
+
+Also logged from RapidForge, verified in the reference's source rather than taken on report: the
+predecessor's unbuilt promote design sits at `Glizzness/TODO.md:214` as an unchecked box reading
+"Decide the v1.1 '-> Event Finder' promote (spec section 9.5)" - parked at a DECISION, not at effort.
+That answers half of the predecessor question this session logged yesterday: it was not that nobody had
+time, it is that nobody chose. v2 inherits a decision, not a backlog item.

@@ -8,15 +8,16 @@ build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 
 ## RESUME HERE
 
-**Live state as of 2026-08-30, re-verified 2026-09-02 22:04 CDT. This block outranks every other document
-here.** Re-verified by running, not by reading: `python -m pytest -q` 56, `npm test` 10,
-`python pipeline/checks.py` ALL GATES PASS (G1-G9), `python pipeline/verify_deploy.py` 21 markers
+**Live state as of 2026-08-30, re-verified 2026-09-03 21:19 CDT. This block outranks every other document
+here.** Re-verified by running, not by reading: `python -m pytest -q` 62, `npm test` 10,
+`python pipeline/checks.py` ALL GATES PASS (G1-G10), `python pipeline/verify_deploy.py` 21 markers
 HTTP 0 (still not deployed). No fact in this block changed; only the verification date did.
 
 **v1 is BUILT (rung one) and MERGED to `master`, pushed to github.com/lazrexmc/eventfinds (private).**
 Twelve plan tasks with a review gate each, a whole-branch adversarial review (0 Critical, 8 Important,
-all fixed and re-verified). Checks, all green at HEAD: `python -m pytest -q` (56), `npm test` (10),
-`python pipeline/checks.py` (ALL GATES PASS, G1-G9). The page was verified in a browser in four states.
+all fixed and re-verified). Checks, all green at HEAD: `python -m pytest -q` (62), `npm test` (10),
+`python pipeline/checks.py` (ALL GATES PASS, G1-G10). The page was verified in a browser in four
+states. G10 was added 2026-09-03; see CHATLOG.
 Every controller ruling is in CHATLOG.md (2026-08-30 00:xx CDT entry).
 
 **The ONE thing blocking rung two is Lance's:** connect Cloudflare Pages. Dashboard -> Workers & Pages
@@ -24,12 +25,12 @@ Every controller ruling is in CHATLOG.md (2026-08-30 00:xx CDT entry).
 root directory `site` -> build command EMPTY -> build output directory EMPTY -> Save and Deploy.
 Project name `eventfinds` (URL https://eventfinds.pages.dev). Trap: the dashboard funnels toward
 Workers; choose Pages. Then run `python pipeline/verify_deploy.py` in F:\EventFinds: it must print
-ALL DEPLOYED (rung two). Last check by `python pipeline/verify_deploy.py`, 2026-09-02 22:05 CDT:
+ALL DEPLOYED (rung two). Last check by `python pipeline/verify_deploy.py`, 2026-09-03 21:19 CDT:
 21 markers HTTP 0 - the origin does not resolve; not connected.
 When it is green: record it in README `## Live` and CHATLOG (clock-dated, plain ASCII), commit, push,
 and message the RapidForge session with the verify_deploy output. **Do not assume anything is
 watching.** An hourly origin check runs only while the session that built v1 is alive; it was still
-alive and still firing at 2026-09-02 22:04 CDT. It is session-only and leaves nothing behind, so a later
+alive and still firing at 2026-09-03 21:19 CDT. It is session-only and leaves nothing behind, so a later
 session runs `python pipeline/verify_deploy.py` itself rather than waiting to be told.
 
 **Registry state (F:\RapidForge):** `modules/event-finder.md` promotion to `proven` is HELD until
@@ -100,7 +101,7 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
   re-verified import as his to make. Reword to "not without an explicit owner decision recorded in
   CHATLOG" on the next touch of that file (self-reported in the 2026-08-30 consent check)
 - A tenth gate for plain ASCII in live documents: rule 9 of CLAUDE.md is the only locked rule with no
-  check behind it (G1-G9 are source-valid, negative, export-current, unknown-place,
+  check behind it (G1-G10 are source-valid, negative, export-current, unknown-place,
   publication-committed, no-gate-in-js, named-columns, stale, headers). PostKit enforces its with a
   gate; here it is habit plus a grep. Note: the product surface is ASCII on disk by design - the page
   renders a middle dot and an em dash through \u escapes - so the gate must check documents,
@@ -124,10 +125,12 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
      an `upcoming_count` computed at export time against the export date, or have the page render the
      count from `visibleEvents()` with the published total beside it. The page already HIDES passed
      events correctly (`isUpcoming`, tested against dated fixtures); only the count lies.
-  2. **No gate fails on the data's dates.** G8 warns (never fails) and only at STALE_DAYS = 60 past an
-     event date, so a directory whose every row ended yesterday passes all nine gates. Add the red
-     condition LinkedUmp names: published rows exist AND none has an end/start date in the future ->
-     FAIL. It is invisible to every test that only asks whether the file parsed.
+  2. ~~**No gate fails on the data's dates.**~~ **DONE 2026-09-03 - G10 dated-rows-not-all-past.** It
+     fires when every published row is dated and every date has passed. Deliberately NARROWER than
+     the page's upcoming rule, because re-implementing that predicate in Python would be the second
+     copy of a decision this repo forbids: a set of month-only rows whose months have passed is NOT
+     caught, and the gate is named for what it checks. Six tests drive both directions per lesson 5.
+     The residue - month-only decay - belongs to item 1 below and stays open.
   3. **The freshness header uses `max(last_verified)`, the one aggregate that cannot degrade**
      (VisibleGov, which shipped the same shape): every new verification refreshes it, so a single
      actively-updated row holds the header green while the rest rots, and the display gets BRIGHTER as

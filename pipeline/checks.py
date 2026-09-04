@@ -10,6 +10,9 @@
   G7 named-columns           every exported event has exactly EVENT_KEYS; no contact/email/phone key
   G8 stale (WARN)            published rows dated > STALE_DAYS in the past - counted, never fails
   G9 headers                 _headers: CSP present, no 'unsafe-inline', nosniff, Referrer-Policy
+  G10 dated-rows-not-all-past  every published row is dated AND every date has passed -> FAIL.
+                             Deliberately narrower than the page's own upcoming rule; see the
+                             function docstring for what it does not catch.
 
 Each gate prints PASS/FAIL/WARN with extracted evidence, never a child's exit code alone.
 ASCII only in this file.
@@ -198,6 +201,43 @@ def g9_headers(headers_path=None):
     return True, "CSP without unsafe-inline; nosniff; Referrer-Policy present"
 
 
+def g10_dated_rows_not_all_past(csv_path=None, places_path=None, today=None):
+    """A curated directory of dated things decays with no commit and no failing check: the
+    calendar moves and the JSON stays byte-identical. This is the red condition for that.
+
+    DELIBERATELY NARROW, and named for what it checks. It fires only when EVERY published row
+    carries a date and EVERY one of those dates has passed. It does NOT re-implement the page's
+    upcoming rule (site/js/predicates.js), because a second copy of that decision is exactly what
+    this repo forbids. So it does not catch a set of month-only rows whose months have passed -
+    that case is the display's job and is recorded in TODO. A guard whose name overstates its
+    reach is worse than a narrow guard honestly labelled.
+    """
+    csv_path = csv_path or config.EVENTS_CSV
+    places_path = places_path or config.PLACES_CSV
+    today = today or date.today()
+    rows = export.read_rows(csv_path)
+    places = load_places(places_path)
+    events_doc, _, _ = export.build(rows, places, config.HOME, "", "", today)
+    events = events_doc["events"]
+    if not events:
+        return True, "no published rows, so nothing can be out of date"
+    dates = [e["end_date"] or e["start_date"] for e in events]
+    undated = sum(1 for d in dates if not d)
+    if undated:
+        return True, (
+            "%d of %d published row(s) carry no date and are always shown, so the directory "
+            "cannot be empty on dates alone" % (undated, len(events))
+        )
+    latest = max(dates)
+    if latest < today.isoformat():
+        return False, (
+            "all %d published row(s) are dated and the latest date is %s, before today (%s) - "
+            "the page would render an empty map beneath a non-zero count" % (len(events), latest, today.isoformat())
+        )
+    return True, "%d published row(s), latest date %s, not before today (%s)" % (
+        len(events), latest, today.isoformat())
+
+
 GATES = [
     ("G1 source-valid", g1_source_valid),
     ("G2 negative-gate", g2_negative_gate),
@@ -208,6 +248,7 @@ GATES = [
     ("G7 named-columns", g7_named_columns),
     ("G8 stale", g8_stale),
     ("G9 headers", g9_headers),
+    ("G10 dated-rows-not-all-past", g10_dated_rows_not_all_past),
 ]
 
 
