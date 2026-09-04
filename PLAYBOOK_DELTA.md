@@ -102,3 +102,30 @@ it - the heading order, the row count, the resulting line - and never let the ex
 it. In a pipeline, check the status of the command that matters rather than the last one. Both
 instances happened to sessions that had just written a rule about verification, which is the
 uncomfortable part: knowing the rule is not the same as running the check.
+
+### Lesson 7 - A green from a check that could not have gone red is not evidence (2026-09-03)
+
+A peer sent a general test: if a check reads "unless K bad rows, pass", ask what makes a row
+ELIGIBLE to be bad, and whether the data contains any such rows at all. Run against the ten gates
+here it found FOUR that could not fail - G1 validates rows and there were no rows, G7 checks exported
+keys and there were no events, G8 ages published rows and there were none, and G10, built the previous
+day against precisely this class of failure, returned a cheerful pass on an empty publication. The
+summary line called all of that ALL GATES PASS.
+
+**Worse, three of this repo's own TESTS had pinned the vacuous pass as the contract.** One asserted
+that an empty events list passes; two asserted `ok is True` for G10 cases that could not have failed.
+They had survived TDD, a per-task review, an eight-finding whole-branch review and a documentation
+audit, because every one of those steps read an assertion as EVIDENCE rather than as a CLAIM. A test
+assertion is a claim wearing the costume of a verification, which is how it passes four defences that
+exist to verify claims.
+
+**Diagnosis.** An untested defect is merely PRESENT; a defect a test asserts is PROTECTED - the next
+person to fix it breaks the suite and is told they are wrong by their own tooling. And the failure is
+quiet by construction: a red gets argued with, a green gets believed, so nobody audits a pass.
+
+**Rules.** (1) A check whose eligible population is empty must report a third state - not-run - never a
+pass, and the summary must not claim full coverage while any check reports it. (2) Reading
+`assert x is True`, ask what input would make it False; treat "none" as a finding rather than as
+coverage. (3) Expect this in the code written to express the rule: four authors in four repos shipped
+this class within a day of naming it, this repo included. Naming a failure mode is not protection
+against it, and may be the moment of greatest exposure to it.
