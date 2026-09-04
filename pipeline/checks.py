@@ -294,6 +294,14 @@ def main(argv=None):
             ok, msg = fn()
         except Exception as e:                       # a crashed gate is a FAIL with a reason
             ok, msg = False, "%s: %s" % (type(e).__name__, e)
+        # Identity, never truthiness. DID_NOT_RUN is deliberately TRUTHY, so a revert to the
+        # old `"PASS" if ok else ...` would label it PASS - and the test
+        # test_main_headline_refuses_to_claim_all_gates_pass_when_a_gate_did_not_run fails when
+        # it does. That polarity is only safe BECAUSE that test exists: delete the test and a
+        # revert becomes silent. equalshares-b1 made the opposite choice on the same reasoning -
+        # its gates are its only tests, so its sentinel is falsy and a revert shows up as a loud
+        # wrong FAIL rather than a quiet wrong PASS. Loud-and-wrong beats quiet-and-wrong where
+        # nothing else is watching; here something is.
         if ok is DID_NOT_RUN:
             label = "N/A "
             did_not_run += 1

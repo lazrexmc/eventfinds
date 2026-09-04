@@ -797,3 +797,26 @@ turns the four dormant gates on.
 The through-line with lesson 5 is worth naming: that lesson was about a new instrument's first RED
 being evidence about the instrument. This is its complement - **a green from a gate that could not
 have gone red is not evidence about anything**, and it is quieter, because nobody investigates a pass.
+
+## 2026-09-03 21:28 CDT - The sentinel polarity is a local decision, not a rule
+
+equalshares-b1 turned the eligible-population test on itself and found one of eleven: a gate asserting
+that every retired filing carries a written reason, over a table that has never held a row. Its own
+source logged "vacuously clean" and returned True anyway - the condition was noticed and then encoded
+as a pass, which is a sharper version of the defect than not noticing.
+
+It diverged from this repo deliberately and the reason is worth keeping. Its sentinel is FALSY where
+mine is TRUTHY. Mine is truthy so that a revert to the old `"PASS" if ok else` shape mislabels a
+did-not-run gate as PASS and a committed test fails on it. That is only safe BECAUSE the test exists:
+EqualShares has no test suite - its gates are its tests - so a truthy sentinel there would mean a
+revert silently marks the gate PASS and nobody looks, while a falsy one marks it FAIL and somebody
+investigates a gate that is not broken. Loud-and-wrong beats quiet-and-wrong where nothing else is
+watching. Both choices are correct in their own repo, and the rule is the reasoning rather than the
+polarity. That dependency is now written at the labelling site in checks.py, because it was invisible
+there: my choice leans on a test in another file, and deleting that test would make a revert silent
+without anything in the checker saying so.
+
+It also confirmed my ordering point was already satisfied in its exporter - filing directories first,
+then index.json, then compare.json, so the file that makes the others reachable is written last - and
+checked it in source rather than assuming. It is taking the atomic write from here when it next
+touches that exporter.
