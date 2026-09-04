@@ -9,15 +9,18 @@ build record: `F:\RapidForge\docs\BUILD_002_eventfinds.md`.*
 ## RESUME HERE
 
 **Live state as of 2026-08-30, re-verified 2026-09-03 21:19 CDT. This block outranks every other document
-here.** Re-verified by running, not by reading: `python -m pytest -q` 62, `npm test` 10,
-`python pipeline/checks.py` ALL GATES PASS (G1-G10), `python pipeline/verify_deploy.py` 21 markers
+here.** Re-verified by running, not by reading: `python -m pytest -q` 65, `npm test` 10,
+`python pipeline/checks.py` 0 of 10 failed with 4 N/A (see below), `python pipeline/verify_deploy.py` 21 markers
 HTTP 0 (still not deployed). No fact in this block changed; only the verification date did.
 
 **v1 is BUILT (rung one) and MERGED to `master`, pushed to github.com/lazrexmc/eventfinds (private).**
 Twelve plan tasks with a review gate each, a whole-branch adversarial review (0 Critical, 8 Important,
-all fixed and re-verified). Checks, all green at HEAD: `python -m pytest -q` (62), `npm test` (10),
-`python pipeline/checks.py` (ALL GATES PASS, G1-G10). The page was verified in a browser in four
-states. G10 was added 2026-09-03; see CHATLOG.
+all fixed and re-verified). Checks at HEAD: `python -m pytest -q` (65), `npm test` (10),
+`python pipeline/checks.py` (0 of 10 failed). **Four gates report N/A rather than PASS** - G1, G7,
+G8 and G10 all key on the published population, which is empty, so they could not have failed and
+did not pass. The summary says COVERAGE IS INCOMPLETE and that is correct: publishing the first
+real rows is what turns those four on. The page was verified in a browser in four states.
+G10 and the N/A outcome were added 2026-09-03; see CHATLOG.
 Every controller ruling is in CHATLOG.md (2026-08-30 00:xx CDT entry).
 
 **The ONE thing blocking rung two is Lance's:** connect Cloudflare Pages. Dashboard -> Workers & Pages

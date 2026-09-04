@@ -43,8 +43,10 @@ built 2026-08-29/30 CDT.
 
 ## Honest status
 
-**BUILT** (rung one): `python -m pytest -q` 62, `npm test` 10, `python pipeline/checks.py`
-ALL GATES PASS (G1-G10); page verified in a browser in four states; merged to `master`.
+**BUILT** (rung one): `python -m pytest -q` 65, `npm test` 10, `python pipeline/checks.py`
+0 of 10 gates failed - but 4 report N/A on an empty publication (G1, G7, G8, G10 have nothing to
+check until rows are published), so coverage is honestly incomplete until Lance adds events; page
+verified in a browser in four states; merged to `master`.
 **NOT VIEWABLE**: Cloudflare Pages is not connected. The connect parameters, so no session
 reconstructs them: repo `lazrexmc/eventfinds`, production
 branch `master`, root directory `site`, build command EMPTY, output directory EMPTY, project

@@ -19,7 +19,10 @@ verification (verify_deploy output, headers, URL semantics) gets recorded.
 2. `python pipeline/assign_ids.py`     - gives new rows a permanent UUID
 3. `python pipeline/export.py`         - writes `site/data/events.json` + `meta.json`; exits 1 naming
                                          any bad row or unknown town
-4. `python pipeline/checks.py`         - ten gates; must print ALL GATES PASS
+4. `python pipeline/checks.py`         - ten gates; no gate may FAIL
+       A gate whose eligible population is empty prints N/A, not PASS - it could not have failed,
+       so it did not pass. With no events published, four gates report N/A and the summary says
+       COVERAGE IS INCOMPLETE. That is the correct output for an empty directory, not a problem.
 5. `python -u pipeline/serve_local.py` - view at http://127.0.0.1:8765/ (production MIME + headers).
                                          Use `-u`: stdout is block-buffered when the process is
                                          backgrounded, so without it the startup log appears late.

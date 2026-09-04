@@ -14,7 +14,11 @@
                              Deliberately narrower than the page's own upcoming rule; see the
                              function docstring for what it does not catch.
 
-Each gate prints PASS/FAIL/WARN with extracted evidence, never a child's exit code alone.
+Each gate prints its outcome with extracted evidence, never a child's exit code alone. There are
+FOUR outcomes, not two: PASS, FAIL, WARN, and N/A - the last for a gate whose eligible population
+is empty and which therefore could not have failed. A pass drawn from an empty population is
+indistinguishable from a gate hardwired to pass, so the summary never says ALL GATES PASS while
+any gate reports N/A; it says how many of the ten actually ran.
 ASCII only in this file.
 """
 import hashlib
@@ -35,6 +39,30 @@ from export import EVENT_KEYS                                      # noqa: E402
 from geocode import load_places                                    # noqa: E402
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+
+class _DidNotRun(object):
+    """A gate that could not have failed did not pass - it did not run.
+
+    Returned in place of True when a gate's ELIGIBLE POPULATION is empty: no rows to
+    validate, no events to inspect, no dated rows to age. A pass drawn from an empty
+    population is indistinguishable from a gate hardwired to pass, so reporting it as a
+    pass overstates what the run verified.
+
+    (equalshares-b1, 2026-09-03: one of its gates cleared a field unless N rows contradicted
+    themselves, where the eligible rows could not reach N - it had been unable to fail for
+    three days, through eleven green runs and three cold-read rounds, while the page
+    published the result as a positive finding. The general test it derived: if a gate reads
+    "unless K bad rows, pass", ask what makes a row eligible to be bad and whether the data
+    contains any such rows at all.)
+    """
+
+    def __repr__(self):
+        return "DID_NOT_RUN"
+
+
+DID_NOT_RUN = _DidNotRun()
+
 GATE_TOKENS = ("visibility", "published", "draft", "retired")
 CONTACT_FRAGMENTS = ("contact", "email", "phone")
 
@@ -51,6 +79,8 @@ def _run_export(csv_path, out_dir, today=None):
 
 def g1_source_valid():
     rows = export.read_rows(config.EVENTS_CSV)
+    if not rows:
+        return DID_NOT_RUN, "data/events.csv holds 0 data rows, so no row could have been invalid"
     pub = sum(1 for r in rows if export.is_published(r))
     return True, "%d row(s), %d published; ids and slugs unique" % (len(rows), pub)
 
@@ -164,6 +194,8 @@ def g7_named_columns(events_path=None):
     events_path = Path(events_path or (config.SITE_DATA / "events.json"))
     doc = json.loads(events_path.read_text(encoding="utf-8"))
     want = set(EVENT_KEYS)
+    if not doc.get("events", []):
+        return DID_NOT_RUN, "%s holds 0 events, so no key could have been wrong" % events_path.name
     for e in doc.get("events", []):
         keys = set(e.keys())
         bad = [k for k in keys if any(f in k.lower() for f in CONTACT_FRAGMENTS)]
@@ -177,7 +209,9 @@ def g7_named_columns(events_path=None):
 def g8_stale():
     rows = export.read_rows(config.EVENTS_CSV)
     places = load_places(config.PLACES_CSV)
-    _, _, stale = export.build(rows, places, config.HOME, "", "", date.today())
+    events_doc, _, stale = export.build(rows, places, config.HOME, "", "", date.today())
+    if not events_doc["events"]:
+        return DID_NOT_RUN, "0 published rows, so none could have been stale"
     if stale:
         return None, "%d published row(s) dated > %d days ago: %s" % (
             len(stale), config.STALE_DAYS, ", ".join("%s (%s)" % s for s in stale))
@@ -220,13 +254,13 @@ def g10_dated_rows_not_all_past(csv_path=None, places_path=None, today=None):
     events_doc, _, _ = export.build(rows, places, config.HOME, "", "", today)
     events = events_doc["events"]
     if not events:
-        return True, "no published rows, so nothing can be out of date"
+        return DID_NOT_RUN, "0 published rows, so nothing could have been out of date"
     dates = [e["end_date"] or e["start_date"] for e in events]
     undated = sum(1 for d in dates if not d)
     if undated:
-        return True, (
-            "%d of %d published row(s) carry no date and are always shown, so the directory "
-            "cannot be empty on dates alone" % (undated, len(events))
+        return DID_NOT_RUN, (
+            "%d of %d published row(s) carry no date and are always shown, so this gate could "
+            "not have failed whatever the other dates say" % (undated, len(events))
         )
     latest = max(dates)
     if latest < today.isoformat():
@@ -254,16 +288,33 @@ GATES = [
 
 def main(argv=None):
     failed = 0
+    did_not_run = 0
     for name, fn in GATES:
         try:
             ok, msg = fn()
         except Exception as e:                       # a crashed gate is a FAIL with a reason
             ok, msg = False, "%s: %s" % (type(e).__name__, e)
-        label = "PASS" if ok else ("WARN" if ok is None else "FAIL")
-        if ok is False:
+        if ok is DID_NOT_RUN:
+            label = "N/A "
+            did_not_run += 1
+        elif ok is True:
+            label = "PASS"
+        elif ok is None:
+            label = "WARN"
+        else:
+            label = "FAIL"
             failed += 1
-        print("%s  %-26s %s" % (label, name, msg))
-    print("\n%s: %d gate(s) failed" % ("ALL GATES PASS" if failed == 0 else "GATES FAILED", failed))
+        print("%s  %-28s %s" % (label, name, msg))
+    if failed:
+        headline = "GATES FAILED"
+    elif did_not_run:
+        # Never "ALL GATES PASS" while a gate could not have failed: that headline would
+        # claim coverage the run did not have.
+        headline = "NO GATE FAILED, BUT COVERAGE IS INCOMPLETE"
+    else:
+        headline = "ALL GATES PASS"
+    print("\n%s: %d of %d gate(s) failed, %d did not run (empty eligible population)"
+          % (headline, failed, len(GATES), did_not_run))
     return 1 if failed else 0
 
 

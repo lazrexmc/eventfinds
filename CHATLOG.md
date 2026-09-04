@@ -759,3 +759,41 @@ predecessor's unbuilt promote design sits at `Glizzness/TODO.md:214` as an unche
 "Decide the v1.1 '-> Event Finder' promote (spec section 9.5)" - parked at a DECISION, not at effort.
 That answers half of the predecessor question this session logged yesterday: it was not that nobody had
 time, it is that nobody chose. v2 inherits a decision, not a backlog item.
+
+## 2026-09-03 21:23 CDT - Four of ten gates could not have failed, and the summary called it ALL GATES PASS
+
+equalshares-b1 sent the general form of a defect it had just found in itself: a gate that clears a
+field unless N rows contradict themselves, where the eligible rows could not reach N. It had been
+unable to fail for three days, through eleven green runs and three cold-read rounds, while the page
+published the result as a positive finding. Its test: **if a gate reads "unless K bad rows, pass", ask
+what makes a row eligible to be bad, and whether the data contains any such rows at all.**
+
+Run against all ten gates here, it found four. G1 validates rows and there are no rows; G7 checks
+exported keys and there are no events; G8 ages published rows and there are none; G10, written
+yesterday against exactly this class of failure, returned a cheerful pass on an empty publication.
+Every one of them was reporting PASS on a population that made failure impossible, and the summary
+line read ALL GATES PASS - overstating coverage by four gates out of ten while being literally true
+about the six that ran.
+
+Fixed by giving the checker a fourth outcome. A gate whose eligible population is empty returns
+DID_NOT_RUN, printed as N/A with the reason ("0 published rows, so none could have been stale"), and
+the summary refuses the headline: NO GATE FAILED, BUT COVERAGE IS INCOMPLETE - 0 of 10 failed, 4 did
+not run. Exit code is unchanged, because a gate that did not run is not a failure; it is an absence
+of evidence, and the point is to stop reading it as evidence of absence.
+
+Three of this repo's own tests had encoded the vacuous pass and had to be corrected, which is the
+uncomfortable part: `test_g7_requires_exact_keys_and_no_contact_keys` asserted that an empty events
+list passes, and two G10 tests written yesterday asserted `ok is True` for the empty and undated
+cases. The tests were faithfully pinning the wrong contract. Three new tests now pin the right one,
+including one that asserts DID_NOT_RUN is truthy on purpose - so that if main() ever reverts to
+`"PASS" if ok else ...` the sentinel would be mislabelled PASS, and a test fails when it is.
+
+Documents corrected in the same commit, because this changed what the tool prints: README told a
+reader the checker "must print ALL GATES PASS", which is now wrong for an empty directory and would
+have sent someone hunting a non-existent problem. CLAUDE.md and TODO's RESUME said ALL GATES PASS
+(G1-G10) and now state the honest split, with the note that publishing the first real rows is what
+turns the four dormant gates on.
+
+The through-line with lesson 5 is worth naming: that lesson was about a new instrument's first RED
+being evidence about the instrument. This is its complement - **a green from a gate that could not
+have gone red is not evidence about anything**, and it is quieter, because nobody investigates a pass.

@@ -45,7 +45,9 @@ def test_g7_requires_exact_keys_and_no_contact_keys(tmp_path):
     ok, msg = checks.g7_named_columns(p)
     assert ok is False and "contact_email" in msg
     p.write_text("{\"events\": []}", encoding="utf-8")
-    assert checks.g7_named_columns(p)[0] is True
+    ok, msg = checks.g7_named_columns(p)
+    assert ok is checks.DID_NOT_RUN      # not True: with no events no key could be wrong
+    assert "0 events" in msg
 
 
 def test_g9_headers_rules(tmp_path):
@@ -132,21 +134,50 @@ def test_g10_green_on_a_row_dated_exactly_today(tmp_path):
     assert ok is True
 
 
-def test_g10_green_and_says_so_when_nothing_is_published(tmp_path):
+def test_g10_did_not_run_when_nothing_is_published(tmp_path):
     ok, msg = _g10(tmp_path, {"visibility": "draft", "start_date": "2026-01-10"})
-    assert ok is True
-    assert "no published rows" in msg
+    assert ok is checks.DID_NOT_RUN
+    assert "0 published rows" in msg
 
 
-def test_g10_does_not_fire_when_an_undated_row_is_always_shown(tmp_path):
+def test_g10_did_not_run_when_an_undated_row_makes_failure_impossible(tmp_path):
     ok, msg = _g10(tmp_path,
                    {"start_date": "2026-01-10", "end_date": "2026-01-11"},
                    {"name": "Year Round Market"})
-    assert ok is True
-    assert "carry no date" in msg
+    assert ok is checks.DID_NOT_RUN      # could not have failed, so it did not pass
+    assert "could not have failed" in msg
 
 
 def test_g10_is_registered_in_the_gate_list():
     names = [n for n, _ in checks.GATES]
     assert "G10 dated-rows-not-all-past" in names
     assert len(names) == len(set(names))
+
+
+# ------------------------------------------------- did-not-run contract -----
+# equalshares-b1's general test: a gate whose eligible population is empty
+# returns a third state, never a pass. These pin the contract itself, so a
+# future gate cannot quietly reintroduce the vacuous pass.
+
+
+def test_did_not_run_is_neither_true_nor_false():
+    assert checks.DID_NOT_RUN is not True
+    assert checks.DID_NOT_RUN is not False
+    assert checks.DID_NOT_RUN is not None
+    assert repr(checks.DID_NOT_RUN) == "DID_NOT_RUN"
+
+
+def test_did_not_run_is_truthy_so_main_must_test_identity_not_truth():
+    """If main() ever reverts to `"PASS" if ok else ...` this sentinel would be
+    labelled PASS, which is the exact overstatement it exists to prevent."""
+    assert bool(checks.DID_NOT_RUN) is True
+
+
+def test_main_headline_refuses_to_claim_all_gates_pass_when_a_gate_did_not_run(capsys):
+    rc = checks.main()
+    out = capsys.readouterr().out
+    assert rc == 0
+    assert "did not run (empty eligible population)" in out
+    # With an empty publication, four gates cannot fail; the headline must say so.
+    assert "ALL GATES PASS" not in out
+    assert "COVERAGE IS INCOMPLETE" in out
