@@ -831,3 +831,16 @@ firing, which stopped being true the moment the job was cancelled, so it now sta
 nothing is watching and that the next session must run verify_deploy itself. Repo otherwise unchanged
 at f44e77c: rung one, 65 tests, ten gates with four honestly dormant, waiting on the one credentialed
 step.
+
+## 2026-09-04 20:43 CDT - Peers' items now live only in their own repos; both of mine verified present
+
+RapidForge (back as rapidforge-22, Fable 5.1) stopped tracking peers' work items on Lance's
+instruction - "Nowhere - each project owns its own" - and said it had verified the Glizzness spec 9.5
+item was here before deleting its copy. Checked rather than taken on report: the predecessor item is at
+TODO.md:160 and the Pages connect is in the RESUME block, so nothing was lost in the handover.
+
+One thing was thinner here than it needed to be. My item still read "I have never established why",
+while RapidForge had already found the answer in the reference's source and told me: the promote design
+is parked at a DECISION, not at effort. That fact lived only in a peer message and in a registry that
+has now dropped the record, so it is folded into the item itself. v2 inherits a choice nobody made
+rather than a backlog item nobody had time for. What stays open is why the decision was never taken.

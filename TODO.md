@@ -162,7 +162,13 @@ Read order for a cold session: this block -> `README.md` -> `CHATLOG.md` (why) -
   finds none of this; the owner's own prose history is one of the places.) This build is a spin-out,
   so it has a predecessor and two of its outcomes are unexplained here. (a) The reference's
   promote-to-public design - the exact shape of my v2 intake - is written and explicitly UNBUILT in its
-  spec section 9.5; I have never established why. (b) Its written north-star, a paid regional event
+  spec section 9.5. **Half answered 2026-09-04:** RapidForge verified in the reference's own
+  source that `Glizzness/TODO.md:214` carries it as an unchecked box reading "Decide the v1.1
+  '-> Event Finder' promote (spec section 9.5)" - it is parked at a DECISION, not at effort. So v2
+  inherits a choice nobody made rather than a backlog item nobody had time for, which is a different
+  thing to plan around. Recorded here because RapidForge no longer tracks peers' work items (Lance,
+  2026-09-04: "Nowhere - each project owns its own"), so this repo is the only place it lives.
+  Still open: WHY the decision was never made, and who could make it. (b) Its written north-star, a paid regional event
   directory, was never realised. Neither is a code problem and neither is visible in any registry.
   Answer both before designing v2, and take the amendment with it: not only what killed it, but who
   could have unstuck it and whether the reason they did not is known. If the answer is "nobody had
