@@ -820,3 +820,14 @@ It also confirmed my ordering point was already satisfied in its exporter - fili
 then index.json, then compare.json, so the file that makes the others reachable is written last - and
 checked it in source rather than assuming. It is taking the atomic write from here when it next
 touches that exporter.
+
+## 2026-09-04 20:41 CDT - Heartbeat stopped on Lance's word
+
+Lance: "no heartbeat required". Cron job bb01e6c1 (hourly, session-only, armed 2026-08-30 under his
+standing limit-restart instruction) cancelled and confirmed gone - CronList now reports no scheduled
+jobs. It had run roughly every hour since 2026-08-30 and reported the same thing every time: 21
+markers HTTP 0, Pages not connected, nothing written. The RESUME block said an hourly check was still
+firing, which stopped being true the moment the job was cancelled, so it now states plainly that
+nothing is watching and that the next session must run verify_deploy itself. Repo otherwise unchanged
+at f44e77c: rung one, 65 tests, ten gates with four honestly dormant, waiting on the one credentialed
+step.

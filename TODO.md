@@ -31,10 +31,11 @@ Workers; choose Pages. Then run `python pipeline/verify_deploy.py` in F:\EventFi
 ALL DEPLOYED (rung two). Last check by `python pipeline/verify_deploy.py`, 2026-09-03 21:19 CDT:
 21 markers HTTP 0 - the origin does not resolve; not connected.
 When it is green: record it in README `## Live` and CHATLOG (clock-dated, plain ASCII), commit, push,
-and message the RapidForge session with the verify_deploy output. **Do not assume anything is
-watching.** An hourly origin check runs only while the session that built v1 is alive; it was still
-alive and still firing at 2026-09-03 21:19 CDT. It is session-only and leaves nothing behind, so a later
-session runs `python pipeline/verify_deploy.py` itself rather than waiting to be told.
+and message the RapidForge session with the verify_deploy output. **NOTHING IS WATCHING.** An hourly
+origin check ran from 2026-08-30 until 2026-09-04 20:41 CDT, when Lance stopped it ("no heartbeat
+required"); the job is cancelled and it was session-only, so it left nothing behind. Whoever next
+opens this repo runs `python pipeline/verify_deploy.py` themselves - there is no timer that will
+notice the connect and no message that will arrive when it happens.
 
 **Registry state (F:\RapidForge):** `modules/event-finder.md` promotion to `proven` is HELD until
 check 7.8 (origin equals git) runs green here; its new section 7b records which of this build's checks
