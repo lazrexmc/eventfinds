@@ -24,15 +24,28 @@ built 2026-08-29/30 CDT.
   reappears in the page.
 - **No contact columns, anywhere.** The CSV header is a closed 18-column list; gate G7 fails any
   exported key containing contact, email or phone.
-- **No auto-publish, ever.** A human sets `visibility`; machines only propose.
+- **No auto-publish, ever.** A human sets `visibility`; machines only propose. *(Provenance:
+  inherited from the reference project's own written constraint, signal-net design spec 9.5,
+  not an instruction from Lance. Held because its reasoning is sound and this repo agrees with
+  it, which is a different kind of authority - and a weaker one - than an owner directive.)*
 - **Failure is not emptiness.** A bad row or unknown town exits 1 naming it and writes nothing;
   a failed page load renders the error box naming the file; zero published rows is an honest
   `event_count: 0`, never a symptom.
-- **Nothing is shared with the reference project**: no key, project, data row, domain, brand, or
-  its name in the product surface (`site/`, `pipeline/`, `data/`, `README.md`).
+- **~~Nothing is shared with the reference project~~ - LIFTED by Lance %s**, relayed via the
+  Glizzness session: *"the no sharing constraint is invalid, feel free to share."* **Pending his
+  direct confirmation in an EventFinds session before anything is copied**, because a peer
+  relaying that a locked rule is lifted is exactly the shape that requires the owner's own word.
+  *(Provenance, stated because it was never what it looked like: this rule was an AGENT DEFAULT -
+  questionnaire item 2, "start empty", which Lance accepted by silence rather than by choosing -
+  plus a boundary RapidForge stated on its own authority. Lance's actual answers were item 1
+  "standalone", item 3 that he owns what is ownable, and item 13 static JSON. A default accepted
+  by silence had acquired the standing of a directive simply by being written in his file.)*
+  Until he confirms: no key, data row, domain or brand crosses, and the reference's name stays
+  out of the product surface (`site/`, `pipeline/`, `data/`, `README.md`).
 - **Stdlib only** in the pipeline; the page's only dependency is vendored.
 - **Draft-then-apply**: credentialed steps (the Pages dashboard) are Lance's, batched into one
-  sitting. An agent never performs them.
+  sitting. An agent never performs them. *(Provenance: Lance's own global conventions - the one
+  rule here that is unambiguously his.)*
 - **Dates and times come from the terminal clock** (`date +'%Y-%m-%d %H:%M %Z'`), never from
   context, and carry their zone. Commit times come from `git log --date=iso`.
 - **Plain ASCII punctuation in live documents** (standard rule 15); CHATLOG history stays as

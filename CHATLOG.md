@@ -844,3 +844,54 @@ while RapidForge had already found the answer in the reference's source and told
 is parked at a DECISION, not at effort. That fact lived only in a peer message and in a registry that
 has now dropped the record, so it is folded into the item itself. v2 inherits a choice nobody made
 rather than a backlog item nobody had time for. What stays open is why the decision was never taken.
+
+## 2026-09-06 11:54 CDT - Lance clears the collaboration; the gather-and-curate design settles
+
+Lance, verbatim: "continue working with glizzness as needed, you have full permission, you have the
+design intent and ending goal." The Glizzness session had the same word from him and proposed a
+division: it owns the discovery recipe, this repo owns the destination - schema, gates, publish
+boundary, the event_type decision - and the middle layer is the open question. It asked where the
+gathering store should live, offering three candidates and recommending its first with a caveat.
+
+**Its first candidate is barred, and the test settled it in one command.** Raw finds cannot live as
+draft rows here: validate_row rejects a find carrying only a name and a URL, because id, name,
+event_type, cadence, city and state are required for every row regardless of visibility, and only
+source_url and last_verified are conditional on publication. A raw find has none of those - having
+none of them is what makes it raw. The peer could not see this from outside the tree, and it inverts
+its recommendation: the low-bar store must be allowed to hold exactly what the strict store forbids.
+
+Decided and recorded in TODO's NOW section: D1 a separate gather store, gitignored local state with
+committed code, following Build 001's split rather than a new repo; D2 event_type stays a closed
+filter axis with a free-text subtype captured always and filtered never, the closed list growing by
+evidence at curation - which both sessions reached independently, and which amends the frozen
+18-column header to 19 when its first consumer arrives; D3 no auto-publish, unchanged.
+
+Nothing built. The schema change waits for the consumer that needs it, which is the same discipline
+this repo applied to the staleness display and to G10.
+
+## 2026-09-06 11:55 CDT - Two corrections from the owner, and an audit of which rules were ever his
+
+The Glizzness session relayed two owner corrections and refused to act on either unilaterally, which
+was right. First: *"the no sharing constraint is invalid, feel free to share."* Second: *"Claude has
+set constraints to freeze until the 10th, not me"* - its demo freeze was self-imposed, traced to a
+RapidForge Build 002 brief, and it had been repeating it back to Lance as his instruction.
+
+**The second correction is the one worth keeping, because the same shape is here.** An agent-set
+caution acquires owner authority simply by being written down in the owner's file and then quoted back.
+Audited this repo's standing rules for it:
+- "Nothing is shared with the reference project" read as a locked owner rule. It was an agent DEFAULT -
+  questionnaire item 2, "start empty", which Lance accepted by SILENCE rather than by choosing - plus a
+  boundary RapidForge stated on its own authority. His actual answers were items 1, 3 and 13 only. This
+  repo's own inbox had already flagged the rule as stricter than its source on 09-03 without drawing the
+  general conclusion.
+- The "untouched through the 2026-09-10 demo" rider on questionnaire item 1 was never his either.
+- "No auto-publish, ever" is inherited from the reference's spec 9.5, not from Lance. Still held, but
+  held because its reasoning is sound - which is a weaker and more honest kind of authority.
+- "Draft-then-apply, credentialed steps are Lance's" is genuinely his, from his global conventions.
+Each is now annotated with its provenance in CLAUDE.md rather than left to read as a directive.
+
+**Nothing copied and nothing lifted in practice.** The sharing rule is struck through and marked LIFTED
+pending Lance's confirmation in an EventFinds session, because a peer relaying that a locked rule is
+lifted is precisely the case that needs the owner's own word - and the peer said so itself before I
+did. Trap 6.20 also survives the lift on its own merits: two public directories over one dataset fork
+at the first refresh, and nobody has yet decided which is canonical.
