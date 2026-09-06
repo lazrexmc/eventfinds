@@ -5,6 +5,51 @@ truth for "why." Conventions: `~/.claude/CLAUDE.md`. Method: `F:\RapidForge` (th
 
 ---
 
+## Index
+
+*31 entries, derived from the headings rather than typed. To rebuild after appending:*
+`grep -n "^## 2026" CHATLOG.md` *- the index must list every heading the file holds.*
+
+**Heading format for new entries:** `## YYYY-MM-DD HH:MM CDT - Title`, time from the terminal
+clock. Entries before 2026-08-30 use a date-only form and an em dash; they are history and stay
+as written.
+
+| Date | Entry |
+|---|---|
+| 2026-08-29 | Session start: an empty directory and a peer |
+| 2026-08-29 | The brief, relayed by RapidForge (Build 002) |
+| 2026-08-29 | Signal Net verified live; provisional Stage-1 pre-selection sent |
+| 2026-08-29 | The module landed; Stage 1 selection; class B answered; Stage 2 issued |
+| 2026-08-29 | Stage 2 answered. The form is closed; the build is unblocked |
+| 2026-08-29 | Reconnect after the PC restart; plan written; execution begins |
+| 2026-08-29 | Browser verification (three states) |
+| 2026-08-29 | Build 002 v1 built; awaiting the Pages connect |
+| 2026-08-30 | Final fix wave: eight Important findings plus three folded-in minors |
+| 2026-08-30 | Build 002 v1 complete on the branch; rulings made on the owner's behalf |
+| 2026-08-30 | RapidForge confirms the Build 002 deposits landed |
+| 2026-08-30 | Registry audit taken: module text widened, promotion held until 7.8 |
+| 2026-08-30 | Shutdown prep |
+| 2026-08-30 | Peer mesh completed on Lance's instruction |
+| 2026-08-30 | VisibleGov caveats checked against this repo |
+| 2026-08-30 | CLAUDE.md created on Lance's approval |
+| 2026-08-30 | Consent check on the rules (Lance, via RapidForge) |
+| 2026-08-30 | Round 2: which standard rule has never checked this project |
+| 2026-08-30 | Session closing |
+| 2026-09-02 | Documentation audit: every .md re-derived, not re-read |
+| 2026-09-03 | Time decay: the failure mode this product has and no gate here catches |
+| 2026-09-03 | Round 2 answered: a format question became an instrument, a scoping proposal did not |
+| 2026-09-03 | G10: the hole two peers found in the nine-gate safety net |
+| 2026-09-03 | Four of ten gates could not have failed, and the summary called it ALL GATES PASS |
+| 2026-09-03 | The sentinel polarity is a local decision, not a rule |
+| 2026-09-04 | Heartbeat stopped on Lance's word |
+| 2026-09-04 | Peers' items now live only in their own repos; both of mine verified present |
+| 2026-09-06 | Lance clears the collaboration; the gather-and-curate design settles |
+| 2026-09-06 | Two corrections from the owner, and an audit of which rules were ever his |
+| 2026-09-06 | Sharing confirmed by Lance; the standing rules labelled by level |
+| 2026-09-06 | Local documentation cleanup, all five batches |
+
+---
+
 ## 2026-08-29 — Session start: an empty directory and a peer
 
 `F:\EventFinds` was opened as a brand-new session paired with the RapidForge session
@@ -922,3 +967,50 @@ Worth recording as the general shape, since it is the second instance this week:
 whatever is written in the owner's file. An agent default acquired it by his silence, a peer's brief
 acquired it by being quoted back to him, and a registry's federal rules acquired it by a pointer at the
 top of a rule file. None of the three was a decision he made.
+
+## 2026-09-06 12:21 CDT - Local documentation cleanup, all five batches
+
+Lance: "proceed with the highest importance to the system, regardless of time or tokens, let's get
+this corrected once and for all." Documents only; no code changed, and the suite and gates are
+identical before and after (65 pytest, 10 node, 0 of 10 gates failed with 4 N/A).
+
+**First, the correctness item left open by the audit.** The gameplan claimed PLAYBOOK_DELTA had "no
+defects found" on the strength of a structural read. All seven lessons are now verified against
+source or git: L1's local_bytes/NO-LOCAL exist in verify_deploy.py; L2's corrected glob is in
+package.json; L3's contradiction is STILL LIVE in the reference's memory index today, which is a
+sharper example than when it was written; L4's three fixes (markers walk, HEAD-aware G5,
+.gitattributes) are all present; L5's false zero reproduces exactly (`^## Lesson` returns 0 against a
+file holding 7 at `^### Lesson`); L6's misordering is in git at 8ff8960 as 1,2,3,5,4 and fixed at
+450b5eb; L7's four N/A gates are what the checker prints. Seven of seven, not two of seven.
+
+**A (correctness).** The frozen v1 spec described a system that no longer exists, and it is what
+CLAUDE.md sends a cold session to. Rather than edit a dated record - which would make it claim
+foresight it did not have - an Amendments block was added at the top listing five drift points with
+the current truth beside each: the false "exit 0 only on all-pass" in TWO places (sections 3 and 8,
+which the audit caught and the first pass missed), nine gates where there are ten, G5's second check,
+and the node --test command that fails on Node 24. It also records that section 9 needs NO amendment
+and should not be "corrected": it described a full-tree deploy check that was aspirational at freeze
+and became true on 09-03 when the marker list was replaced by a walk.
+
+**C (structure).** TODO was 274 lines of which only the first 44 were live state. The 70-line
+gather-and-curate design record moved to its own dated spec; the two oversized inbox items (41 and 16
+lines of reasoning) compressed to their conclusions with CHATLOG pointers; the answered questionnaire
+moved below the live sections; NOW placed before the build queue per Lance's own convention. 274 ->
+185 lines, and a resuming session now meets live state, then what is next, then history.
+
+**B (navigability).** CHATLOG passed 900 lines with no index - the shape that made a peer's 112K
+delta truncate on a cold read. An index of all 30 entries now sits at the top, DERIVED from the
+headings rather than typed, with the rebuild command in the file and a stated heading format for new
+entries. Early entries keep their inconsistent date-only form; they are history.
+
+**D and E (trim).** CLAUDE.md had grown to 100 lines with provenance parentheticals longer than the
+rules they annotated - my own excess, and the clearest instance of what Lance called out. The
+[STATE]/[FEDERAL]/[OWNER] labels stay because they carry the federal-versus-state split he has not had
+time to make; the explanations moved to CHATLOG where they already were. 100 -> 85 lines. The Cloudflare
+connect parameters went from three copies to two - README as the deploy document and TODO's RESUME as
+what a resuming session reads - deliberately not one, because making a cold session hunt for them
+would defeat the block that exists to prevent exactly that.
+
+What did not change: no CHATLOG entry edited, no lesson rewritten, no code touched, and the 2,480-line
+plan left as the finished artifact it is. The v1 spec's 36 non-ASCII characters are all in its frozen
+body and stay there; the amendment block added none.

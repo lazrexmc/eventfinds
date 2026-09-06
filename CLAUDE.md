@@ -19,14 +19,9 @@ built 2026-08-29/30 CDT.
 
 ## Standing rules (locked)
 
-*Labelled by LEVEL, because the levels are currently tangled. Lance, 2026-09-06: "somehow rapidforge
-leaked it's rules into the sub systems when it shouldn't have and I have not had time to clean that
-up and separate the rules out that are federal rules at the rapidforge level only and the state
-level where each session has it's own rules to govern items." Nothing below is deleted on that
-basis - a session does not get to drop a rule by reclassifying it - but the origin of each is now
-visible, so the cleanup is a reading rather than an investigation. **[STATE]** is this project's own
-and this session governs it. **[FEDERAL]** arrived from `PROJECT_STANDARD.md` and is RapidForge's to
-keep or drop. **[OWNER]** is Lance's own global convention and outranks both.*
+*Levels, because they are tangled and Lance has not yet separated them (2026-09-06, CHATLOG).*
+***[STATE]*** *this project's own, governed here.* ***[FEDERAL]*** *from `PROJECT_STANDARD.md`,
+RapidForge's to keep or drop.* ***[OWNER]*** *Lance's global convention; outranks both.*
 
 
 - **[STATE] The publish gate lives in exactly one place**: `is_published()` in `pipeline/export.py`.
@@ -34,30 +29,21 @@ keep or drop. **[OWNER]** is Lance's own global convention and outranks both.*
   reappears in the page.
 - **[STATE] No contact columns, anywhere.** The CSV header is a closed 18-column list; gate G7 fails any
   exported key containing contact, email or phone.
-- **[STATE] No auto-publish, ever.** A human sets `visibility`; machines only propose. *(Provenance:
-  inherited from the reference project's own written constraint, signal-net design spec 9.5,
-  not an instruction from Lance. Held because its reasoning is sound and this repo agrees with
-  it, which is a different kind of authority - and a weaker one - than an owner directive.)*
+- **[STATE] No auto-publish, ever.** A human sets `visibility`; machines only propose.
+  *(Inherited from the reference's spec 9.5, not from Lance; held because it is right.)*
 - **[FEDERAL, and kept regardless] Failure is not emptiness.** A bad row or unknown town exits 1 naming it and writes nothing;
   a failed page load renders the error box naming the file; zero published rows is an honest
   `event_count: 0`, never a symptom.
-- **~~Nothing is shared with the reference project~~ - LIFTED, confirmed by Lance in this
-  session 2026-09-06:** *"you can share with other peers."* Sharing across peer repos is permitted:
-  rows, schemas, method documents, city tables. **Two limits survive the lift and are this
-  project's own, not his:** (a) **no contact columns, ever** - not `contact_name`,
-  `contact_email`, `contact_phone`, whatever the source schema calls them; gate G7 enforces it,
-  and the reason is consent rather than storage. (b) **Canonical-directory first**: nothing is
-  imported wholesale until it is settled which directory is the canonical one, because two public
-  directories over one dataset fork at the first re-verification (`event-finder` trap 6.20). Ask;
-  do not assume.
-  *(Provenance, kept because it explains how this rule got its authority: it was an AGENT DEFAULT -
-  questionnaire item 2, "start empty", accepted by Lance's silence rather than chosen - plus a
-  boundary RapidForge asserted on its own. A default written into the owner's file and quoted back
-  to him had acquired the standing of a directive.)*
+- **[STATE] Sharing between peer repos is permitted** (Lance lifted the old no-sharing rule
+  2026-09-06). Two limits survive it and are this project's own: **no contact columns ever cross**,
+  whatever a source schema calls them - gate G7, and the reason is consent rather than storage; and
+  **nothing is imported wholesale until the canonical directory is settled**, because two public
+  directories over one dataset fork at the first re-verification (`event-finder` trap 6.20).
+  *(The rule it replaced was never a directive - it was an agent default; CHATLOG 2026-09-06.)*
 - **[STATE] Stdlib only** in the pipeline; the page's only dependency is vendored.
 - **[OWNER] Draft-then-apply**: credentialed steps (the Pages dashboard) are Lance's, batched into one
-  sitting. An agent never performs them. *(Provenance: Lance's own global conventions - the one
-  rule here that is unambiguously his.)*
+  sitting. An agent never performs them. *(His global conventions; the one rule here that is
+  unambiguously his.)*
 - **[FEDERAL] Dates and times come from the terminal clock** (`date +'%Y-%m-%d %H:%M %Z'`), never from
   context, and carry their zone. Commit times come from `git log --date=iso`.
 - **[FEDERAL] Plain ASCII punctuation in live documents** (standard rule 15); CHATLOG history stays as
@@ -72,12 +58,10 @@ keep or drop. **[OWNER]** is Lance's own global convention and outranks both.*
 0 of 10 gates failed - but 4 report N/A on an empty publication (G1, G7, G8, G10 have nothing to
 check until rows are published), so coverage is honestly incomplete until Lance adds events; page
 verified in a browser in four states; merged to `master`.
-**NOT VIEWABLE**: Cloudflare Pages is not connected. The connect parameters, so no session
-reconstructs them: repo `lazrexmc/eventfinds`, production
-branch `master`, root directory `site`, build command EMPTY, output directory EMPTY, project
-`eventfinds` -> https://eventfinds.pages.dev. After connecting, `python pipeline/verify_deploy.py`
-must print ALL DEPLOYED (rung two). `event-finder`'s promotion to proven is HELD at RapidForge
-until that check (7.8) runs green here.
+**NOT VIEWABLE**: Cloudflare Pages is not connected. Connect parameters are in `README.md`
+(section Deploy) and in `TODO.md`'s RESUME block - deliberately two copies with different readers,
+not three. After connecting, `python pipeline/verify_deploy.py` must print ALL DEPLOYED (rung two).
+`event-finder`'s promotion to proven is HELD at RapidForge until that check (7.8) runs green here.
 
 ## Deviations from the standard (declared, each with its reason)
 

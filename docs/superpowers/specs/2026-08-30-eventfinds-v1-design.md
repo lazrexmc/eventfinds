@@ -5,6 +5,28 @@ Method: `F:\RapidForge\modules\event-finder.md` (the shape, its wiring, its 21 t
 constraints: `F:\RapidForge\docs\BUILD_002_eventfinds.md`. This spec does not repeat those; it
 records what THIS build fixed and the contracts the plan implements.*
 
+## Amendments since freeze (2026-09-06)
+
+*This spec is a record of what was decided on 2026-08-30 and its sections below are NOT edited - a
+dated design document that gets quietly updated stops being a record. Everything the build has since
+changed is listed here instead, newest facts first, so a reader knows which sentences below to
+distrust.*
+
+| Where | The spec says | What is true now |
+|---|---|---|
+| section 3 (file structure) and section 8 (heading) | `pipeline/checks.py ... exit 0 only on all-pass` | **False in both places.** The checker has four outcomes - PASS, FAIL, WARN and N/A - and exits 0 while gates report N/A. A gate whose eligible population is empty could not have failed, so it does not pass; the summary refuses the words ALL GATES PASS while any gate is N/A. Added 2026-09-06 |
+| section 8 (gate table) | nine gates, G1-G9 | **Ten.** G10 `dated-rows-not-all-past` fails when every published row is dated and every date has passed. Deliberately narrower than the page's upcoming rule, because re-implementing that predicate in Python would be a second copy of a decision this repo forbids. Added 2026-09-03 |
+| section 8 (G5) | `git check-ignore site/data/events.json` says NOT ignored | **Two checks now.** Also verifies that HEAD's committed `meta.json` carries the sha256 of HEAD's committed `data/events.csv` - proving the publication and its source were committed together, not merely that git would allow it. Changed 2026-09-03 |
+| section 8 (dev-time tests) | `node --test tests/js` | **That command fails on Node 24**, which imports the bare directory as a module. Use `npm test`, or `node --test "tests/js/**/*.test.mjs"`. `package.json` and `README.md` both carry the corrected form. Fixed 2026-08-30 |
+| section 1 | "no crawler" | **Still true of v1 and still the shipped scope.** A v2 gather-and-curate layer is designed but not built: `docs/superpowers/specs/2026-09-06-gather-and-curate-design.md`. Nothing in it is implemented |
+
+**Section 9 needs no amendment, and should not be "corrected".** It says `verify_deploy.py` checks
+every file under `site/` except `_headers`. That was aspirational when frozen - the marker list was
+eight hand-written entries - and became true on 2026-09-03 when the list was replaced by a recursive
+walk. The spec was wrong at freeze and is right now.
+
+---
+
 ## 1. What v1 is
 
 A **public, curated, filterable map-and-list directory of events**, published as static JSON from a

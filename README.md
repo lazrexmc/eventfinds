@@ -5,9 +5,9 @@ CSV; no database, no server, no framework, $0/month. RapidForge Build 002.
 
 ## Live
 
-Built (rung one). Not yet viewable: Cloudflare Pages is not connected. Verification at the origin
-is recorded here when it is. When the site is later deployed, this section is where the origin
-verification (verify_deploy output, headers, URL semantics) gets recorded.
+Built (rung one). Not yet viewable: Cloudflare Pages is not connected. When it is deployed, the
+origin verification - `verify_deploy.py` output, headers, the host's URL semantics - gets recorded
+here.
 
 ## Add or change an event (the whole workflow)
 
