@@ -170,6 +170,17 @@ The curation step is the ONLY path from the gather store into `data/events.csv`.
 
 ## INBOX (captured, not chased)
 
+- **UNBLOCKED 2026-09-06: sharing across peer repos is permitted** (Lance, this session: "you can
+  share with other peers"). The Glizzness session has offered ~410 published circuit events with
+  counties, coordinates, dates, last_verified stamps and provenance, a 373-line city centroid table
+  that would fill most of `data/places.csv`, and `DISCOVERY_METHOD.md` - the method behind twelve
+  adversarially-verified research passes. **Still gated on ONE owner decision, not on permission:
+  which directory is canonical.** Importing ~410 rows creates a second public directory over one
+  dataset, and the two fork at the first re-verification pass (`event-finder` trap 6.20). If
+  EventFinds is canonical the mapping is worth writing; if it is not, the mapping is wasted work.
+  Asked; not assumed. Independent of that answer: contact columns never cross (gate G7), and the
+  city table is a clean take because coordinates are public facts with no consent question.
+
 - CLAUDE.md rule 5 is stricter than the decision it came from: "nothing shared with the reference
   project" bars a data row outright, but Lance owns the 415 events and the questionnaire left a
   re-verified import as his to make. Reword to "not without an explicit owner decision recorded in

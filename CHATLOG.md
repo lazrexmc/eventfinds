@@ -895,3 +895,30 @@ pending Lance's confirmation in an EventFinds session, because a peer relaying t
 lifted is precisely the case that needs the owner's own word - and the peer said so itself before I
 did. Trap 6.20 also survives the lift on its own merits: two public directories over one dataset fork
 at the first refresh, and nobody has yet decided which is canonical.
+
+## 2026-09-06 11:58 CDT - Sharing confirmed by Lance; the standing rules labelled by level
+
+Lance, in this session: "you can share with other peers, somehow rapidforge leaked it's rules into the
+sub systems when it shouldn't have and I have not had time to clean that up and separate the rules out
+that are federal rules at the rapidforge level only and the state level where each session has it's own
+rules to govern items."
+
+The lift is confirmed, so the struck-through rule is replaced rather than left pending. Two limits
+survive it and both are this project's own rather than his: contact columns never cross under any
+sharing arrangement, because the reason is consent and not storage; and nothing is imported wholesale
+until the canonical-directory question is answered, because trap 6.20 is about forking data and is
+untouched by permission.
+
+On the leak: every standing rule here is now labelled [STATE], [FEDERAL] or [OWNER], and nothing is
+deleted on that basis - a session does not get to drop a rule by reclassifying it. The point is that
+the cleanup he has not had time for becomes a reading rather than an investigation, at least for this
+repo. The split lands as five state rules that are genuinely this project's architecture, three
+federal ones (two of which this repo would keep even if the standard vanished, since it argued one of
+them into being federal in the first place), and one owner convention that outranks both. The
+deviations section is relabelled as what it always was: the concrete answer to which federal rules
+should not reach a 65-test static-site repo with no database, no server and one contributor.
+
+Worth recording as the general shape, since it is the second instance this week: authority accretes to
+whatever is written in the owner's file. An agent default acquired it by his silence, a peer's brief
+acquired it by being quoted back to him, and a registry's federal rules acquired it by a pointer at the
+top of a rule file. None of the three was a decision he made.

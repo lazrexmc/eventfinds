@@ -19,36 +19,48 @@ built 2026-08-29/30 CDT.
 
 ## Standing rules (locked)
 
-- **The publish gate lives in exactly one place**: `is_published()` in `pipeline/export.py`.
+*Labelled by LEVEL, because the levels are currently tangled. Lance, 2026-09-06: "somehow rapidforge
+leaked it's rules into the sub systems when it shouldn't have and I have not had time to clean that
+up and separate the rules out that are federal rules at the rapidforge level only and the state
+level where each session has it's own rules to govern items." Nothing below is deleted on that
+basis - a session does not get to drop a rule by reclassifying it - but the origin of each is now
+visible, so the cleanup is a reading rather than an investigation. **[STATE]** is this project's own
+and this session governs it. **[FEDERAL]** arrived from `PROJECT_STANDARD.md` and is RapidForge's to
+keep or drop. **[OWNER]** is Lance's own global convention and outranks both.*
+
+
+- **[STATE] The publish gate lives in exactly one place**: `is_published()` in `pipeline/export.py`.
   The page carries no copy; gate G6 fails the build if the gate vocabulary or an inline handler
   reappears in the page.
-- **No contact columns, anywhere.** The CSV header is a closed 18-column list; gate G7 fails any
+- **[STATE] No contact columns, anywhere.** The CSV header is a closed 18-column list; gate G7 fails any
   exported key containing contact, email or phone.
-- **No auto-publish, ever.** A human sets `visibility`; machines only propose. *(Provenance:
+- **[STATE] No auto-publish, ever.** A human sets `visibility`; machines only propose. *(Provenance:
   inherited from the reference project's own written constraint, signal-net design spec 9.5,
   not an instruction from Lance. Held because its reasoning is sound and this repo agrees with
   it, which is a different kind of authority - and a weaker one - than an owner directive.)*
-- **Failure is not emptiness.** A bad row or unknown town exits 1 naming it and writes nothing;
+- **[FEDERAL, and kept regardless] Failure is not emptiness.** A bad row or unknown town exits 1 naming it and writes nothing;
   a failed page load renders the error box naming the file; zero published rows is an honest
   `event_count: 0`, never a symptom.
-- **~~Nothing is shared with the reference project~~ - LIFTED by Lance 2026-09-06**, relayed via the
-  Glizzness session: *"the no sharing constraint is invalid, feel free to share."* **Pending his
-  direct confirmation in an EventFinds session before anything is copied**, because a peer
-  relaying that a locked rule is lifted is exactly the shape that requires the owner's own word.
-  *(Provenance, stated because it was never what it looked like: this rule was an AGENT DEFAULT -
-  questionnaire item 2, "start empty", which Lance accepted by silence rather than by choosing -
-  plus a boundary RapidForge stated on its own authority. Lance's actual answers were item 1
-  "standalone", item 3 that he owns what is ownable, and item 13 static JSON. A default accepted
-  by silence had acquired the standing of a directive simply by being written in his file.)*
-  Until he confirms: no key, data row, domain or brand crosses, and the reference's name stays
-  out of the product surface (`site/`, `pipeline/`, `data/`, `README.md`).
-- **Stdlib only** in the pipeline; the page's only dependency is vendored.
-- **Draft-then-apply**: credentialed steps (the Pages dashboard) are Lance's, batched into one
+- **~~Nothing is shared with the reference project~~ - LIFTED, confirmed by Lance in this
+  session 2026-09-06:** *"you can share with other peers."* Sharing across peer repos is permitted:
+  rows, schemas, method documents, city tables. **Two limits survive the lift and are this
+  project's own, not his:** (a) **no contact columns, ever** - not `contact_name`,
+  `contact_email`, `contact_phone`, whatever the source schema calls them; gate G7 enforces it,
+  and the reason is consent rather than storage. (b) **Canonical-directory first**: nothing is
+  imported wholesale until it is settled which directory is the canonical one, because two public
+  directories over one dataset fork at the first re-verification (`event-finder` trap 6.20). Ask;
+  do not assume.
+  *(Provenance, kept because it explains how this rule got its authority: it was an AGENT DEFAULT -
+  questionnaire item 2, "start empty", accepted by Lance's silence rather than chosen - plus a
+  boundary RapidForge asserted on its own. A default written into the owner's file and quoted back
+  to him had acquired the standing of a directive.)*
+- **[STATE] Stdlib only** in the pipeline; the page's only dependency is vendored.
+- **[OWNER] Draft-then-apply**: credentialed steps (the Pages dashboard) are Lance's, batched into one
   sitting. An agent never performs them. *(Provenance: Lance's own global conventions - the one
   rule here that is unambiguously his.)*
-- **Dates and times come from the terminal clock** (`date +'%Y-%m-%d %H:%M %Z'`), never from
+- **[FEDERAL] Dates and times come from the terminal clock** (`date +'%Y-%m-%d %H:%M %Z'`), never from
   context, and carry their zone. Commit times come from `git log --date=iso`.
-- **Plain ASCII punctuation in live documents** (standard rule 15); CHATLOG history stays as
+- **[FEDERAL] Plain ASCII punctuation in live documents** (standard rule 15); CHATLOG history stays as
   written.
 - Commit trailer: `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`. (Commits up to
   f1e7d33 carry `Claude Fable 5`, which was the correct trailer when they were made; history
@@ -68,6 +80,11 @@ must print ALL DEPLOYED (rung two). `event-finder`'s promotion to proven is HELD
 until that check (7.8) runs green here.
 
 ## Deviations from the standard (declared, each with its reason)
+
+*These four are the concrete answer to "which federal rules should not reach this project": a
+65-test static-site repo with no database, no server and one contributor. Each is declared rather
+than silently skipped, which under the standard's own section 3b counts as compliance.*
+
 
 - **No `verify_claims.py` of the usual kind.** `pipeline/checks.py` is the claim checker: G3
   derives the publication from the source, G5 proves the committed pair is self-consistent, G9
