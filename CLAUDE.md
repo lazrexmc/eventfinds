@@ -31,7 +31,7 @@ built 2026-08-29/30 CDT.
 - **Failure is not emptiness.** A bad row or unknown town exits 1 naming it and writes nothing;
   a failed page load renders the error box naming the file; zero published rows is an honest
   `event_count: 0`, never a symptom.
-- **~~Nothing is shared with the reference project~~ - LIFTED by Lance %s**, relayed via the
+- **~~Nothing is shared with the reference project~~ - LIFTED by Lance 2026-09-06**, relayed via the
   Glizzness session: *"the no sharing constraint is invalid, feel free to share."* **Pending his
   direct confirmation in an EventFinds session before anything is copied**, because a peer
   relaying that a locked rule is lifted is exactly the shape that requires the owner's own word.
