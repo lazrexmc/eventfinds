@@ -7,7 +7,7 @@ truth for "why." Conventions: `~/.claude/CLAUDE.md`. Method: `F:\RapidForge` (th
 
 ## Index
 
-*34 entries, derived from the headings rather than typed. To rebuild after appending:*
+*35 entries, derived from the headings rather than typed. To rebuild after appending:*
 `grep -n "^## 2026" CHATLOG.md` *- the index must list every heading the file holds.*
 
 **Heading format for new entries:** `## YYYY-MM-DD HH:MM CDT - Title`, time from the terminal
@@ -50,6 +50,7 @@ as written.
 | 2026-09-06 | Backfill: five exchanges that were never logged |
 | 2026-11-16 | Read-only review of the Dec 2 talk deck, asked by Lance through RapidForge |
 | 2026-11-16 | Second and last look at the reworked deck |
+| 2026-11-16 | Deck review closed; the status word on our line changed after we confirmed it |
 
 ---
 
@@ -1134,3 +1135,13 @@ and not for the slide: it holds no events yet.
 
 **Held back on purpose:** round one's point about "That person can now be you" was not repeated; it
 was heard and the line was kept, which is the owner's call. No change to this repo but this entry.
+
+## 2026-11-16 23:11 CST - Deck review closed; the status word on our line changed after we confirmed it
+
+RapidForge closed the loop (its commit 5c90ea1, no reply asked, none sent). Logged because it
+corrects the entry above: the status on the hidden slide is no longer "Finished, not online", which
+this session answered "right" to. A facts reviewer read this repo's own files and set it to
+**"Built, not online yet"** - the wording offered in round one and the one that matches README
+`## Live`. The line itself is unchanged. Taken from the second look: Keep means only what you told
+it until the slot fills, the dinner story names the guesser up front, and the told version says what
+built the dinner app. RapidForge's record: `F:\RapidForge\docs\capstone\deck\REVIEW_2026-11-16.md`.
