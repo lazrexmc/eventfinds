@@ -7,7 +7,7 @@ truth for "why." Conventions: `~/.claude/CLAUDE.md`. Method: `F:\RapidForge` (th
 
 ## Index
 
-*33 entries, derived from the headings rather than typed. To rebuild after appending:*
+*34 entries, derived from the headings rather than typed. To rebuild after appending:*
 `grep -n "^## 2026" CHATLOG.md` *- the index must list every heading the file holds.*
 
 **Heading format for new entries:** `## YYYY-MM-DD HH:MM CDT - Title`, time from the terminal
@@ -49,6 +49,7 @@ as written.
 | 2026-09-06 | Local documentation cleanup, all five batches |
 | 2026-09-06 | Backfill: five exchanges that were never logged |
 | 2026-11-16 | Read-only review of the Dec 2 talk deck, asked by Lance through RapidForge |
+| 2026-11-16 | Second and last look at the reworked deck |
 
 ---
 
@@ -1100,3 +1101,36 @@ item. One thing for Lance to rule on: CLAUDE.md fixes the commit trailer as Clau
 session runs as Claude Fable 5.2. This commit carries the name of the model that made it, by the same
 reasoning that file gives for the older Fable 5 commits; the rule file is his to change and was not
 touched.
+
+## 2026-11-16 22:10 CST - Second and last look at the reworked deck
+
+RapidForge reworked the deck from ten sessions' reviews and asked for one more read: confirm what it
+now says about this project, and one cold read of
+`F:\RapidForge\docs\capstone\deck\_scratch\v3\SCRIPT_v2.md` (43 slides plus 5 backup). Read-only
+again; replied once.
+
+**Taken from round one, by RapidForge's account:** "how it works" moved ahead of the series recap,
+"brief" and "the check" defined before use, two words kept at two (watching is checking that never
+stops), plain status words on the backup slides. The checker story offered as the CHECK moment was
+not used; PostKit's version of the same class is on the backup table instead.
+
+**The line about this project** is now "A map and list of events run from one spreadsheet. A person
+approves each event before it shows.", status "Finished, not online". Answered "right", on a fresh
+run (2026-11-16 22:09 CST): `python pipeline/verify_deploy.py` 21 markers not deployed, exit 1;
+`python pipeline/checks.py` 0 of 10 failed, 4 did not run. Added one fact for Lance to say if asked
+and not for the slide: it holds no events yet.
+
+**Three places a listener is still lost, sent with a fix each.**
+- The reveal is already in the room's hands. Slide 13 says and shows "keep what it made" and slide 14
+  says Drew and Jackson "handed us both words"; slide 20 then promises a piece "nobody has handed you
+  yet" and slide 23 reveals "keep what it made". Fix: let Keep on 13 be only what you told it, so the
+  second half is new at 23. This one is a side effect of the reorder this session asked for.
+- Slides 24 and 33 contradict as heard: "I stopped asking AI what's for dinner" and then "a button
+  that asks Claude to plan the week". Fix: one sentence saying the app plans with no AI and the
+  button is extra - flagged as "if true of the app", since that record is FamilyDinner's, not ours.
+- Slide 28, which stands in when there is no video, never says who or what built the dinner app, and
+  runs straight into the portal - so the room will assume the portal built it. The script's own note
+  requires the video to say it did not; the stand-in slide does not.
+
+**Held back on purpose:** round one's point about "That person can now be you" was not repeated; it
+was heard and the line was kept, which is the owner's call. No change to this repo but this entry.
