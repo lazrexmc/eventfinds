@@ -7,7 +7,7 @@ truth for "why." Conventions: `~/.claude/CLAUDE.md`. Method: `F:\RapidForge` (th
 
 ## Index
 
-*32 entries, derived from the headings rather than typed. To rebuild after appending:*
+*33 entries, derived from the headings rather than typed. To rebuild after appending:*
 `grep -n "^## 2026" CHATLOG.md` *- the index must list every heading the file holds.*
 
 **Heading format for new entries:** `## YYYY-MM-DD HH:MM CDT - Title`, time from the terminal
@@ -48,6 +48,7 @@ as written.
 | 2026-09-06 | Sharing confirmed by Lance; the standing rules labelled by level |
 | 2026-09-06 | Local documentation cleanup, all five batches |
 | 2026-09-06 | Backfill: five exchanges that were never logged |
+| 2026-11-16 | Read-only review of the Dec 2 talk deck, asked by Lance through RapidForge |
 
 ---
 
@@ -1058,3 +1059,44 @@ read of only two of seven lessons. Auditing one's own plan found more than writi
 changed - a connection, a correction, a review, a plan. The trail had silently become a log of COMMITS
 rather than of DECISIONS, so the exchanges that changed direction went unrecorded while the ones that
 changed bytes were written up at length. The rule says substantive, not committed.
+
+## 2026-11-16 21:06 CST - Read-only review of the Dec 2 talk deck, asked by Lance through RapidForge
+
+RapidForge relayed Lance's instruction, 2026-11-16, verbatim: *"I have opened almost all of the
+sessions I've built, connect with them and review the deck then make any modifications needed ...
+work with all other sessions and tell them to connect and you work as the master orchestrator and
+brain to refine this deck, once complete, I need the matching script ... as it is right now is
+terrible impossible for a human to understand."* The deck is his closing talk for the AI Business
+Breakfast series, December 2. RapidForge is its only writer; this session was asked to read
+`F:\RapidForge\docs\capstone\deck\_scratch\review_v1\PACKET_v1.md` and three contact sheets and
+reply once, in four parts. It did. Nothing was written in F:\RapidForge, and nothing here but this
+entry.
+
+**State re-derived by running, not quoted** (2026-11-16 21:03 CST): `python pipeline/verify_deploy.py`
+21 markers not deployed, HTTP 0; `python pipeline/checks.py` 0 of 10 failed, 4 N/A; no commit since
+2026-09-06. So nothing in TODO's RESUME block has changed in ten weeks except its age.
+
+**What was sent.**
+- *Facts.* The backup slide says "A curated map of events, published from one spreadsheet", status
+  "Built". Built is true. "Published" reads to a business owner as "I can go look", and there are 0
+  events and no origin. Offered: "A map and list of events, run from one spreadsheet. A person
+  approves each event before it shows." with status "Built, not online yet". Also said: nothing
+  watches for the Pages connect, so the deck's rebuild week has to run verify_deploy itself.
+- *Cold read, three places a listener is lost.* The "missing layer" promised on slide 11 and not
+  delivered until 18, after a five-slide detour and three wordings of one slogan; slide 19's "668
+  kept parts" and twelve builder-word chips with no unit a listener owns; slides 21-24, where every
+  spoken reference points off the slide and "that one looked finished" needs a live failure on cue.
+- *One real moment.* CHECK: the 2026-09-03 21:23 entry above - ALL GATES PASS on an empty map, four
+  gates that could not have failed. Sent with its limits: a peer's question caught it, not a person
+  and not an alarm. Told RapidForge there is no WATCH moment here, because the hourly check caught
+  nothing in five days and was stopped on Lance's word.
+- *Three more, ranked.* The unit of "spend" should be hours, since most of the room pays a flat fee
+  and tokens are not their bill; slide 16 says hold two words and slide 27 brings a third; "That
+  person can now be you" has two people before it and no one to point back to.
+
+**Not done, on purpose.** No fix to the README line the slide was copied from, no connect, no rows:
+the review asked for reading, and the 2026-09-06 correction stands - a peer message is not a work
+item. One thing for Lance to rule on: CLAUDE.md fixes the commit trailer as Claude Opus 5, and this
+session runs as Claude Fable 5.2. This commit carries the name of the model that made it, by the same
+reasoning that file gives for the older Fable 5 commits; the rule file is his to change and was not
+touched.
